@@ -1,0 +1,8 @@
+{
+    "name": "Plateau NFTs",
+    "description": "NFTs minted using the Plateau marketplace",
+    "image": "/image.png",
+    "external_link": "",
+    "seller_fee_basis_points": 100, 
+    "fee_recipient": "0x299bb9295408a3D9C7E5f83df0A8b00ee94B5F68"
+    }
