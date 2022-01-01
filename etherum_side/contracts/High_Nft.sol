@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.0;
 
 /**
@@ -1028,44 +1030,64 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 }
 
 
-pragma solidity ^0.8.0;
-
-
-
-
 contract High_NFT is ERC1155, Ownable {
     
  uint256 public Token_Id = 0; 
+ address public admin;
  mapping (uint256 => string) public _tokens;
+ mapping (address=> uint256) public _number_of_owned_nfts;
  mapping (uint256 => address) public _owners;
+ address public address_of_nft_contract = address(this);
+ address public marketplace;
  string public contractURI = "https://gateway.pinata.cloud/ipfs/QmNfKF6qyHYK6BKSNBUrFJkmZH53Z4b79WjX8GBq3jYK4J";
+
+
+ modifier restricted() {
+      require(
+         msg.sender == admin,
+         "Function only available for the admin."
+      );
+      _;
+   }
 
     constructor() ERC1155("https://gateway.pinata.cloud/ipfs/QmZ9jfWXkV5Vvnytecqy28a9bPnrzoEhqzt1eiXfcyxugv") {
         
-        
+        admin = msg.sender;
         _mint(msg.sender, Token_Id, 1, "");
-         _tokens[Token_Id] = contractURI;
-         Token_Id += 1;
+        _tokens[Token_Id] = contractURI;
+        Token_Id += 1;
 
         
 
     }
     function mint (string memory newuri) public {
+
         address account = msg.sender;
         _mint(account, Token_Id, 1,"");
         _setURI(newuri);
         _tokens[Token_Id] = newuri;
         _owners[Token_Id] = msg.sender;
+        _number_of_owned_nfts[msg.sender] +=1;
         Token_Id += 1;
+        setApprovalForAll(marketplace, true);
     }
     
-    
+    function set_NFT_contract (address NFT_address) public restricted{  
+        setApprovalForAll(NFT_address, true);
+        marketplace = NFT_address;
+    }
+
+
+
     function burn(address account, uint256 id) public 
     {
     require (msg.sender == account);   
     _burn(account, id, 1);
     }
+    
+
 
 }
+
 
 

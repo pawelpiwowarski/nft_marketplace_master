@@ -8,7 +8,7 @@ const __dirname = path.resolve();
 const buildPath = path.resolve(__dirname, 'build');
 fs.removeSync(buildPath);
 
-const campaignPath = path.resolve(__dirname, 'contracts', 'High_Nft.sol');
+const campaignPath = path.resolve(__dirname, 'contracts', 'Marketplace.sol');
 const source = fs.readFileSync(campaignPath, 'utf-8');
 
 
@@ -17,7 +17,7 @@ const output = {
 
     language: "Solidity",
     sources: {
-        "High_Nft.sol": {
+        "Marketplace.sol": {
             content: source
         }
     },
@@ -36,10 +36,10 @@ const compiled_abi = JSON.parse(solc.compile(JSON.stringify(output)));
 
 console.log(compiled_abi)
 
-const nft_bytecode = (compiled_abi.contracts['High_Nft.sol']['High_NFT'])
+const nft_bytecode = (compiled_abi.contracts['Marketplace.sol']['Marketplace'])
 
 console.log(nft_bytecode.abi)
 fs.outputJSONSync(
-  path.resolve(buildPath, 'High_NFT' + '.json'),
+  path.resolve(buildPath, 'Marketplace' + '.json'),
   nft_bytecode
 );

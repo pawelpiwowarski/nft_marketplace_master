@@ -3,7 +3,7 @@ import compiledNFT_contract from './build/High_NFT.json'
 
 const instance = new web3.eth.Contract(
     compiledNFT_contract.abi,
-    '0x837a8ca559c78293485C145aEE2e4e939f40eF46'
+    '0x8c97E997bC995De9010D90fCd69C9f2b529A4227'
 )
 
 
