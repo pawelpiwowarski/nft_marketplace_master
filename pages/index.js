@@ -6,14 +6,7 @@ import {Link} from '../routes'
 import web3 from "../etherum_side/web3";
 import {Router} from '../routes';
 
-
-
-
-
-
 class home_page extends Component {
-
-
     
    state = {
 
@@ -22,18 +15,11 @@ class home_page extends Component {
     opensea_urls: '',
    }
    
- 
-
    async componentDidMount() {
     Router.pushRoute('/');
-    this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})
-
-        
-       
-    
+    this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
     
-
     static async getInitialProps() {
         const is_chainId_right = false
         const does_user_has_metamask_installed = false
@@ -55,7 +41,7 @@ class home_page extends Component {
               });
             }
         const account = await web3.eth.getAccounts()
-        console.log(account)
+        console.log(account[0])
         
         const is_metamask_running = Boolean(account.length !== 0)
         const instance_address = instance._address;

@@ -33,17 +33,25 @@ class asset extends Component {
             
             return response_to_json;
           }
-    
-    
+          const is_user_logged_in  = 0
+          const account = await web3.eth.getAccounts()
+          const does_user_has_metamask_installed = false
+          const index = props.query.index_of_the_nft
+
+          if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof account[0] != "undefined") {
+            does_user_has_metamask_installed = true
+            is_user_logged_in = await instance.methods.balanceOf(account[0],index).call()
+            console.log(does_user_has_metamask_installed)
+
+
+          }
         const instance_addres = props.query.instance_address
-        const index = props.query.index_of_the_nft
+        
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
-        const account = await web3.eth.getAccounts()
         const is_metamask_running = Boolean(account.length !== 0)
         const owner = await instance.methods._owners(index).call()
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
-        const is_user_logged_in = await instance.methods.balanceOf(account[0],index).call()
         const is_the_seller_logged_in = account == seller
         if (price != 0) // Asset is listed 
         {
@@ -57,7 +65,8 @@ class asset extends Component {
             account,is_metamask_running,instance_addres,
             index,uri_to_JSON,owner,
             price,seller,is_user_logged_in,
-            is_the_seller_logged_in }
+            is_the_seller_logged_in,
+        does_user_has_metamask_installed }
         
     }
 
@@ -163,7 +172,7 @@ render() {
         </Form>
         }
         {
-        this.props.price != 0 && !this.props.is_the_seller_logged_in &&
+        this.props.price != 0 && !this.props.is_the_seller_logged_in && this.props.does_user_has_metamask_installed &&
         <Button onClick = {this.buy_the_asset}size="massive" color="teal" loading={this.state.loading_flag}> Buy the asset </Button>
         }
         <Form  error={!!this.state.error_message}> 

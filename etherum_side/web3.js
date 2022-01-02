@@ -21,7 +21,6 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" ) {
 } 
 
 else {
-  console.log('sss')
   // We are on the server *OR* the user is not running metamask
   const provider = new Web3.providers.WebsocketProvider(
     "wss://rinkeby.infura.io/ws/v3/6d6b6d3a7c164567a05a88d04c2a3c92"
