@@ -50,7 +50,7 @@ class asset extends Component {
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
         const is_metamask_running = Boolean(account.length !== 0)
-        const owner = await instance.methods._owners(index).call()
+        let owner = await instance.methods._owners(index).call()
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
         const is_the_seller_logged_in = account == seller
         if (price != 0) // Asset is listed 
