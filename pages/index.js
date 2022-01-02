@@ -21,8 +21,8 @@ class home_page extends Component {
         }
     
     static async getInitialProps() {
-        const is_chainId_right = false
-        const does_user_has_metamask_installed = false
+        let is_chainId_right = false
+        let does_user_has_metamask_installed = false
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             does_user_has_metamask_installed = true
             if (window.ethereum.chainId =="0x4")
@@ -41,8 +41,6 @@ class home_page extends Component {
               });
             }
         const account = await web3.eth.getAccounts()
-        console.log(account[0])
-        
         const is_metamask_running = Boolean(account.length !== 0)
         const instance_address = instance._address;
         const numbers_of_tokens = (await instance.methods.Token_Id().call());

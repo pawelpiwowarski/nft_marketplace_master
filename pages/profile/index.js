@@ -22,7 +22,6 @@ class profile extends Component {
      getactualindex(index) {
         const array_of_indexes = []
         const list_to_compare = this.props.numbers_of_tokens_the_user_owns.map((element, index) => {return parseInt(this.props.numbers_of_tokens_the_user_owns[index])})
-        console.log(list_to_compare)
         const l = list_to_compare.length
         for (let i = 0; i < l; i++){
 
@@ -84,7 +83,7 @@ class profile extends Component {
             }
 
         }))).filter(num => num != null)
-        console.log(array_of_uris_filtered)
+
         for (let i=0; i < array_of_uris_filtered.length; i++) {
             let uri = await fetchJSON(array_of_uris_filtered[i])
             array_of_metadatas.push(uri)

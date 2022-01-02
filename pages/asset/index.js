@@ -33,9 +33,9 @@ class asset extends Component {
             
             return response_to_json;
           }
-          const is_user_logged_in  = 0
+          let is_user_logged_in  = 0
           const account = await web3.eth.getAccounts()
-          const does_user_has_metamask_installed = false
+          let does_user_has_metamask_installed = false
           const index = props.query.index_of_the_nft
 
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof account[0] != "undefined") {
