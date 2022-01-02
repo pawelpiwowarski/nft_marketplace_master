@@ -8,9 +8,13 @@ const app = next({
 
 });
 
-const handler = routes.getRequestHandler(app);
+const handler = routes.getRequestHandler(app, ({req, res, route, query}) => {
+    app.render(req, res, route.page, query)
+  })
 
 app.prepare().then(()=> {
+
+    
     createServer(handler).listen(3002, err=> {
         if(err) throw err;
         console.log('Ready on localhost:3002');

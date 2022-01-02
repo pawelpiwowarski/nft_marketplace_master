@@ -22,7 +22,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "start": "NODE_ENV=production node server.js"
+
   },
   "author": "",
   "license": "ISC",
