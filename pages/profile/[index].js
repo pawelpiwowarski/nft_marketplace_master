@@ -62,7 +62,7 @@ class profile extends Component {
         
         const account = props.query.address
         const account_of_the_user = await web3.eth.getAccounts()
-        const is_metamask_running = Boolean(account.length !== 0)
+        const is_metamask_running = Boolean(account != undefined)
         console.log(is_metamask_running)
         const numbers_of_tokens = await instance.methods.Token_Id().call();
         const instance_address = await instance._address

@@ -49,7 +49,7 @@ class asset extends Component {
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
         console.log(account)
-        const is_metamask_running = Boolean(account.length !== 0)
+        const is_metamask_running = Boolean(account != undefined)
         console.log(is_metamask_running)
         let owner = await instance.methods._owners(index).call()
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
@@ -190,4 +190,4 @@ render() {
 
 }
 
-export default asset
+export default withRouter(asset)
