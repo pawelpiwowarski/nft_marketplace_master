@@ -1,11 +1,11 @@
 import React, { Component } from "react"; 
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import {Form, Button, Input, Container, Header, Message, Card, Grid} from 'semantic-ui-react'
-import {Link} from '../../routes'
-import web3 from "../../etherum_side/web3";
-import instance from "../../etherum_side/instance_of_the_contract";
-import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
-import {Router} from '../../routes';
+import {Link} from '../../../routes'
+import web3 from "../../../etherum_side/web3";
+import instance from "../../../etherum_side/instance_of_the_contract";
+import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
+import {Router} from '../../../routes';
 import Web3 from "web3";
 
 class asset extends Component {
