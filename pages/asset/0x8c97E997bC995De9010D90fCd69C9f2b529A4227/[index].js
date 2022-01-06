@@ -5,7 +5,7 @@ import {Link} from '../../../routes'
 import web3 from "../../../etherum_side/web3";
 import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
-import {Router} from '../../../routes';
+import Router, {withRouter } from 'next/router'
 import Web3 from "web3";
 
 class asset extends Component {
@@ -26,7 +26,7 @@ class asset extends Component {
 
     static async getInitialProps(props) {
         async function fetchJSON(url) {
-           
+            
             const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
         
             const response_to_json = await response.json();
@@ -46,10 +46,11 @@ class asset extends Component {
 
           }
         const instance_addres = props.query.instance_address
-        
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
+        console.log(account)
         const is_metamask_running = Boolean(account.length !== 0)
+        console.log(is_metamask_running)
         let owner = await instance.methods._owners(index).call()
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
         const is_the_seller_logged_in = account == seller

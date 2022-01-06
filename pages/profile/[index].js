@@ -5,7 +5,8 @@ import {Link} from '../../routes'
 import web3 from "../../etherum_side/web3";
 import instance from "../../etherum_side/instance_of_the_contract";
 import lodash from 'lodash'
-import {Router} from '../../routes';
+import Router, {withRouter } from 'next/router'
+
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
 
 
@@ -62,6 +63,7 @@ class profile extends Component {
         const account = props.query.address
         const account_of_the_user = await web3.eth.getAccounts()
         const is_metamask_running = Boolean(account.length !== 0)
+        console.log(is_metamask_running)
         const numbers_of_tokens = await instance.methods.Token_Id().call();
         const instance_address = await instance._address
         const list_of_offers = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
@@ -135,4 +137,4 @@ render() {
 
 }
 
-export default profile
+export default withRouter(profile)

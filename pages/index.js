@@ -4,7 +4,7 @@ import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'seman
 import instance from "../etherum_side/instance_of_the_contract";
 import {Link} from '../routes'
 import web3 from "../etherum_side/web3";
-import {Router} from '../routes';
+import Router, {withRouter } from 'next/router'
 
 class home_page extends Component {
     
@@ -132,4 +132,4 @@ render(){
 }
 }
 
-export default home_page
+export default withRouter(home_page)
