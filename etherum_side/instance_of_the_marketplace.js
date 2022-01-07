@@ -3,7 +3,7 @@ import compiledNFT_contract from './build/Marketplace.json'
 
 const instance_of_marketplace = new web3.eth.Contract(
     compiledNFT_contract.abi,
-    '0xCE97f31A1e109604486fa21B8f081026a49EC6ed'
+    '0x3Aaa164d7968324361A3c3869a9897C3ce846B08'
 )
 
 
