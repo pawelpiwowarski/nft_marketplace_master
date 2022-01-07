@@ -30,10 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/asset": [
+    "/asset/0x3F3638012cd5b807a2aeDA39E7cdA7571507DA56/[index]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/asset.js"
+      "static/chunks/pages/asset/0x3F3638012cd5b807a2aeDA39E7cdA7571507DA56/[index].js"
     ]
   },
   "ampFirstPages": []

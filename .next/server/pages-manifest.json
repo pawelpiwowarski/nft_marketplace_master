@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/asset": "pages/asset.js"
+  "/asset/0x3F3638012cd5b807a2aeDA39E7cdA7571507DA56/[index]": "pages/asset/0x3F3638012cd5b807a2aeDA39E7cdA7571507DA56/[index].js",
+  "/": "pages/index.js"
 }

@@ -1,4 +1,4 @@
-import * as IPFS from 'ipfs-core'
+import ipfs from "../etherum_side/ipfs";
 import React, { Component } from "react"; 
 import nft_creator from '../etherum_side/instance_of_the_contract'
 import {Form, Button, Input, Container, Header, Message} from 'semantic-ui-react'
