@@ -122,10 +122,10 @@ render(){
 
         <Header as='h1'> There have been {this.props.numbers_of_tokens} NFTs minted so far</Header>
         <Header as='h3'> Adress of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
-        <Header as="h4" color="blue"> Markeplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
-        <a href="https://github.com/pawelpiwowarski" target="_blank">  link to Git Hub page. </a></Header>
+        
          {this.renderNFT()} 
-         
+         <Header as="h4" color="blue"> Markeplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
+        <a href="https://github.com/pawelpiwowarski" target="_blank">  link to Git Hub page. </a></Header>
         </Layout>
     )
 
