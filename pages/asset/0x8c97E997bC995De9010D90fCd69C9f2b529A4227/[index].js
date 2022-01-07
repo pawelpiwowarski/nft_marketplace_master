@@ -14,12 +14,13 @@ class asset extends Component {
     state = {
         price: "",
         loading_flag: false,
-        error_message: ""
+        error_message: "",
+        account_of_the_user: ""
     }
 
     
     async componentDidMount() {
-        
+        this.setState({account_of_the_user: await web3.eth.getAccounts()})
         Router.pushRoute(`/asset/${this.props.instance_addres}/${this.props.index}`);
         
             }
@@ -154,7 +155,7 @@ render() {
 
     return(
 
-        <Layout metamaskflag = {this.props.is_metamask_running} account={this.props.account}>
+        <Layout metamaskflag = {this.props.is_metamask_running} account={this.state.account_of_the_user}>
         <Grid>
         <Grid.Column width={8}>
         <Card 
