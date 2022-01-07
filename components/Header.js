@@ -1,7 +1,7 @@
 import React, { Component } from "react"; 
 import {Link} from '../routes'
 import { Button, Menu } from "semantic-ui-react";
-import {Router} from '../routes';
+import Router, {withRouter } from 'next/router'
 
 
 
@@ -86,4 +86,4 @@ const Header = (props) => {
     )
     }
 
-export default Header;
+export default withRouter(Header);
