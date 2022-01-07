@@ -4,7 +4,6 @@ import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'seman
 import {Link} from '../../routes'
 import web3 from "../../etherum_side/web3";
 import instance from "../../etherum_side/instance_of_the_contract";
-import lodash from 'lodash'
 import Router, { withRouter } from 'next/router'
 
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
@@ -13,12 +12,13 @@ import instance_of_marketplace from "../../etherum_side/instance_of_the_marketpl
 class profile extends Component {
 
     async componentDidMount() {
-
+        this.setState({account_of_the_user: await web3.eth.getAccounts()})
         Router.pushRoute(`/profile/${this.props.account}`)
     }
     
     state = {
-        index_of_the_nft: 0
+        index_of_the_nft: 0,
+        account_of_the_user: ""
     }
      getactualindex(index) {
         const array_of_indexes = []
@@ -67,7 +67,7 @@ class profile extends Component {
         
         }
         
-        const account_of_the_user = await web3.eth.getAccounts()
+        
         const is_metamask_running = Boolean(account != undefined)
         
         const numbers_of_tokens = await instance.methods.Token_Id().call();
@@ -99,7 +99,7 @@ class profile extends Component {
         
         
         return {account,
-            account_of_the_user,
+       
             array_of_metadatas,
             is_metamask_running,
             instance_address, 
@@ -133,7 +133,7 @@ render() {
 
     return(
 
-        <Layout metamaskflag = {this.props.is_metamask_running} account={this.props.account_of_the_user}>
+        <Layout metamaskflag = {this.props.is_metamask_running} account={this.state.account_of_the_user}>
 
 <Header as='h1'>The NFTs that belong to the adrress: {this.props.account}</Header>
         {this.renderNFT()}

@@ -31,7 +31,8 @@ class home_page extends Component {
             }
             window.ethereum.on('accountsChanged', function (accounts) {
         
-                Router.pushRoute('/');
+                Router.reload(window.location.pathname);
+
               });
               ethereum.on('chainChanged', (chainId) => {
                 // Handle the new chain.
