@@ -36,7 +36,15 @@ class asset extends Component {
           let is_user_logged_in  = 0
           const account = await web3.eth.getAccounts()
           let does_user_has_metamask_installed = false
-          const index = props.query.index_of_the_nft
+          let index = props.query.index_of_the_nft
+          
+          
+
+          if (index == undefined){
+            let arr = props.req.url.split("/").length -1 
+            index = props.req.url.split("/")[arr]
+
+          }
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof account[0] != "undefined") {
             does_user_has_metamask_installed = true
             is_user_logged_in = await instance.methods.balanceOf(account[0],index).call()

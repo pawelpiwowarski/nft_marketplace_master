@@ -60,10 +60,13 @@ class profile extends Component {
             return response_to_json;
           }
         let account = props.query.address
+       
         if (account == undefined) {
-            account = props.req.url.substr(9, -1)
+            let arr = props.req.url.split("/").length -1 
+            account = props.req.url.split("/")[arr]
         
         }
+        
         const account_of_the_user = await web3.eth.getAccounts()
         const is_metamask_running = Boolean(account != undefined)
         
