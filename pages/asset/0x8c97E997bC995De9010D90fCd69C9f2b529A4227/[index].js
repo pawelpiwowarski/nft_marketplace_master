@@ -65,7 +65,7 @@ class asset extends Component {
         {
         owner = seller
         }
-        else if (price == 0)// Asset was delisted 
+        else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
         owner = seller
         }
