@@ -37,20 +37,19 @@ class asset extends Component {
           const account = await web3.eth.getAccounts()
           let does_user_has_metamask_installed = false
           const index = props.query.index_of_the_nft
-
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof account[0] != "undefined") {
             does_user_has_metamask_installed = true
             is_user_logged_in = await instance.methods.balanceOf(account[0],index).call()
-            console.log(does_user_has_metamask_installed)
+           
 
 
           }
         const instance_addres = props.query.instance_address
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
-        console.log(account)
+       
         const is_metamask_running = Boolean(account != undefined)
-        console.log(is_metamask_running)
+ 
         let owner = await instance.methods._owners(index).call()
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
         const is_the_seller_logged_in = account == seller
