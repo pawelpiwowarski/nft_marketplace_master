@@ -1,10 +1,11 @@
-import ipfs from "../etherum_side/ipfs";
+
 import React, { Component } from "react"; 
 import nft_creator from '../etherum_side/instance_of_the_contract'
 import {Form, Button, Input, Container, Header, Message} from 'semantic-ui-react'
 import Layout from '../components/Layout';
 import pinata from '../etherum_side/pinata';
 import web3 from "../etherum_side/web3";
+import ipfs from "../etherum_side/ipfs";
 
 class mint_nft extends Component 
 {
@@ -69,7 +70,7 @@ if (!this.state.is_content_loaded || this.state.name_of_the_nft === "" || this.s
 const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
 const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;    
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-
+console.log(metadata)
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
 }
 
@@ -102,10 +103,11 @@ handleSubmission = async (e) => {
    reader.onloadend = async () => {
   
     
-    const ipfs = await IPFS.create();
+
 
     const { cid } = await ipfs.add(reader.result) // Display as a buffer
-    const img_source = "https://gateway.ipfs.io/ipfs/" + cid
+    const img_source = "https://ipfs.io/ipfs/" + cid
+    console.log(img_source)
     this.setState({file_url: img_source})
    }
 

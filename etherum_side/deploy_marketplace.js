@@ -3,7 +3,7 @@ import HDWalletProvider  from '@truffle/hdwallet-provider'
 import fs from 'fs'
 const compiledNFT_contract = JSON.parse(fs.readFileSync('./build/Marketplace.json'));
 
-const address_of_the_nft = "0x8c97E997bC995De9010D90fCd69C9f2b529A4227"
+const address_of_the_nft = "0x1DEDa0e734465B737e2999532dc424ee39721DB5"
 console.log(compiledNFT_contract)
 
 
