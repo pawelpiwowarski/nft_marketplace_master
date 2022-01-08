@@ -9,40 +9,43 @@ import Router, {withRouter } from 'next/router'
 class home_page extends Component {
     
    state = {
-
+    
     index_of_the_nft: 0,
     loadingflag : true,
     opensea_urls: '',
+    account: '',
+    is_chainId_right: false
+
    }
    
    async componentDidMount() {
-    Router.pushRoute('/');
+    if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+        this.setState({does_user_has_metamask_installed: true})
+        if (window.ethereum.chainId =="0x4")
+        {
+            this.setState({is_chainId_right: true})
+        }
+        window.ethereum.on('accountsChanged', function (accounts) {
+    
+            Router.reload(window.location.pathname);
+
+          });
+          ethereum.on('chainChanged', (chainId) => {
+            // Handle the new chain.
+            // Correctly handling chain changes can be complicated.
+            // We recommend reloading the page unless you have good reason not to.
+            window.location.reload();
+          });
+        }
+    this.setState({account:  await web3.eth.getAccounts()})
+    this.setState({ is_metamask_running: Boolean(this.state.account.length !== 0)})
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
     
     static async getInitialProps() {
-        let is_chainId_right = false
-        let does_user_has_metamask_installed = false
-        if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
-            does_user_has_metamask_installed = true
-            if (window.ethereum.chainId =="0x4")
-            {
-            is_chainId_right = true
-            }
-            window.ethereum.on('accountsChanged', function (accounts) {
+    
         
-                Router.reload(window.location.pathname);
 
-              });
-              ethereum.on('chainChanged', (chainId) => {
-                // Handle the new chain.
-                // Correctly handling chain changes can be complicated.
-                // We recommend reloading the page unless you have good reason not to.
-                window.location.reload();
-              });
-            }
-        const account = await web3.eth.getAccounts()
-        const is_metamask_running = Boolean(account.length !== 0)
         const instance_address = instance._address;
         const numbers_of_tokens = (await instance.methods.Token_Id().call());
     
@@ -76,11 +79,8 @@ class home_page extends Component {
             instance_address,
             numbers_of_tokens,
             array_of_metadatas,
-            account,
-            is_metamask_running,
-            is_chainId_right,
-            does_user_has_metamask_installed
-        
+
+  
             
         };
         }
@@ -113,11 +113,11 @@ render(){
 
     return(
 
-        <Layout metamaskflag = {this.props.is_metamask_running} account={this.props.account}>
+        <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account}>
 
-        {!this.props.is_chainId_right &&  this.props.does_user_has_metamask_installed && <Message color='red' size='large' 
+        {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <Message color='red' size='large' 
         content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network! " />}
-        {!this.props.does_user_has_metamask_installed && this.metamaskinfo()}
+        {!this.state.does_user_has_metamask_installed && this.metamaskinfo()}
   
   
 
