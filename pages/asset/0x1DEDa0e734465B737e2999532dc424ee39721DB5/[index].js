@@ -17,6 +17,7 @@ class asset extends Component {
         error_message: "",
         account_of_the_user: "",
         does_user_has_metamask_installed: false,
+        is_metamask_running: false,
         is_user_logged_in: 0,
         is_the_seller_logged_in: false,
         owner: "",
@@ -26,14 +27,18 @@ class asset extends Component {
     
     async componentDidMount() {
         
-        this.setState({account_of_the_user: await web3.eth.getAccounts()})
+        const provider  = window.ethereum
+        const accounts = await provider.request({method: 'eth_requestAccounts'})
+        this.setState({account_of_the_user:  accounts[0]})
+        this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
             
             this.setState({does_user_has_metamask_installed: true})
-            this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user[0],this.props.index).call()})
+            this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
             this.setState({is_the_seller_logged_in: this.state.account_of_the_user == this.props.seller})
           }
-        console.log(this.props.index)
+        
         
         
         let owner = await instance.methods._owners(this.props.index).call()

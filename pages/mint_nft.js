@@ -30,11 +30,13 @@ state = {
 
 async componentDidMount() {
 
-  const account = await web3.eth.getAccounts()
-  const is_metamask_running = Boolean(account.length !== 0)
+  const provider  = window.ethereum
+   const accounts = await provider.request({method: 'eth_requestAccounts'})
+   this.setState({account:  accounts[0]})
+   this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
   const instance_address = await nft_creator._address;
-  this.setState({account: account[0]})
-  this.setState({is_metamask_running})
+
+
   this.setState({instance_address})
   this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + instance_address})
 

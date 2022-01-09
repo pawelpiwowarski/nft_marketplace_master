@@ -13,7 +13,7 @@ class profile extends Component {
 
     async componentDidMount() 
     {
-        this.setState({account_of_the_user: await web3.eth.getAccounts()})
+        
         const array_of_metadatas = []
         async function fetchJSON(url) {
            
@@ -24,7 +24,10 @@ class profile extends Component {
             return response_to_json;
           }
    
-    this.setState({is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+          const provider  = window.ethereum
+          const accounts = await provider.request({method: 'eth_requestAccounts'})
+          this.setState({account_of_the_user:  accounts[0]})
+          this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
     const numbers_of_tokens = await instance.methods.Token_Id().call();
     const list_of_offers = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
     this.setState({list_of_offers: list_of_offers})
