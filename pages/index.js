@@ -15,7 +15,8 @@ class home_page extends Component {
     opensea_urls: '',
     account: '',
     is_chainId_right: false,
-    is_metamask_running: false
+    is_metamask_running: false,
+    does_user_has_metamask_installed: false
 
    }
    
@@ -39,8 +40,9 @@ class home_page extends Component {
           });
         }
    
-    this.setState({account:  await web3.eth.getAccounts()})
-    this.setState({ is_metamask_running: Boolean(this.state.account.length !== 0)})
+    this.setState({account:  (await web3.eth.getAccounts())[0]})
+   
+    this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
    
