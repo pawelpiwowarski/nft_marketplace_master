@@ -15,7 +15,7 @@ class home_page extends Component {
     opensea_urls: '',
     account: '',
     is_chainId_right: false,
-    is_metamask_running: true,
+    is_metamask_running: false,
     does_user_has_metamask_installed: false
 
    }
