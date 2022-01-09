@@ -1,7 +1,7 @@
 import React, { Component } from "react"; 
 import Layout from '../../../components/Layout';
 import {Form, Button, Input, Container, Header, Message, Card, Grid} from 'semantic-ui-react'
-import {Link} from '../../../routes'
+import Link from 'next/link'
 import web3 from "../../../etherum_side/web3";
 import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
@@ -15,74 +15,48 @@ class asset extends Component {
         price: "",
         loading_flag: false,
         error_message: "",
-        account_of_the_user: ""
+        account_of_the_user: "",
+        does_user_has_metamask_installed: false,
+        is_user_logged_in: 0,
+        is_the_seller_logged_in: false,
+        owner: "",
+        price: 0
     }
 
     
     async componentDidMount() {
+        
         this.setState({account_of_the_user: await web3.eth.getAccounts()})
-        Router.pushRoute(`/asset/${this.props.instance_addres}/${this.props.index}`);
-        
-            }
-
-    static async getInitialProps(props) {
-        async function fetchJSON(url) {
+        if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
             
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+            this.setState({does_user_has_metamask_installed: true})
+            this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user[0],this.props.index).call()})
+            this.setState({is_the_seller_logged_in: this.state.account_of_the_user == this.props.seller})
+          }
+        console.log(this.props.index)
         
-            const response_to_json = await response.json();
-            
-            return response_to_json;
-          }
-          let is_user_logged_in  = 0
-          const account = await web3.eth.getAccounts()
-          let does_user_has_metamask_installed = false
-          let index = props.query.index_of_the_nft
-          
-          
-
-          if (index == undefined){
-            let arr = props.req.url.split("/").length -1 
-            index = props.req.url.split("/")[arr]
-
-          }
-          if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof account[0] != "undefined") {
-            does_user_has_metamask_installed = true
-            is_user_logged_in = await instance.methods.balanceOf(account[0],index).call()
-           
-
-
-          }
-        const instance_addres = props.query.instance_address
-        const uri = await instance.methods._tokens(index).call()
-        const uri_to_JSON = await fetchJSON(uri)
-       
-        const is_metamask_running = Boolean(account != undefined)
- 
-        let owner = await instance.methods._owners(index).call()
-        const {price, seller} = await instance_of_marketplace.methods._listingDetails(index).call()
-        const is_the_seller_logged_in = account == seller
+        
+        let owner = await instance.methods._owners(this.props.index).call()
+        const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
+        this.setState({price: price})
+        this.setState({owner: owner})
         if (price != 0) // Asset is listed 
         {
-        owner = seller
+            this.setState({owner: seller})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
-        owner = seller
+            this.setState({owner: seller})
         }
-        return {
-            account,is_metamask_running,instance_addres,
-            index,uri_to_JSON,owner,
-            price,seller,is_user_logged_in,
-            is_the_seller_logged_in,
-        does_user_has_metamask_installed }
         
-    }
+            }
+
+
 
 
 async link_address_to_profile(){
 
-    return <Link route={`/profile/${this.props.owner}`}>
+    return <Link href={`/profile/${this.props.owner}`}>
     <a className='item' > {this.props.owner}</a>
 
     </Link>
@@ -94,12 +68,12 @@ async link_address_to_profile(){
 
 is_asset_listed() {
  
-    if (this.props.price != 0) // Asset is currently listed 
+    if (this.state.price != 0) // Asset is currently listed 
     {
     
         return (
         <Header size="huge" color="teal">
-        Current Price:  {Web3.utils.fromWei(this.props.price, 'ether')} ETH
+        Current Price:  {Web3.utils.fromWei(this.state.price, 'ether')} ETH
         </Header>
         )
     }
@@ -161,7 +135,7 @@ render() {
         <Card 
         style = {{width: "100%"}}
         image = {this.props.uri_to_JSON.image}
-        extra = {<Link route={`/profile/${this.props.owner}`}>
+        extra = {<Link  href={`/profile/${this.props.owner}`}>
             {"Address of the owner: " + this.props.owner}
         </Link>} 
         header={this.props.uri_to_JSON.name}
@@ -171,7 +145,7 @@ render() {
         </Grid.Column>
         <Grid.Column width={4}>
         {this.is_asset_listed()}
-        {this.props.is_user_logged_in == 1 &&
+        {this.state.is_user_logged_in == 1 &&
         <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}>
         <Form.Field> 
         <label>Price for which you want to list the asset in ETH</label> 
@@ -181,7 +155,7 @@ render() {
         </Form>
         }
         {
-        this.props.price != 0 && !this.props.is_the_seller_logged_in && this.props.does_user_has_metamask_installed &&
+        this.state.price != 0 && !this.state.is_the_seller_logged_in && this.state.does_user_has_metamask_installed &&
         <Button onClick = {this.buy_the_asset}size="massive" color="teal" loading={this.state.loading_flag}> Buy the asset </Button>
         }
         <Form  error={!!this.state.error_message}> 
@@ -198,4 +172,39 @@ render() {
 
 }
 
+export async function getServerSideProps(context) {
+     async function fetchJSON(url) {
+            
+            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+        
+            const response_to_json = await response.json();
+            
+            return response_to_json;
+          }
+
+          let account = await web3.eth.getAccounts()
+          console.log(context)
+          let index = context.query.index
+          if (index == undefined) {
+              index = context.query.index_of_the_nft
+          }
+     
+          
+ 
+          
+        const instance_addres = context.query.instance_address
+        const uri = await instance.methods._tokens(index).call()
+       
+        const uri_to_JSON = await fetchJSON(uri)
+       
+        const is_metamask_running = Boolean(account != undefined)
+ 
+
+
+    return {
+      props: {account,is_metamask_running,instance_addres,
+        index,uri_to_JSON
+   }, // will be passed to the page component as props
+    }
+  }
 export default withRouter(asset)

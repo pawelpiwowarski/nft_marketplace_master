@@ -1,7 +1,7 @@
 import React, { Component } from "react"; 
-import {Link} from '../routes'
+import Link from 'next/link'
 import { Button, Menu } from "semantic-ui-react";
-import Router, {withRouter } from 'next/router'
+import {withRouter } from 'next/router'
 
 
 
@@ -14,7 +14,7 @@ const connectMetamask = async () => {
     try {
 
         await ethereum.request({ method: 'eth_requestAccounts' });
-        Router.pushRoute('/');
+       
     }
 
     catch(error) {
@@ -34,7 +34,7 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined")
 {
 if (metamaskflag) 
 {
-    return <Link route={`/profile/${address}`}>
+    return <Link href={`/profile/${address}`}>
     <a className='item' > Your Profile        {props.address}</a>
 
     </Link>
@@ -63,7 +63,7 @@ const Header = (props) => {
     <Menu.Item active={true} color='teal' />
 
     
-    <Link route='/'>
+    <Link href='/'>
     <a className='item'> Plateau NFT </a>
     </Link>
 
@@ -71,7 +71,7 @@ const Header = (props) => {
     
     
     
-    <Link route='/mint_nft'>
+    <Link href='/mint_nft'>
     <a color="blue" className='item'> Mint a NFT </a>
     </Link>
 

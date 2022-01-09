@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Layout from '../components/Layout';
 import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
-import {Link} from '../routes'
+import Link from 'next/link'
 import web3 from "../etherum_side/web3";
 import Router, {withRouter } from 'next/router'
 
@@ -10,7 +10,7 @@ class home_page extends Component {
     
    state = {
     
-    index_of_the_nft: 0,
+    index: 0,
     loadingflag : true,
     opensea_urls: '',
     account: '',
@@ -43,55 +43,13 @@ class home_page extends Component {
     this.setState({ is_metamask_running: Boolean(this.state.account.length !== 0)})
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
-    
-    static async getInitialProps() {
-    
-        
-
-        const instance_address = instance._address;
-        const numbers_of_tokens = await instance.methods.Token_Id().call();
-    
-        const array_of_metadatas = []
-      
-       
-
-
-        const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
-
-        async function fetchJSON(url) {
-           
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
-        
-            const response_to_json = await response.json();
-          
-            return response_to_json;
-          }
-        
-        
-          for (let i=0; i < numbers_of_tokens; i++) {
-            let uri = await fetchJSON(array_of_uris[i])
-            array_of_metadatas.push(uri)
-          }
-          
-          
-        
-        
-        
-        return {
-            instance_address,
-            numbers_of_tokens,
-            array_of_metadatas,
-
-  
-            
-        };
-        }
+   
 
     renderNFT() {
     
         return <Card.Group itemsPerRow={3} >{this.props.array_of_metadatas.map((element, index) => 
-            {return <Link route = {`/asset/${this.props.instance_address}/${this.state.index_of_the_nft}`} >
-                <a onMouseEnter={() => this.setState({index_of_the_nft: index})}> <Card     
+            {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
+                <a onMouseEnter={() => this.setState({index: index})}> <Card     
         style={{margin: "25px" }}
         
         key={index} 
@@ -135,5 +93,39 @@ render(){
 
 }
 }
+export async function getServerSideProps(context) {
+    const instance_address = instance._address;
+        const numbers_of_tokens = await instance.methods.Token_Id().call();
+    
+        const array_of_metadatas = []
+      
+       
 
+
+        const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
+
+        async function fetchJSON(url) {
+           
+            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+        
+            const response_to_json = await response.json();
+          
+            return response_to_json;
+          }
+        
+        
+          for (let i=0; i < numbers_of_tokens; i++) {
+            let uri = await fetchJSON(array_of_uris[i])
+            array_of_metadatas.push(uri)
+          }
+
+
+
+   return {
+     props: {instance_address,
+        numbers_of_tokens,
+        array_of_metadatas
+  }, // will be passed to the page component as props
+   }
+ }
 export default withRouter(home_page)
