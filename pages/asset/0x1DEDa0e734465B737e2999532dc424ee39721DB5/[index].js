@@ -135,8 +135,8 @@ render() {
         <Card 
         style = {{width: "100%"}}
         image = {this.props.uri_to_JSON.image}
-        extra = {<Link  href={`/profile/${this.props.owner}`}>
-            {"Address of the owner: " + this.props.owner}
+        extra = {<Link  href={`/profile/${this.state.owner}`}>
+            {"Address of the owner: " + this.state.owner}
         </Link>} 
         header={this.props.uri_to_JSON.name}
         description = {this.props.uri_to_JSON.description} 
