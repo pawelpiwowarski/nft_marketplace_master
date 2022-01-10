@@ -39,7 +39,7 @@ class home_page extends Component {
    const accounts = await provider.request({method: 'eth_requestAccounts'})
    const chainId = await provider.request({ method: 'eth_chainId' })
    this.setState({is_chainId_right: chainId == "0x4"})
-   console.log(this.state.is_chainId_right)
+
     this.setState({account:  accounts[0]})
 
     this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
