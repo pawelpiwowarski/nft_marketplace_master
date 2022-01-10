@@ -4,7 +4,7 @@ import nft_creator from '../etherum_side/instance_of_the_contract'
 import {Form, Button, Input, Container, Header, Message} from 'semantic-ui-react'
 import Layout from '../components/Layout';
 import pinata from '../etherum_side/pinata';
-import web3 from "../etherum_side/web3";
+import { utils } from "ethers";
 import ipfs from "../etherum_side/ipfs";
 
 class mint_nft extends Component 
@@ -32,7 +32,7 @@ async componentDidMount() {
   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
-   this.setState({account:  accounts[0]})
+   this.setState({account:  utils.getAddress(accounts[0])})
    this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
   }
   const instance_address = await nft_creator._address;

@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
-import web3 from "../etherum_side/web3";
+import { utils } from "ethers";
 import Router, {withRouter } from 'next/router'
 
 class home_page extends Component {
@@ -26,10 +26,10 @@ class home_page extends Component {
       const accounts = await provider.request({method: 'eth_requestAccounts'})
       const chainId = await provider.request({ method: 'eth_chainId' })
       this.setState({is_chainId_right: chainId == "0x4"})
-      this.setState({account:  accounts[0]})
+      this.setState({account:  utils.getAddress(accounts[0])})
       this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
       this.setState({does_user_has_metamask_installed: true})
-      
+
         window.ethereum.on('accountsChanged', function (accounts) {
     
             Router.reload(window.location.pathname);
@@ -67,7 +67,7 @@ class home_page extends Component {
     {
 
         return <a target='_blank' href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'><Message size='large' color='orange'> 
-            It looks like you don't have Metamask installed in your browser you can download it by clicking on this banner </Message></a>
+            It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension. You can download it by clicking on this banner </Message></a>
     }
     
 
@@ -78,7 +78,8 @@ render(){
         <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account}>
 
         {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <Message color='red' size='large' 
-        content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network! " />}
+        content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network! 
+        You can get some sample ETH to work with using this link https://faucets.chain.link/rinkeby" /> }
         {!this.state.does_user_has_metamask_installed && this.metamaskinfo()}
   
   

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Layout from '../../../components/Layout';
 import {Form, Button, Input, Container, Header, Message, Card, Grid} from 'semantic-ui-react'
 import Link from 'next/link'
-import web3 from "../../../etherum_side/web3";
+import { utils } from "ethers";
 import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
 import Router, {withRouter } from 'next/router'
@@ -30,7 +30,7 @@ class asset extends Component {
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const accounts = await provider.request({method: 'eth_requestAccounts'})
-            this.setState({account_of_the_user:  accounts[0]})
+            this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
             this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
         
@@ -39,7 +39,7 @@ class asset extends Component {
             
             this.setState({does_user_has_metamask_installed: true})
             this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
-            this.setState({is_the_seller_logged_in: this.state.account_of_the_user == this.props.seller})
+            
           }
         
         
@@ -48,10 +48,13 @@ class asset extends Component {
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
         this.setState({price: price})
         this.setState({owner: owner})
-        console.log(this.state.price)
+        
+        
+       
         if (price != 0) // Asset is listed 
         {
             this.setState({owner: seller})
+            this.setState({is_the_seller_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == seller.toLowerCase())})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
@@ -101,7 +104,7 @@ buy_the_asset = async()=> {
     this.setState({loading_flag: true, errorMessage: ''})
     try {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-    await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.props.price})
+    await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.state.price})
     this.setState({loading_flag: false, errorMessage: ''})
 
     }
@@ -160,7 +163,7 @@ render() {
         <label>Price for which you want to list the asset in ETH</label> 
         <Input value={this.state.price_of_the_listing} onChange={event => this.setState({price_of_the_listing: event.target.value})}/>
         </Form.Field>
-        <Button content="List an asset" primary loading={this.state.loading_flag}></Button>
+        <Button  content="List an asset" primary loading={this.state.loading_flag}></Button>
         </Form>
         }
         {
@@ -191,8 +194,8 @@ export async function getServerSideProps(context) {
             return response_to_json;
           }
 
-          let account = await web3.eth.getAccounts()
-          console.log(context)
+   
+
           let index = context.query.index
           if (index == undefined) {
               index = context.query.index_of_the_nft
@@ -212,7 +215,6 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-          account,
           instance_addres,
         index,
         uri_to_JSON

@@ -4,7 +4,7 @@ import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'seman
 import Link  from 'next/link'
 import instance from "../../etherum_side/instance_of_the_contract";
 import { withRouter } from 'next/router'
-
+import { utils } from "ethers";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
 
 
@@ -25,7 +25,7 @@ class profile extends Component {
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
           const accounts = await provider.request({method: 'eth_requestAccounts'})
-          this.setState({account_of_the_user:  accounts[0]})
+          this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
           this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
           
@@ -37,10 +37,10 @@ class profile extends Component {
     this.setState({list_of_offers: list_of_offers})
 
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
- 
+  
     this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
     const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
-    console.log(array_of_uris)
+
     const array_of_uris_filtered = (await Promise.all(numbers_of_tokens_the_user_owns.map( async (element, index) => { 
         if (element==1) {
             return array_of_uris[index]
@@ -78,7 +78,7 @@ class profile extends Component {
         is_metamask_running: false,
         array_of_metadatas: [],
         list_of_offers: [],
-        numbers_of_tokens_the_user_owns: 0
+        numbers_of_tokens_the_user_owns: []
 
     }
      getactualindex(index) {
@@ -146,6 +146,8 @@ render() {
 
 <Header as='h1'>The NFTs that belong to the adrress: {this.props.account}</Header>
         {this.renderNFT()}
+
+
         </Layout>
     )
 }
