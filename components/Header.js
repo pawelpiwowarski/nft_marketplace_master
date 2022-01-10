@@ -57,7 +57,7 @@ const Header = (props) => {
 
     
     return (
-        <Menu inverted>
+        <Menu size='large' inverted>
 
     
     <Menu.Item active={true} color='teal' />

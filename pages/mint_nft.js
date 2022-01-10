@@ -67,7 +67,8 @@ if (!this.state.is_content_loaded || this.state.name_of_the_nft === "" || this.s
 }
 
 const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
-const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;    
+const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;   
+console.log(metadata) 
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
 console.log(metadata)
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
