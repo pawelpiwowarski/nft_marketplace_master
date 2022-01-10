@@ -148,9 +148,9 @@ return (
 
 
 
-  <Header> Mint your very own NFT! Add a name, description and some cool artwork!</Header>
-  <Header> Address of the NFT smart contract: </Header>
-  <Header><a href={this.state.opensea_url} target="_blank"> {this.state.instance_address} </a></Header>
+  <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
+  <Header as='h2'> Address of the NFT smart contract: </Header>
+  <Header as='h3' ><a href={this.state.opensea_url} target="_blank"> {this.state.instance_address} </a></Header>
 
 
 
@@ -168,7 +168,7 @@ return (
   </Form.Field>
   <Form.Field>
   
-  <label> Image of your NFT </label>
+  <label> Image of your NFT (jpg,   jpeg,    png)</label>
 
                 <Button
                   size = 'large'

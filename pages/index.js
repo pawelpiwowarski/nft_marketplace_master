@@ -84,13 +84,13 @@ render(){
         {!this.state.does_user_has_metamask_installed && this.metamaskinfo()}
   
   
-        <Header color='teal' as='h1'> Welcome to Plateau Marketplace - simple NFT marketplace working on Ethereum's Rinkeby test network. </Header>
+        <Header color='teal' as='h1'> Welcome to plateau-nft.art - simple NFT marketplace and minting framework working on Ethereum's Rinkeby test network. </Header>
         <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far.</Header>
-        <Header as='h3'> Adress of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
+        <Header as='h3'> Address of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
         
          {this.renderNFT()} 
-         <Header size='large'  color="blue"> Markeplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
-        <a href="https://github.com/pawelpiwowarski" target="_blank">  link to Git Hub page. </a> </Header>
+         <Header size='large'  color="blue"> Marketplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
+        <a href="https://github.com/pawelpiwowarski" target="_blank">  link to GitHub page. </a> </Header>
         </Layout>
  
         
