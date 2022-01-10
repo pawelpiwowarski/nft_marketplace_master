@@ -5,6 +5,7 @@ import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
 import Router, {withRouter } from 'next/router'
+import Head from "next/head"
 
 class home_page extends Component {
     
@@ -74,7 +75,7 @@ class home_page extends Component {
 render(){
 
     return(
-
+   
         <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account}>
 
         {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <a target="_blank" href='https://faucets.chain.link/rinkeby' ><Message color='red' size='large' 
@@ -84,13 +85,15 @@ render(){
   
   
         <Header color='teal' as='h1'> Welcome to Plateau Marketplace - simple NFT marketplace working on Ethereum's Rinkeby test network. </Header>
-        <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far</Header>
+        <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far.</Header>
         <Header as='h3'> Adress of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
         
          {this.renderNFT()} 
          <Header size='large'  color="blue"> Markeplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
         <a href="https://github.com/pawelpiwowarski" target="_blank">  link to Git Hub page. </a> </Header>
         </Layout>
+ 
+        
     )
 
 
