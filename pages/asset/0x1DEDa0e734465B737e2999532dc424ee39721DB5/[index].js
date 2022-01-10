@@ -45,6 +45,7 @@ class asset extends Component {
         
         
         let owner = await instance.methods._owners(this.props.index).call()
+        
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
         this.setState({price: price})
         this.setState({owner: owner})
@@ -163,7 +164,7 @@ render() {
         <label>Price for which you want to list the asset in ETH</label> 
         <Input value={this.state.price_of_the_listing} onChange={event => this.setState({price_of_the_listing: event.target.value})}/>
         </Form.Field>
-        <Button  content="List an asset" primary loading={this.state.loading_flag}></Button>
+        <Button  size='huge' color='teal' content="List the asset"  loading={this.state.loading_flag}></Button>
         </Form>
         }
         {
@@ -204,20 +205,17 @@ export async function getServerSideProps(context) {
           
  
           
-        const instance_addres = context.query.instance_address
+    
         const uri = await instance.methods._tokens(index).call()
-       
         const uri_to_JSON = await fetchJSON(uri)
-       
+     
   
- 
 
 
     return {
       props: {
-          instance_addres,
         index,
-        uri_to_JSON
+        uri_to_JSON,
    }, // will be passed to the page component as props
     }
   }

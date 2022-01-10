@@ -36,17 +36,14 @@ async componentDidMount() {
    this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
   }
   const instance_address = await nft_creator._address;
-
-
   this.setState({instance_address})
-  this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + instance_address})
+  this.setState({opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
 
 }
+
+
 onFormSubmit = async(event)=> {
 event.preventDefault();
-
-
-
   const nft_metadata_object = {
 
     "description": this.state.description_of_the_nft,
@@ -62,7 +59,6 @@ const options = {pinataMetadata: {
 
 
 try {
-
 
 
 this.setState({loading_flag: true, errorMessage: ''});
@@ -208,7 +204,7 @@ return (
  </Form >
 	
   <Header>
-    <a href='https://testnets.opensea.io/collection/choroszc-nft-v3' target="_blank" >
+    <a href={this.state.opensea_url} target="_blank" >
    Check minted NFTS on Opensea.
     </a>
   </Header>

@@ -22,25 +22,24 @@ class profile extends Component {
             
             return response_to_json;
           }
+
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
-          const accounts = await provider.request({method: 'eth_requestAccounts'})
-          this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
-          this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            const accounts = await provider.request({method: 'eth_requestAccounts'})
+            this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
+            this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
           
 
 
 
-    const numbers_of_tokens = await instance.methods.Token_Id().call();
-    const list_of_offers = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
-    this.setState({list_of_offers: list_of_offers})
-
-    const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
   
-    this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
-    const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
+    const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
 
+    this.setState({list_of_offers: list_of_offers})
+    const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
+    this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
+    const array_of_uris = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
     const array_of_uris_filtered = (await Promise.all(numbers_of_tokens_the_user_owns.map( async (element, index) => { 
         if (element==1) {
             return array_of_uris[index]
@@ -58,7 +57,6 @@ class profile extends Component {
         }
 
     }))).filter(num => num != null)
-    console.log(array_of_uris_filtered)
     for (let i=0; i < array_of_uris_filtered.length; i++) 
     {
         let uri = await fetchJSON(array_of_uris_filtered[i])
@@ -84,8 +82,6 @@ class profile extends Component {
      getactualindex(index) {
         const array_of_indexes = []
         const list_to_compare = this.state.numbers_of_tokens_the_user_owns.map((element, index) => {return parseInt(this.state.numbers_of_tokens_the_user_owns[index])})
-
-     
         const l = list_to_compare.length
         for (let i = 0; i < l; i++){
 
@@ -162,12 +158,11 @@ export async function getServerSideProps(context) {
     }
 
  
-    
+
     const instance_address = await instance._address
- 
-      
+    const numbers_of_tokens = await instance.methods.Token_Id().call();
       return {props:{account,
-        instance_address, 
+        instance_address,numbers_of_tokens 
 
  }}
 

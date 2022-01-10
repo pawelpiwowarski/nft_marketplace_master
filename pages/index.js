@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'semantic-ui-react'
+import {Header, Message, Card} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -16,7 +16,7 @@ class home_page extends Component {
     account: '',
     is_chainId_right: false,
     is_metamask_running: false,
-    does_user_has_metamask_installed: false
+    does_user_has_metamask_installed: false,
 
    }
    
@@ -99,14 +99,8 @@ render(){
 export async function getServerSideProps(context) {
     const instance_address = instance._address;
         const numbers_of_tokens = await instance.methods.Token_Id().call();
-    
         const array_of_metadatas = []
-      
-       
-
-
         const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
-
         async function fetchJSON(url) {
            
             const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
