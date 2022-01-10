@@ -22,7 +22,14 @@ class home_page extends Component {
    
    async componentDidMount() {
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
-        this.setState({does_user_has_metamask_installed: true})
+      const provider  = window.ethereum
+      const accounts = await provider.request({method: 'eth_requestAccounts'})
+      const chainId = await provider.request({ method: 'eth_chainId' })
+      this.setState({is_chainId_right: chainId == "0x4"})
+      this.setState({account:  accounts[0]})
+      this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
+      this.setState({does_user_has_metamask_installed: true})
+      
         window.ethereum.on('accountsChanged', function (accounts) {
     
             Router.reload(window.location.pathname);
@@ -35,14 +42,7 @@ class home_page extends Component {
             window.location.reload();
           });
         }
-   const provider  = window.ethereum
-   const accounts = await provider.request({method: 'eth_requestAccounts'})
-   const chainId = await provider.request({ method: 'eth_chainId' })
-   this.setState({is_chainId_right: chainId == "0x4"})
-
-    this.setState({account:  accounts[0]})
-
-    this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
+   
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
    

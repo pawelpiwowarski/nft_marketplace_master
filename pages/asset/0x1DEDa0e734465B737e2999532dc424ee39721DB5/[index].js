@@ -12,7 +12,7 @@ class asset extends Component {
 
 
     state = {
-        price: "",
+        price_of_the_listing: "",
         loading_flag: false,
         error_message: "",
         account_of_the_user: "",
@@ -21,16 +21,19 @@ class asset extends Component {
         is_user_logged_in: 0,
         is_the_seller_logged_in: false,
         owner: "",
-        price: 0
+        price: ""
+        
     }
 
     
     async componentDidMount() {
+        if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+            const provider  = window.ethereum
+            const accounts = await provider.request({method: 'eth_requestAccounts'})
+            this.setState({account_of_the_user:  accounts[0]})
+            this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+        }
         
-        const provider  = window.ethereum
-        const accounts = await provider.request({method: 'eth_requestAccounts'})
-        this.setState({account_of_the_user:  accounts[0]})
-        this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
             
@@ -45,6 +48,7 @@ class asset extends Component {
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
         this.setState({price: price})
         this.setState({owner: owner})
+        console.log(this.state.price)
         if (price != 0) // Asset is listed 
         {
             this.setState({owner: seller})
@@ -115,7 +119,7 @@ onFormSubmit = async(event) => {
     this.setState({loading_flag: true, errorMessage: ''})
 
     try {
-    const price_in_wei =  Web3.utils.toWei(this.state.price, 'ether');
+    const price_in_wei =  Web3.utils.toWei(this.state.price_of_the_listing, 'ether');
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei).send({from: accounts[0]})
@@ -134,7 +138,7 @@ render() {
 
     return(
 
-        <Layout metamaskflag = {this.props.is_metamask_running} account={this.state.account_of_the_user}>
+        <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user}>
         <Grid>
         <Grid.Column width={8}>
         <Card 
@@ -154,7 +158,7 @@ render() {
         <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}>
         <Form.Field> 
         <label>Price for which you want to list the asset in ETH</label> 
-        <Input value={this.state.price} onChange={event => this.setState({price: event.target.value})}/>
+        <Input value={this.state.price_of_the_listing} onChange={event => this.setState({price_of_the_listing: event.target.value})}/>
         </Form.Field>
         <Button content="List an asset" primary loading={this.state.loading_flag}></Button>
         </Form>
@@ -202,13 +206,16 @@ export async function getServerSideProps(context) {
        
         const uri_to_JSON = await fetchJSON(uri)
        
-        const is_metamask_running = Boolean(account != undefined)
+  
  
 
 
     return {
-      props: {account,is_metamask_running,instance_addres,
-        index,uri_to_JSON
+      props: {
+          account,
+          instance_addres,
+        index,
+        uri_to_JSON
    }, // will be passed to the page component as props
     }
   }

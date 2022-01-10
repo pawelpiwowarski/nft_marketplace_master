@@ -22,11 +22,13 @@ class profile extends Component {
             
             return response_to_json;
           }
-   
-          const provider  = window.ethereum
+          if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+            const provider  = window.ethereum
           const accounts = await provider.request({method: 'eth_requestAccounts'})
           this.setState({account_of_the_user:  accounts[0]})
           this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+        }
+          
 
 
 
@@ -35,7 +37,7 @@ class profile extends Component {
     this.setState({list_of_offers: list_of_offers})
 
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
-    console.log(numbers_of_tokens_the_user_owns)
+ 
     this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
     const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
     console.log(array_of_uris)

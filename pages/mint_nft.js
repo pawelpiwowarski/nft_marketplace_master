@@ -29,11 +29,12 @@ state = {
 }
 
 async componentDidMount() {
-
+  if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
    this.setState({account:  accounts[0]})
    this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
+  }
   const instance_address = await nft_creator._address;
 
 
