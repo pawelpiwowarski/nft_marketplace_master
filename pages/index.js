@@ -5,7 +5,7 @@ import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
 import Router, {withRouter } from 'next/router'
-import Head from "next/head"
+
 
 class home_page extends Component {
     
