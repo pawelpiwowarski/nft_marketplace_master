@@ -22,7 +22,8 @@ state = {
   account: '',
   is_metamask_running: false,
   instance_adress: "",
-  opensea_url: ""
+  opensea_url: "",
+  was_asset_subimitted: false
 
 
 
@@ -72,6 +73,7 @@ console.log(metadata)
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
 console.log(metadata)
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
+this.setState({was_asset_subimitted: true})
 }
 
 catch(err)
@@ -200,7 +202,9 @@ return (
   <Message color='orange' size='large' content="You need to connect your wallet to sumbit metadata!"/>
   }
   <Message error header="Oops!" content={this.state.error_message}  />
-  
+  { this.state.was_asset_subimitted &&
+  <Message color="green"  positive> Congratulation your NFT was sucesfully minted. You can see it by going to the home page.</Message>
+  }
   
  </Form >
 	

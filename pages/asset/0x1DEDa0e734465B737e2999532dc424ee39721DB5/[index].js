@@ -21,7 +21,9 @@ class asset extends Component {
         is_user_logged_in: 0,
         is_the_seller_logged_in: false,
         owner: "",
-        price: ""
+        price: "",
+        asset_was_listed: false,
+        asset_was_bought: false
         
     }
 
@@ -107,6 +109,8 @@ buy_the_asset = async()=> {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.state.price})
     this.setState({loading_flag: false, errorMessage: ''})
+    this.setState({asset_was_bought: true}) 
+
 
     }
 
@@ -118,6 +122,12 @@ buy_the_asset = async()=> {
 
 }
 
+dissmiss = ()=> {
+    this.setState({asset_was_listed: false}) 
+    this.setState({asset_was_bought: false}) 
+    window.location.reload()
+}
+
 onFormSubmit = async(event) => {
     event.preventDefault();
     this.setState({loading_flag: true, errorMessage: ''})
@@ -127,6 +137,7 @@ onFormSubmit = async(event) => {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei).send({from: accounts[0]})
+    this.setState({asset_was_listed: true})
     this.setState({loading_flag: false, errorMessage: ''})
 
     }
@@ -174,6 +185,12 @@ render() {
         <Form  error={!!this.state.error_message}> 
          <Message error header="Oops!" margin="10ptx" content={this.state.error_message}  />
          </Form>
+         { this.state.asset_was_listed &&
+  <Message color="green"   onDismiss = {this.dissmiss}  positive> Congratulation your NFT was successfully listed.</Message>
+  }
+  { this.state.asset_was_bought &&
+  <Message color="green"   onDismiss = {this.dissmiss}  positive> Congratulation you have successfully bought an NFT. </Message>
+  }
         
        </Grid.Column>
        </Grid>

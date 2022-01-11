@@ -33,7 +33,7 @@ class home_page extends Component {
 
         window.ethereum.on('accountsChanged', function (accounts) {
     
-            Router.reload(window.location.pathname);
+          window.location.reload();
 
           });
           ethereum.on('chainChanged', (chainId) => {
