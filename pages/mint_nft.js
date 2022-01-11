@@ -152,7 +152,7 @@ return (
 
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
-  <Header as='h3' ><a href={this.state.opensea_url} target="_blank"> {this.state.instance_address} </a></Header>
+  <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>
 
 
 
