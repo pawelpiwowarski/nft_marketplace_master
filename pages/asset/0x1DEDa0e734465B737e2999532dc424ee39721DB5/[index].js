@@ -23,7 +23,8 @@ class asset extends Component {
         owner: "",
         price: "",
         asset_was_listed: false,
-        asset_was_bought: false
+        asset_was_bought: false,
+        dissmiss_flag: false
         
     }
 
@@ -196,8 +197,8 @@ render() {
         
        </Grid.Column>
        {
-        !this.state.does_user_has_metamask_installed && <a target='_blank' href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'><Message size='medium' color='orange'> 
-        It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension. You can download it by clicking on this banner </Message></a>
+        !this.state.dissmiss_flag && !this.state.does_user_has_metamask_installed && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='large' color='orange'> 
+        It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension.</Message>
         }
        </Grid>
         </Layout>
