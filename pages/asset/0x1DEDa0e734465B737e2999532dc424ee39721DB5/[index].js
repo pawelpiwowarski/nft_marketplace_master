@@ -179,9 +179,10 @@ render() {
         </Form>
         }
         {
-        this.state.price != 0 && !this.state.is_the_seller_logged_in && this.state.does_user_has_metamask_installed &&
-        <Button onClick = {this.buy_the_asset}size="massive" color="teal" loading={this.state.loading_flag}> Buy the asset </Button>
+        this.state.price != 0 && !this.state.is_the_seller_logged_in && 
+        <Button disabled = {!this.state.does_user_has_metamask_installed} onClick = {this.buy_the_asset}size="massive" color="teal" loading={this.state.loading_flag}> Buy the asset </Button>
         }
+        
         <Form  error={!!this.state.error_message}> 
          <Message error header="Oops!" margin="10ptx" content={this.state.error_message}  />
          </Form>
@@ -191,8 +192,13 @@ render() {
   { this.state.asset_was_bought &&
   <Message color="green"   onDismiss = {this.dissmiss}  positive> Congratulation you have successfully bought an NFT. </Message>
   }
+  
         
        </Grid.Column>
+       {
+        !this.state.does_user_has_metamask_installed && <a target='_blank' href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn'><Message size='medium' color='orange'> 
+        It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension. You can download it by clicking on this banner </Message></a>
+        }
        </Grid>
         </Layout>
 
