@@ -24,7 +24,8 @@ class asset extends Component {
         price: "",
         asset_was_listed: false,
         asset_was_bought: false,
-        dissmiss_flag: false
+        dissmiss_flag: false,
+        is_chainId_right: false
         
     }
 
@@ -32,6 +33,8 @@ class asset extends Component {
     async componentDidMount() {
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
+            const chainId = await provider.request({ method: 'eth_chainId' })
+            this.setState({is_chainId_right: chainId == "0x4"})
             const accounts = await provider.request({method: 'eth_requestAccounts'})
             this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
             this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
@@ -39,6 +42,7 @@ class asset extends Component {
         
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
+          
             
             this.setState({does_user_has_metamask_installed: true})
             this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
@@ -200,6 +204,12 @@ render() {
         !this.state.dissmiss_flag && !this.state.does_user_has_metamask_installed && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='large' color='orange'> 
         It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension.</Message>
         }
+
+        {
+        !this.state.dissmiss_flag  && this.state.does_user_has_metamask_installed && !this.state.is_chainId_right && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='huge' color='red'> 
+        Please connect to the Rinkeby test network and refresh the page! This site won't be rendered properly unless you do so! </Message>
+        }
+
        </Grid>
         </Layout>
 
