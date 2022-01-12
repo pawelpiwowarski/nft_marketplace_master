@@ -170,7 +170,7 @@ return (
   </Form.Field>
   <Form.Field>
   
-  <label> Image of your NFT (jpg,   jpeg,    png)</label>
+  <label> Image of your NFT (jpg,   jpeg, png,  gif)</label>
 
                 <Button
                   size = 'large'
