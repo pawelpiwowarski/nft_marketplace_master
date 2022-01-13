@@ -111,6 +111,7 @@ render(){
 }
 }
 export async function getServerSideProps(context) {
+    let contentType
     const instance_address = instance._address;
     const array_of_responses = []
         const numbers_of_tokens = await instance.methods.Token_Id().call();
@@ -129,13 +130,21 @@ export async function getServerSideProps(context) {
           for (let i=0; i < numbers_of_tokens; i++) {
             let uri = await fetchJSON(array_of_uris[i])
             array_of_metadatas.push(uri)
+            try {
             let res = await fetch(array_of_metadatas[i].image);
-            let contentType = res.headers.get('Content-Type');
+            contentType = res.headers.get('Content-Type');
             array_of_responses.push(contentType)
+            }
+            catch { 
+              contentType = 'none'
+              array_of_responses.push(contentType)
+            }
+            
+            
             
           }
           
-    
+          console.log(array_of_metadatas)
 
           console.log(array_of_responses)
 

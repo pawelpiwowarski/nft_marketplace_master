@@ -12,6 +12,7 @@ class profile extends Component {
 
     async componentDidMount() 
     {
+        let contentType
         const problematic_url = 'https://podlaskie24.pl/wp-content/uploads/2019/11/podlaskie24.pl-choroszcz-ma-nowy-neonowy-gadzet-img-7647.jpg'
         const array_of_metadatas = []
         const array_of_responses = []
@@ -63,7 +64,8 @@ class profile extends Component {
         let uri = await fetchJSON(array_of_uris_filtered[i])
         array_of_metadatas.push(uri)
         let res; 
-        console.log(uri.image)
+        try
+        {
         if (uri.image == problematic_url) // this is a problematic statement to be removed, it is only nescessary because the first url is not on ipfs, without it it throws a cors error
         {
             res = await fetch(uri.image, {mode: 'no-cors'});
@@ -72,8 +74,13 @@ class profile extends Component {
         else {
             res = await fetch(uri.image)
         } 
-        
-        let contentType = res.headers.get('Content-Type');
+    
+        contentType = res.headers.get('Content-Type');
+    }
+
+    catch {
+        contentType = 'none'
+    }
         array_of_responses.push(contentType)
         
     

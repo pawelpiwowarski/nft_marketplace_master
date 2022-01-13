@@ -235,7 +235,7 @@ export async function getServerSideProps(context) {
           }
 
    
-
+          let contentype
           let index = context.query.index
           if (index == undefined) {
               index = context.query.index_of_the_nft
@@ -246,11 +246,15 @@ export async function getServerSideProps(context) {
           
     
         const uri = await instance.methods._tokens(index).call()
+        
         const uri_to_JSON = await fetchJSON(uri)
-
+        try {
         const res = await fetch(uri_to_JSON.image);
-        const contentype = res.headers.get('Content-Type');
-            
+        contentype = res.headers.get('Content-Type');
+        }
+        catch {
+        contentype = 'none'
+        }
      
   
 

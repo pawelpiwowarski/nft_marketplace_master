@@ -23,13 +23,15 @@ state = {
   is_metamask_running: false,
   instance_adress: "",
   opensea_url: "",
-  was_asset_subimitted: false
+  was_asset_subimitted: false,
+  content_loading_flag: false
 
 
 
 }
 
 async componentDidMount() {
+  
   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
@@ -63,9 +65,7 @@ try {
 
 
 this.setState({loading_flag: true, errorMessage: ''});
-if (!this.state.is_content_loaded || this.state.name_of_the_nft === "" || this.state.description_of_the_nft === ""){
-  throw new Error('One or more necessary data fields is not completed!');
-}
+
 
 const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
 const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;   
@@ -81,7 +81,7 @@ catch(err)
 this.setState({error_message: err.message})
 }
 
-this.setState({loading_flag: false, errorMessage: ''})
+this.setState({loading_flag: false, error_message: ''})
 
 }
 
@@ -97,8 +97,12 @@ handleSubmission = async (e) => {
   
 
   try {
-    this.setState({is_content_loaded: true})
-
+    console.log(this.state.name_of_the_nft)
+    this.setState({error_message: ''});
+    if (this.state.name_of_the_nft == "" || this.state.description_of_the_nft == ""){
+      throw new Error('One or more necessary data fields is not completed!');
+    }
+    this.setState({content_loading_flag: true})
     const files = e.target.files
     const reader = new FileReader()
   reader.readAsArrayBuffer(files[0]);
@@ -111,6 +115,8 @@ handleSubmission = async (e) => {
     const img_source = "https://ipfs.io/ipfs/" + cid
     console.log(img_source)
     this.setState({file_url: img_source})
+    this.setState({is_content_loaded: true})
+    this.setState({content_loading_flag: false})
    }
 
    
@@ -173,6 +179,8 @@ return (
   <label> Image of your NFT (jpg,   jpeg, png,  gif, mp4)</label>
 
                 <Button
+                  disabled = {!this.state.is_metamask_running}
+                  loading = {this.state.content_loading_flag}
                   size = 'large'
                   positive = {this.state.is_content_loaded}
                   type='button'
@@ -195,7 +203,7 @@ return (
 
   
   
- <Button  size= 'large' disabled={!this.state.is_metamask_running} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
+ <Button  size= 'large' disabled={!this.state.is_content_loaded} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
 
   
   {!this.state.is_metamask_running &&
