@@ -176,7 +176,7 @@ render() {
 
         <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user}>
 
-<Header as='h1'>The NFTs that belong to the adrress: {this.props.account}</Header>
+<Header as='h1'>The NFTs that belong to the address: {this.props.account}</Header>
         {this.renderNFT()}
 
 
