@@ -129,16 +129,13 @@ export async function getServerSideProps(context) {
           for (let i=0; i < numbers_of_tokens; i++) {
             let uri = await fetchJSON(array_of_uris[i])
             array_of_metadatas.push(uri)
-          }
-          
-          for (let i=0; i < numbers_of_tokens; i++)  {
-
             let res = await fetch(array_of_metadatas[i].image);
             let contentType = res.headers.get('Content-Type');
             array_of_responses.push(contentType)
-
-         
+            
           }
+          
+    
 
           console.log(array_of_responses)
 
