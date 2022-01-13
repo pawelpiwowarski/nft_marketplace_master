@@ -49,7 +49,23 @@ class home_page extends Component {
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
    
+        setLoader = (index) => {      
+          this.state.loading_image_arr[index] = true
+          console.log(this.state.loading_image_arr)
+        }
+        setLoadend = (index) => {
+          this.state.loading_image_arr[index] = false
+        }
+        returnImage = (index) => {
+
+          if (this.state.loading_image_arr[index] == false) {
+            return this.props.array_of_metadatas[index].image
+          }
+          return "https://cdn.dribbble.com/users/172519/screenshots/3520576/dribbble-spinner-800x600.gif"
+
+
         
+        }
         is_file_a_video = (index)=> {
 
           if (this.props.array_of_responses[index] == 'video/mp4')

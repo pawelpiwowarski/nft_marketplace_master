@@ -14,6 +14,7 @@ class profile extends Component {
     {
         
         const array_of_metadatas = []
+        const array_of_responses = []
         async function fetchJSON(url) {
            
             const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
@@ -60,11 +61,15 @@ class profile extends Component {
     for (let i=0; i < array_of_uris_filtered.length; i++) 
     {
         let uri = await fetchJSON(array_of_uris_filtered[i])
+        let res = await fetch(uri.image);
+        let contentType = res.headers.get('Content-Type');
+        array_of_responses.push(contentType)
         array_of_metadatas.push(uri)
       }
 
       
       this.setState({array_of_metadatas: array_of_metadatas})
+      this.setState({array_of_responses: array_of_responses})
 
         
          
@@ -76,7 +81,8 @@ class profile extends Component {
         is_metamask_running: false,
         array_of_metadatas: [],
         list_of_offers: [],
-        numbers_of_tokens_the_user_owns: []
+        numbers_of_tokens_the_user_owns: [],
+        array_of_responses: []
 
     }
      getactualindex(index) {
@@ -109,7 +115,16 @@ class profile extends Component {
        
         
         
-        
+    is_file_a_video = (index)=> {
+
+        console.log(this.state.array_of_responses)
+        if (this.state.array_of_responses[index] == 'video/mp4')
+          return <video loop  autoPlay="autoplay" muted src={this.state.array_of_metadatas[index].image} ></video>
+       return this.state.array_of_metadatas[index].image
+
+
+
+     }    
         
         
         
@@ -123,7 +138,7 @@ class profile extends Component {
             <Card 
             key={index}
             style={{margin: "25px" }}
-            image = {this.state.array_of_metadatas[index].image}  
+            image = {this.is_file_a_video(index)}  
             description={this.state.array_of_metadatas[index].description} 
             header={this.state.array_of_metadatas[index].name}
     
