@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import {Header, Message, Card} from 'semantic-ui-react'
+import {Dimmer, Header, Message, Card, Loader,  Image} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -18,6 +18,7 @@ class home_page extends Component {
     is_chainId_right: false,
     is_metamask_running: false,
     does_user_has_metamask_installed: false,
+    loading_image_arr: Array(parseInt(this.props.numbers_of_tokens)).fill().map(() => {return false})
 
    }
    
@@ -43,11 +44,21 @@ class home_page extends Component {
             window.location.reload();
           });
         }
-   
+
+
     this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
         }
    
+        
+        is_file_a_video = (index)=> {
 
+          if (this.props.array_of_responses[index] == 'video/mp4')
+            return <video loop  autoPlay="autoplay" muted src={this.props.array_of_metadatas[index].image} ></video>
+         return this.props.array_of_metadatas[index].image
+
+          
+
+       }
     renderNFT() {
     
         return <Card.Group itemsPerRow={3} >{this.props.array_of_metadatas.map((element, index) => 
@@ -56,7 +67,7 @@ class home_page extends Component {
         style={{margin: "25px" }}
         
         key={index} 
-        image = {this.props.array_of_metadatas[index].image}  
+        image = {this.is_file_a_video(index)}
         description={this.props.array_of_metadatas[index].description} 
         header={this.props.array_of_metadatas[index].name}/> </a></Link>})}</Card.Group>;
 
@@ -101,6 +112,7 @@ render(){
 }
 export async function getServerSideProps(context) {
     const instance_address = instance._address;
+    const array_of_responses = []
         const numbers_of_tokens = await instance.methods.Token_Id().call();
         const array_of_metadatas = []
         const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
@@ -109,22 +121,34 @@ export async function getServerSideProps(context) {
             const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
         
             const response_to_json = await response.json();
-          
+            
             return response_to_json;
           }
         
-        
+          
           for (let i=0; i < numbers_of_tokens; i++) {
             let uri = await fetchJSON(array_of_uris[i])
             array_of_metadatas.push(uri)
           }
+          
+          for (let i=0; i < numbers_of_tokens; i++)  {
 
+            let res = await fetch(array_of_metadatas[i].image);
+            let contentType = res.headers.get('Content-Type');
+            array_of_responses.push(contentType)
+
+         
+          }
+
+          console.log(array_of_responses)
 
 
    return {
      props: {instance_address,
         numbers_of_tokens,
-        array_of_metadatas
+        array_of_metadatas,
+        array_of_responses
+   
   }, // will be passed to the page component as props
    }
  }

@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../../../components/Layout';
-import {Form, Button, Input, Container, Header, Message, Card, Grid} from 'semantic-ui-react'
+import {Form, Button, Input, Container, Header, Message, Card, Grid, Image} from 'semantic-ui-react'
 import Link from 'next/link'
 import { utils } from "ethers";
 import instance from "../../../etherum_side/instance_of_the_contract";
@@ -84,7 +84,12 @@ async link_address_to_profile(){
 
 
 
+is_file_a_video = () => {
 
+    if (this.props.contentype == 'video/mp4')
+      return <video loop  autoPlay="autoplay" controls muted src={this.props.uri_to_JSON.image} ></video>
+   return <Image src={this.props.uri_to_JSON.image} /> 
+}
 
 is_asset_listed() {
  
@@ -163,7 +168,7 @@ render() {
         <Grid.Column width={8}>
         <Card 
         style = {{width: "100%"}}
-        image = {this.props.uri_to_JSON.image}
+        image = {this.is_file_a_video}
         extra = {<Link  href={`/profile/${this.state.owner}`}>
             {"Address of the owner: " + this.state.owner}
         </Link>} 
@@ -242,12 +247,17 @@ export async function getServerSideProps(context) {
     
         const uri = await instance.methods._tokens(index).call()
         const uri_to_JSON = await fetchJSON(uri)
+
+        const res = await fetch(uri_to_JSON.image);
+        const contentype = res.headers.get('Content-Type');
+            
      
   
 
 
     return {
       props: {
+        contentype,
         index,
         uri_to_JSON,
    }, // will be passed to the page component as props
