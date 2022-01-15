@@ -3,7 +3,7 @@ import HDWalletProvider  from '@truffle/hdwallet-provider'
 import fs from 'fs'
 const compiledNFT_contract = JSON.parse(fs.readFileSync('./build/High_NFT.json'));
 
-console.log(compiledNFT_contract)
+
 
 
 
@@ -34,3 +34,6 @@ console.log('Contract deployed to', result.options.address);
 }
 
 deploy();
+
+
+module.exports = provider

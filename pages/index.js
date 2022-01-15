@@ -143,11 +143,6 @@ export async function getServerSideProps(context) {
             
             
           }
-          
-          console.log(array_of_metadatas)
-
-          console.log(array_of_responses)
-
 
    return {
      props: {instance_address,

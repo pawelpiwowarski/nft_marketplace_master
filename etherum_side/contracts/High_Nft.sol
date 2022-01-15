@@ -1050,11 +1050,11 @@ contract High_NFT is ERC1155, Ownable {
       _;
    }
 
-    constructor() ERC1155("https://gateway.pinata.cloud/ipfs/QmZ9jfWXkV5Vvnytecqy28a9bPnrzoEhqzt1eiXfcyxugv") {
+    constructor() ERC1155("https://gateway.pinata.cloud/ipfs/QmVW3V6FM9R49WPsgNLSwMJ3jJKJXHqhX1GbQjtQLXxRrG") {
         
         admin = msg.sender;
         _mint(msg.sender, Token_Id, 1, "");
-        _tokens[Token_Id] = contractURI;
+        _tokens[Token_Id] = "https://gateway.pinata.cloud/ipfs/QmVW3V6FM9R49WPsgNLSwMJ3jJKJXHqhX1GbQjtQLXxRrG";
         Token_Id += 1;
 
         
