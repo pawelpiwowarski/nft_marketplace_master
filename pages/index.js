@@ -7,6 +7,7 @@ import { utils } from "ethers";
 import Router, {withRouter } from 'next/router'
 
 
+
 class home_page extends Component {
     
    state = {
@@ -18,11 +19,50 @@ class home_page extends Component {
     is_chainId_right: false,
     is_metamask_running: false,
     does_user_has_metamask_installed: false,
-    loading_image_arr: Array(parseInt(this.props.numbers_of_tokens)).fill().map(() => {return false})
+    array_of_responses: [],
+    array_of_metadatas: []
+
 
    }
    
    async componentDidMount() {
+    let contentType
+        const array_of_responses = []
+        const array_of_metadatas = []
+    async function fetchJSON(url) {
+           
+      const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+  
+      const response_to_json = await response.json();
+      
+      return response_to_json;
+    }
+  
+    
+    for (let i=0; i < this.props.numbers_of_tokens; i++) {
+      let uri = await fetchJSON(this.props.array_of_uris[i])
+      array_of_metadatas.push(uri)
+      try {
+      let res = await fetch(array_of_metadatas[i].image);
+      contentType = res.headers.get('Content-Type');
+      array_of_responses.push(contentType)
+      }
+      catch { 
+        contentType = 'none'
+        array_of_responses.push(contentType)
+      }
+      
+      
+      
+    }
+
+    this.setState({array_of_metadatas})
+    this.setState({array_of_responses})
+
+
+
+
+
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
       const provider  = window.ethereum
       const accounts = await provider.request({method: 'eth_requestAccounts'})
@@ -52,24 +92,24 @@ class home_page extends Component {
         
         is_file_a_video = (index)=> {
 
-          if (this.props.array_of_responses[index] == 'video/mp4')
-            return <video loop  autoPlay="autoplay" muted src={this.props.array_of_metadatas[index].image} ></video>
-         return this.props.array_of_metadatas[index].image
+          if (this.state.array_of_responses[index] == 'video/mp4')
+            return <video loop  autoPlay="autoplay" muted src={this.state.array_of_metadatas[index].image} ></video>
+         return this.state.array_of_metadatas[index].image
 
           
 
        }
     renderNFT() {
     
-        return <Card.Group itemsPerRow={3} >{this.props.array_of_metadatas.map((element, index) => 
+        return <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
         style={{margin: "25px" }}
         
         key={index} 
         image = {this.is_file_a_video(index)}
-        description={this.props.array_of_metadatas[index].description} 
-        header={this.props.array_of_metadatas[index].name}/> </a></Link>})}</Card.Group>;
+        description={this.state.array_of_metadatas[index].description} 
+        header={this.state.array_of_metadatas[index].name}/> </a></Link>})}</Card.Group>;
 
     }
    
@@ -111,44 +151,17 @@ render(){
 }
 }
 export async function getServerSideProps(context) {
-    let contentType
     const instance_address = instance._address;
-    const array_of_responses = []
-        const numbers_of_tokens = await instance.methods.Token_Id().call();
-        const array_of_metadatas = []
+    const numbers_of_tokens = await instance.methods.Token_Id().call();
+
+     
         const array_of_uris = await Promise.all(Array(parseInt(numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
-        async function fetchJSON(url) {
-           
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
-        
-            const response_to_json = await response.json();
-            
-            return response_to_json;
-          }
-        
-          
-          for (let i=0; i < numbers_of_tokens; i++) {
-            let uri = await fetchJSON(array_of_uris[i])
-            array_of_metadatas.push(uri)
-            try {
-            let res = await fetch(array_of_metadatas[i].image);
-            contentType = res.headers.get('Content-Type');
-            array_of_responses.push(contentType)
-            }
-            catch { 
-              contentType = 'none'
-              array_of_responses.push(contentType)
-            }
-            
-            
-            
-          }
+       
 
    return {
      props: {instance_address,
         numbers_of_tokens,
-        array_of_metadatas,
-        array_of_responses
+        array_of_uris
    
   }, // will be passed to the page component as props
    }
