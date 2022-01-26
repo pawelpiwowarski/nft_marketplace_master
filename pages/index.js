@@ -147,7 +147,7 @@ render(){
     <Icon name='circle notched' loading />
     <Message.Content>
       <Message.Header>Just one second</Message.Header>
-      We are the fetching the images for you 
+      We are fetching the images for you 
     </Message.Content>
   </Message>}
          {this.renderNFT()} 
