@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import {Dimmer, Header, Message, Card, Loader,  Image} from 'semantic-ui-react'
+import {Dimmer, Header, Message, Card, Loader,  Image, Button, Icon} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -20,12 +20,14 @@ class home_page extends Component {
     is_metamask_running: false,
     does_user_has_metamask_installed: false,
     array_of_responses: [],
-    array_of_metadatas: []
+    array_of_metadatas: [],
+    page_loading_flag: true
 
 
    }
    
    async componentDidMount() {
+    
     let contentType
         const array_of_responses = []
         const array_of_metadatas = []
@@ -58,6 +60,7 @@ class home_page extends Component {
 
     this.setState({array_of_metadatas})
     this.setState({array_of_responses})
+    this.setState({page_loading_flag: false})
 
 
 
@@ -100,7 +103,7 @@ class home_page extends Component {
 
        }
     renderNFT() {
-    
+      console.log(this.state.page_loading_flag)
         return <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
@@ -139,6 +142,13 @@ render(){
         <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far.</Header>
         <Header as='h3'> Address of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
         
+          {this.state.page_loading_flag && <Message color='big' color='teal' size='huge' icon>
+    <Icon name='circle notched' loading />
+    <Message.Content>
+      <Message.Header>Just one second</Message.Header>
+      We are the fetching the images for you 
+    </Message.Content>
+  </Message>}
          {this.renderNFT()} 
          <Header size='large'  color="blue"> Marketplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
         <a href="https://github.com/pawelpiwowarski" target="_blank">  link to GitHub page. </a> </Header>
