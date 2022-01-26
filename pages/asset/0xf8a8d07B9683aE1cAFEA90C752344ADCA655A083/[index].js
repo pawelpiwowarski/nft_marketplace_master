@@ -25,12 +25,34 @@ class asset extends Component {
         asset_was_listed: false,
         asset_was_bought: false,
         dissmiss_flag: false,
-        is_chainId_right: false
+        is_chainId_right: false,
+        uri_to_JSON: [],
+        contenttype: []
         
     }
 
     
     async componentDidMount() {
+        async function fetchJSON(url) {
+            
+            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+        
+            const response_to_json = await response.json();
+            
+            return response_to_json;
+          }
+          let contentype
+          const uri_to_JSON = await fetchJSON(this.props.uri)
+        try {
+        const res = await fetch(uri_to_JSON.image);
+        contentype = res.headers.get('Content-Type');
+        }
+        catch {
+        contentype = 'none'
+        }
+        this.setState({uri_to_JSON})
+        this.setState({contentype})
+
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
@@ -86,9 +108,9 @@ async link_address_to_profile(){
 
 is_file_a_video = () => {
 
-    if (this.props.contentype == 'video/mp4')
-      return <video loop  autoPlay="autoplay" controls muted src={this.props.uri_to_JSON.image} ></video>
-   return <Image src={this.props.uri_to_JSON.image} /> 
+    if (this.state.contentype == 'video/mp4')
+      return <video loop  autoPlay="autoplay" controls muted src={this.state.uri_to_JSON.image} ></video>
+   return <Image src={this.state.uri_to_JSON.image} /> 
 }
 
 is_asset_listed() {
@@ -172,8 +194,8 @@ render() {
         extra = {<Link  href={`/profile/${this.state.owner}`}>
             {"Address of the owner: " + this.state.owner}
         </Link>} 
-        header={this.props.uri_to_JSON.name}
-        description = {this.props.uri_to_JSON.description} 
+        header={this.state.uri_to_JSON.name}
+        description = {this.state.uri_to_JSON.description} 
   
         />
         </Grid.Column>
@@ -225,17 +247,7 @@ render() {
 }
 
 export async function getServerSideProps(context) {
-     async function fetchJSON(url) {
-            
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
-        
-            const response_to_json = await response.json();
-            
-            return response_to_json;
-          }
-
-   
-          let contentype
+     
           let index = context.query.index
           if (index == undefined) {
               index = context.query.index_of_the_nft
@@ -247,23 +259,17 @@ export async function getServerSideProps(context) {
     
         const uri = await instance.methods._tokens(index).call()
         
-        const uri_to_JSON = await fetchJSON(uri)
-        try {
-        const res = await fetch(uri_to_JSON.image);
-        contentype = res.headers.get('Content-Type');
-        }
-        catch {
-        contentype = 'none'
-        }
+    
      
   
 
 
     return {
       props: {
-        contentype,
+   
+        uri,
         index,
-        uri_to_JSON,
+
    }, // will be passed to the page component as props
     }
   }
