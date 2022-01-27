@@ -6,7 +6,7 @@ import instance from "../../etherum_side/instance_of_the_contract";
 import { withRouter } from 'next/router'
 import { utils } from "ethers";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
-
+import lodash from 'lodash'
 
 class profile extends Component {
 
@@ -36,9 +36,11 @@ class profile extends Component {
 
   
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
-
+    
     this.setState({list_of_offers: list_of_offers})
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
+
+    
     this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
     const array_of_uris = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
     const array_of_uris_filtered = (await Promise.all(numbers_of_tokens_the_user_owns.map( async (element, index) => { 
@@ -86,7 +88,14 @@ class profile extends Component {
       
       this.setState({array_of_metadatas: array_of_metadatas})
       this.setState({array_of_responses: array_of_responses})
+      this.setState({page_loading_flag: false})
+      if (array_of_responses.length == 0)
+    {
 
+    this.setState({message_content: "Sorry, this user deos not hold any NFTs "})
+    this.setState({page_loading_flag: false})
+
+    }
         
          
     }
@@ -98,7 +107,9 @@ class profile extends Component {
         array_of_metadatas: [],
         list_of_offers: [],
         numbers_of_tokens_the_user_owns: [],
-        array_of_responses: []
+        array_of_responses: [],
+        page_loading_flag: true,
+        message_content: ""
 
     }
      getactualindex(index) {
@@ -133,7 +144,7 @@ class profile extends Component {
         
     is_file_a_video = (index)=> {
 
-        console.log(this.state.array_of_responses)
+ 
         if (this.state.array_of_responses[index] == 'video/mp4')
           return <video loop  autoPlay="autoplay" muted src={this.state.array_of_metadatas[index].image} ></video>
        return this.state.array_of_metadatas[index].image
@@ -172,6 +183,15 @@ render() {
         <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user}>
 
 <Header as='h1'>The NFTs that belong to the address: {this.props.account}</Header>
+
+{this.state.page_loading_flag && <Message color='big' color='teal' size='huge' icon>
+    <Icon name='circle notched' loading />
+    <Message.Content>
+      <Message.Header>Just one second</Message.Header>
+      We are fetching the images for you 
+    </Message.Content>
+  </Message>}
+  {this.state.message_content != "" && <Message size='huge' color="teal">{this.state.message_content } </Message>}
         {this.renderNFT()}
 
 

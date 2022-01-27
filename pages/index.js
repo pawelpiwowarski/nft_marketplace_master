@@ -104,7 +104,7 @@ class home_page extends Component {
 
        }
     renderNFT() {
-      console.log(this.state.page_loading_flag)
+
         return <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
