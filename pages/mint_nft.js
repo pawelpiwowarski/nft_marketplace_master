@@ -69,9 +69,9 @@ this.setState({loading_flag: true, errorMessage: ''});
 
 const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
 const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;   
-console.log(metadata) 
+
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-console.log(metadata)
+
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
 this.setState({was_asset_subimitted: true})
 }
@@ -97,7 +97,7 @@ handleSubmission = async (e) => {
   
 
   try {
-    console.log(this.state.name_of_the_nft)
+
     this.setState({error_message: ''});
     if (this.state.name_of_the_nft == "" || this.state.description_of_the_nft == ""){
       throw new Error('One or more necessary data fields is not completed!');
@@ -113,7 +113,7 @@ handleSubmission = async (e) => {
 
     const { cid } = await ipfs.add(reader.result) // Display as a buffer
     const img_source = "https://ipfs.io/ipfs/" + cid
-    console.log(img_source)
+  
     this.setState({file_url: img_source})
     this.setState({is_content_loaded: true})
     this.setState({content_loading_flag: false})

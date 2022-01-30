@@ -97,7 +97,7 @@ class home_page extends Component {
         is_file_a_video = (index)=> {
 
           if (this.state.array_of_responses[index] == 'video/mp4')
-            return <video loop  autoPlay="autoplay" muted src={this.state.array_of_metadatas[index].image} ></video>
+            return <video src={this.state.array_of_metadatas[index].image} ></video>
          return this.state.array_of_metadatas[index].image
 
           
