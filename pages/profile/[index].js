@@ -182,7 +182,7 @@ render() {
 
         <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user}>
 
-<Header as='h1'>The NFTs that belong to the address: {this.props.account}</Header>
+<Header as='h1'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
 
 {this.state.page_loading_flag && <Message color='big' color='teal' size='huge' icon>
     <Icon name='circle notched' loading />
