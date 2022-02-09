@@ -1,14 +1,29 @@
 import React, { Component } from "react"; 
 import Layout from '../../components/Layout';
-import {Form, Button, Input, Container, Header, Message, Card, Icon} from 'semantic-ui-react'
+import { Header, Message, Card, Icon} from 'semantic-ui-react'
 import Link  from 'next/link'
 import instance from "../../etherum_side/instance_of_the_contract";
 import { withRouter } from 'next/router'
 import { utils } from "ethers";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
-import lodash from 'lodash'
 
 class profile extends Component {
+
+    constructor(props) {
+        super(props)
+        this.setState({page_loading_flag: true})
+    }
+
+    async componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.account !== prevProps.account) {
+          console.log('change_of_account')
+          this.setState({page_loading_flag: true})
+          this.setState({array_of_metadatas: []})
+          this.componentDidMount()
+        }
+      }
+
 
     async componentDidMount() 
     {
@@ -209,7 +224,7 @@ export async function getServerSideProps(context) {
     }
 
  
-
+    
     const instance_address = await instance._address
     const numbers_of_tokens = await instance.methods.Token_Id().call();
       return {props:{account,
