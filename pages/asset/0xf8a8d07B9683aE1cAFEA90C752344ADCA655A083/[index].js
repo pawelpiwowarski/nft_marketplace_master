@@ -7,6 +7,7 @@ import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
 import Router, {withRouter } from 'next/router'
 import Web3 from "web3";
+import fetch_metadata from "../../../utils/fetch_json";
 
 class asset extends Component {
 
@@ -33,25 +34,10 @@ class asset extends Component {
 
     
     async componentDidMount() {
-        async function fetchJSON(url) {
-            
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
-        
-            const response_to_json = await response.json();
-            
-            return response_to_json;
-          }
-          let contentype
-          const uri_to_JSON = await fetchJSON(this.props.uri)
-        try {
-        const res = await fetch(uri_to_JSON.image);
-        contentype = res.headers.get('Content-Type');
-        }
-        catch {
-        contentype = 'none'
-        }
-        this.setState({uri_to_JSON})
-        this.setState({contentype})
+    
+        const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1)
+        this.setState({uri_to_JSON: array_of_metadatas[0]})
+        this.setState({contentype: array_of_responses[0]})
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum

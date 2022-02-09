@@ -51,12 +51,9 @@ class profile extends Component {
 
   
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
-    
-    this.setState({list_of_offers: list_of_offers})
+    this.setState({list_of_offers})
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
-
-    
-    this.setState({numbers_of_tokens_the_user_owns: numbers_of_tokens_the_user_owns})
+    this.setState({numbers_of_tokens_the_user_owns})
     const array_of_uris = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
     const array_of_uris_filtered = (await Promise.all(numbers_of_tokens_the_user_owns.map( async (element, index) => { 
         if (element==1) {
