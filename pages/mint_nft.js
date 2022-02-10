@@ -1,7 +1,7 @@
 
 import React, { Component } from "react"; 
 import nft_creator from '../etherum_side/instance_of_the_contract'
-import {Form, Button, Input, Container, Header, Message} from 'semantic-ui-react'
+import {Form, Button, Input, Header, Message} from 'semantic-ui-react'
 import Layout from '../components/Layout';
 import pinata from '../etherum_side/pinata';
 import { utils } from "ethers";
@@ -35,12 +35,10 @@ async componentDidMount() {
   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
-   this.setState({account:  utils.getAddress(accounts[0])})
-   this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
+   this.setState({account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
   }
   const instance_address = await nft_creator._address;
-  this.setState({instance_address})
-  this.setState({opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
+  this.setState({instance_address, opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
 
 }
 
@@ -114,9 +112,7 @@ handleSubmission = async (e) => {
     const { cid } = await ipfs.add(reader.result) // Display as a buffer
     const img_source = "https://ipfs.io/ipfs/" + cid
   
-    this.setState({file_url: img_source})
-    this.setState({is_content_loaded: true})
-    this.setState({content_loading_flag: false})
+    this.setState({file_url: img_source, is_content_loaded: true, content_loading_flag: false})
    }
 
    

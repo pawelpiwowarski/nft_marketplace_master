@@ -1,10 +1,10 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import {Dimmer, Header, Message, Card, Loader,  Image, Button, Icon} from 'semantic-ui-react'
+import { Header, Message, Card, Icon} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
-import Router, {withRouter } from 'next/router'
+import {withRouter } from 'next/router'
 import fetch_metadata from "../utils/fetch_json";
 
 
@@ -31,10 +31,7 @@ class home_page extends Component {
       const provider  = window.ethereum
       const accounts = await provider.request({method: 'eth_requestAccounts'})
       const chainId = await provider.request({ method: 'eth_chainId' })
-      this.setState({is_chainId_right: chainId == "0x4"})
-      this.setState({account:  utils.getAddress(accounts[0])})
-      this.setState({ is_metamask_running: Boolean(this.state.account != undefined)})
-      this.setState({does_user_has_metamask_installed: true})
+      this.setState({is_chainId_right: chainId == "0x4", account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true })
 
         window.ethereum.on('accountsChanged', function (accounts) {
     
@@ -51,9 +48,8 @@ class home_page extends Component {
 
       const {array_of_metadatas, array_of_responses} = await fetch_metadata(this.props.array_of_uris, this.props.numbers_of_tokens)
 
-    this.setState({array_of_metadatas})
-    this.setState({array_of_responses})
-    this.setState({page_loading_flag: false})
+    this.setState({array_of_metadatas, array_of_responses, page_loading_flag: false})
+
 
 
 

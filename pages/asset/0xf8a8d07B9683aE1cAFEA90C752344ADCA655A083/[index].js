@@ -1,11 +1,11 @@
 import React, { Component } from "react"; 
 import Layout from '../../../components/Layout';
-import {Form, Button, Input, Container, Header, Message, Card, Grid, Image} from 'semantic-ui-react'
+import {Form, Button, Input, Header, Message, Card, Grid, Image} from 'semantic-ui-react'
 import Link from 'next/link'
 import { utils } from "ethers";
 import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
-import Router, {withRouter } from 'next/router'
+import {withRouter } from 'next/router'
 import Web3 from "web3";
 import fetch_metadata from "../../../utils/fetch_json";
 
@@ -35,25 +35,22 @@ class asset extends Component {
     
     async componentDidMount() {
     
-        const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1)
-        this.setState({uri_to_JSON: array_of_metadatas[0]})
-        this.setState({contentype: array_of_responses[0]})
+        const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1) // We  are manually inputing one here because we know that we are only fetching one NFT metadata
+        this.setState({uri_to_JSON: array_of_metadatas[0], contentype: array_of_responses[0]})
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
-            this.setState({is_chainId_right: chainId == "0x4"})
+            
             const accounts = await provider.request({method: 'eth_requestAccounts'})
-            this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
-            this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
         
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
           
             
-            this.setState({does_user_has_metamask_installed: true})
-            this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
+            this.setState({does_user_has_metamask_installed: true, is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
             
           }
         
@@ -62,15 +59,14 @@ class asset extends Component {
         let owner = await instance.methods._owners(this.props.index).call()
         
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
-        this.setState({price: price})
-        this.setState({owner: owner})
+        this.setState({price: price, owner: owner})
+
         
         
        
         if (price != 0) // Asset is listed 
         {
-            this.setState({owner: seller})
-            this.setState({is_the_seller_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == seller.toLowerCase())})
+            this.setState({owner: seller, is_the_seller_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == seller.toLowerCase())})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
@@ -126,23 +122,21 @@ buy_the_asset = async()=> {
     try {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.state.price})
-    this.setState({loading_flag: false, errorMessage: ''})
-    this.setState({asset_was_bought: true}) 
+    this.setState({loading_flag: false, errorMessage: '', asset_was_bought: true})
+
 
 
     }
 
     catch(err) {
-        this.setState({loading_flag: false, errorMessage: ''})
-        this.setState({error_message: err.message})
+        this.setState({loading_flag: false, errorMessage: '', error_message: err.message})
     }
 
 
 }
 
 dissmiss = ()=> {
-    this.setState({asset_was_listed: false}) 
-    this.setState({asset_was_bought: false}) 
+    this.setState({asset_was_listed: false, asset_was_bought: false}) 
     window.location.reload()
 }
 
@@ -155,14 +149,12 @@ onFormSubmit = async(event) => {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei).send({from: accounts[0]})
-    this.setState({asset_was_listed: true})
-    this.setState({loading_flag: false, errorMessage: ''})
+    this.setState({asset_was_listed: true, loading_flag: false, errorMessage: ''})
 
     }
 
     catch(err){
-        this.setState({loading_flag: false, errorMessage: ''})
-        this.setState({error_message: err.message})
+        this.setState({loading_flag: false, errorMessage: '', error_message: err.message})
     }
    
 
@@ -239,17 +231,7 @@ export async function getServerSideProps(context) {
               index = context.query.index_of_the_nft
           }
      
-          
- 
-          
-    
         const uri = await instance.methods._tokens(index).call()
-        
-    
-     
-  
-
-
     return {
       props: {
    

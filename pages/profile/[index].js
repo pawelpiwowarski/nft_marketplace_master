@@ -42,8 +42,8 @@ class profile extends Component {
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const accounts = await provider.request({method: 'eth_requestAccounts'})
-            this.setState({account_of_the_user:  utils.getAddress(accounts[0])})
-            this.setState({ is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+        
         }
           
 
@@ -51,9 +51,8 @@ class profile extends Component {
 
   
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
-    this.setState({list_of_offers})
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
-    this.setState({numbers_of_tokens_the_user_owns})
+    this.setState({numbers_of_tokens_the_user_owns, list_of_offers})
     const array_of_uris = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods._tokens(index).call()}))
     const array_of_uris_filtered = (await Promise.all(numbers_of_tokens_the_user_owns.map( async (element, index) => { 
         if (element==1) {
@@ -91,21 +90,12 @@ class profile extends Component {
         contentType = 'none'
     }
         array_of_responses.push(contentType)
-        
-    
-
-
       }
-
-      
-      this.setState({array_of_metadatas: array_of_metadatas})
-      this.setState({array_of_responses: array_of_responses})
-      this.setState({page_loading_flag: false})
+      this.setState({array_of_metadatas,array_of_responses, page_loading_flag: false})
       if (array_of_responses.length == 0)
     {
 
-    this.setState({message_content: "Sorry, this user deos not hold any NFTs "})
-    this.setState({page_loading_flag: false})
+    this.setState({message_content: "Sorry, this user deos not hold any NFTs ", page_loading_flag: false})
 
     }
         
