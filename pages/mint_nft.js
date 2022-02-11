@@ -67,9 +67,7 @@ this.setState({loading_flag: true, errorMessage: ''});
 
 const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
 const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;   
-
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
 this.setState({was_asset_subimitted: true})
 }
@@ -90,9 +88,6 @@ this.setState({loading_flag: false, error_message: ''})
 
 
 handleSubmission = async (e) => {
-  
-  
-  
 
   try {
 
@@ -105,19 +100,10 @@ handleSubmission = async (e) => {
     const reader = new FileReader()
   reader.readAsArrayBuffer(files[0]);
    reader.onloadend = async () => {
-  
-    
-
-
     const { cid } = await ipfs.add(reader.result) // Display as a buffer
     const img_source = "https://ipfs.io/ipfs/" + cid
-  
     this.setState({file_url: img_source, is_content_loaded: true, content_loading_flag: false})
    }
-
-   
-  
-   
    }
 
    catch (err)
@@ -143,22 +129,11 @@ isfileloaded(){
 
 
     
-    
 return (
 <Layout  metamaskflag = {this.state.is_metamask_running} account={this.state.account}>
-
-
-
-
-
-
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
-  <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>
-
-
-
-  
+  <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
   <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}> 
   <Form.Field>
   <label>Name of your NFT </label> 

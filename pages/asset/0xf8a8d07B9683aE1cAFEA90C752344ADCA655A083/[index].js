@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { utils } from "ethers";
 import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
-import {withRouter } from 'next/router'
 import Web3 from "web3";
 import fetch_metadata from "../../../utils/fetch_json";
 
@@ -37,31 +36,24 @@ class asset extends Component {
     
         const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1) // We  are manually inputing one here because we know that we are only fetching one NFT metadata
         this.setState({uri_to_JSON: array_of_metadatas[0], contentype: array_of_responses[0]})
-
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
-            
             const accounts = await provider.request({method: 'eth_requestAccounts'})
             this.setState({is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
         
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
-          
-            
             this.setState({does_user_has_metamask_installed: true, is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
-            
           }
         
+
         
-        
-        let owner = await instance.methods._owners(this.props.index).call()
-        
+        let owner = await instance.methods._owners(this.props.index).call()        
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
         this.setState({price: price, owner: owner})
 
-        
         
        
         if (price != 0) // Asset is listed 
@@ -123,9 +115,6 @@ buy_the_asset = async()=> {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.state.price})
     this.setState({loading_flag: false, errorMessage: '', asset_was_bought: true})
-
-
-
     }
 
     catch(err) {
@@ -241,4 +230,4 @@ export async function getServerSideProps(context) {
    }, // will be passed to the page component as props
     }
   }
-export default withRouter(asset)
+export default asset

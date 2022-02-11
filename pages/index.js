@@ -4,7 +4,6 @@ import { Header, Message, Card, Icon} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
-import {withRouter } from 'next/router'
 import fetch_metadata from "../utils/fetch_json";
 
 
@@ -48,21 +47,11 @@ class home_page extends Component {
 
       const {array_of_metadatas, array_of_responses} = await fetch_metadata(this.props.array_of_uris, this.props.numbers_of_tokens)
 
-    this.setState({array_of_metadatas, array_of_responses, page_loading_flag: false})
-
-
-
-
-
-
-    
-
-
-    this.setState({opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})    
+    this.setState({array_of_metadatas, array_of_responses, page_loading_flag: false, opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})
         }
    
         
-        is_file_a_video = (index)=> {
+        is_file_a_video(index) {
 
           if (this.state.array_of_responses[index] == 'video/mp4')
             return <video src={this.state.array_of_metadatas[index].image} ></video>
@@ -77,7 +66,6 @@ class home_page extends Component {
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
         style={{margin: "25px" }}
-        
         key={index} 
         image = {this.is_file_a_video(index)}
         description={this.state.array_of_metadatas[index].description} 
@@ -145,4 +133,4 @@ export async function getServerSideProps(context) {
   }, // will be passed to the page component as props
    }
  }
-export default withRouter(home_page)
+export default home_page

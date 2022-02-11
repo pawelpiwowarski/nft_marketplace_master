@@ -3,7 +3,6 @@ import Layout from '../../components/Layout';
 import { Header, Message, Card, Icon} from 'semantic-ui-react'
 import Link  from 'next/link'
 import instance from "../../etherum_side/instance_of_the_contract";
-import { withRouter } from 'next/router'
 import { utils } from "ethers";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
 
@@ -45,11 +44,6 @@ class profile extends Component {
             this.setState({account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         
         }
-          
-
-
-
-  
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
     this.setState({numbers_of_tokens_the_user_owns, list_of_offers})
@@ -208,10 +202,7 @@ export async function getServerSideProps(context) {
     let account = context.query.index
     if (account == undefined) {
         account = context.query.address
-    }
-
- 
-    
+    }    
     const instance_address = await instance._address
     const numbers_of_tokens = await instance.methods.Token_Id().call();
       return {props:{account,
@@ -223,4 +214,4 @@ export async function getServerSideProps(context) {
 }
 
 
-export default withRouter(profile)
+export default profile
