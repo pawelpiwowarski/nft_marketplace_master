@@ -39,16 +39,16 @@ class asset extends Component {
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
+            console.log(chainId)
             const accounts = await provider.request({method: 'eth_requestAccounts'})
             this.setState({is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
         
 
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
-            this.setState({does_user_has_metamask_installed: true, is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
+            this.setState({does_user_has_metamask_installed: true}) 
+            this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
           }
-        
-
         
         let owner = await instance.methods._owners(this.props.index).call()        
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
