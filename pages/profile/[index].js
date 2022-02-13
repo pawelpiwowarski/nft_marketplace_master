@@ -199,10 +199,8 @@ render() {
 export async function getServerSideProps(context) {
 
     
-    let account = context.query.index
-    if (account == undefined) {
-        account = context.query.address
-    }    
+    let account = context.query.index || context.query.address
+      
     const instance_address = await instance._address
     const numbers_of_tokens = await instance.methods.Token_Id().call();
       return {props:{account,

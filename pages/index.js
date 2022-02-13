@@ -65,7 +65,7 @@ class home_page extends Component {
         return <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
-        style={{margin: "25px" }}
+        style={{margin: "25px"}}
         key={index} 
         image = {this.is_file_a_video(index)}
         description={this.state.array_of_metadatas[index].description} 

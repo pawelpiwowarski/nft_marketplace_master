@@ -39,7 +39,6 @@ class asset extends Component {
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
-            console.log(chainId)
             const accounts = await provider.request({method: 'eth_requestAccounts'})
             this.setState({is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
         }
@@ -83,7 +82,9 @@ async link_address_to_profile(){
 is_file_a_video = () => {
 
     if (this.state.contentype == 'video/mp4')
-      return <video loop  autoPlay="autoplay" controls muted src={this.state.uri_to_JSON.image} ></video>
+    {
+       return <video loop  autoPlay="autoplay" controls muted src={this.state.uri_to_JSON.image} ></video>
+    }
    return <Image src={this.state.uri_to_JSON.image} /> 
 }
 
@@ -136,7 +137,6 @@ onFormSubmit = async(event) => {
     try {
     const price_in_wei =  Web3.utils.toWei(this.state.price_of_the_listing, 'ether');
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-    
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei).send({from: accounts[0]})
     this.setState({asset_was_listed: true, loading_flag: false, errorMessage: ''})
 
@@ -215,15 +215,12 @@ render() {
 
 export async function getServerSideProps(context) {
      
-          let index = context.query.index
-          if (index == undefined) {
-              index = context.query.index_of_the_nft
-          }
+          let index = context.query.index || context.query.index_of_the_nft
+         
      
         const uri = await instance.methods._tokens(index).call()
     return {
       props: {
-   
         uri,
         index,
 
