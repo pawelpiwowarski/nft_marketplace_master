@@ -8,15 +8,11 @@ import instance_of_marketplace from "../../etherum_side/instance_of_the_marketpl
 
 class profile extends Component {
 
-    constructor(props) {
-        super(props)
-        this.setState({page_loading_flag: true})
-    }
+ 
 
     async componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.account !== prevProps.account) {
-          console.log('change_of_account')
           this.setState({page_loading_flag: true})
           this.setState({array_of_metadatas: []})
           this.componentDidMount()
