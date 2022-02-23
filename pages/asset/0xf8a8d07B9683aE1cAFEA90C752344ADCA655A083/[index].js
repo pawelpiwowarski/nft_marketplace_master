@@ -7,7 +7,7 @@ import instance from "../../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../../etherum_side/instance_of_the_marketplace";
 import Web3 from "web3";
 import fetch_metadata from "../../../utils/fetch_json";
-import confidential from './credentials'
+import confidential from '../../../utils/credentials'
 class asset extends Component {
 
 
