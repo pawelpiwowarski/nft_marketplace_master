@@ -27,13 +27,13 @@ async function fetchJSON(url) {
   }
 }
 else {
-    
+
 }
-     const obj = {
-         array_of_metadatas,
-         array_of_responses
-     }
-     return obj
+    
+     return {
+        array_of_metadatas,
+        array_of_responses
+    }
 }
 
 module.exports = fetch_metadata
