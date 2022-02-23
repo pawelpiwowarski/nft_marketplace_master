@@ -37,7 +37,7 @@ class asset extends Component {
     
         const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1) // We  are manually inputing one here because we know that we are only fetching one NFT metadata
 
-        const response = await fetch('http://0ba4-79-184-53-203.ngrok.io/orders/'+ this.props.index, {method: 'GET', headers: {'Authorization': 'Basic '+btoa(confidential), "Content-type": "application/json"}, });
+        const response = await fetch('https://0ba4-79-184-53-203.ngrok.io/orders/'+ this.props.index, {method: 'GET', headers: {'Authorization': 'Basic '+btoa(confidential), "Content-type": "application/json"}, });
         const response_to_json = await response.json()
         this.setState({order_history: response_to_json})
 
@@ -123,7 +123,7 @@ buy_the_asset = async()=> {
     try {
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         const date = new Date()
-        const url = 'http://0ba4-79-184-53-203.ngrok.io/orders/'+ this.props.index +'?time='+ date +' &price='+ this.state.price +'&seller=' + this.state.owner +'&buyer=' +this.state.account_of_the_user
+        const url = 'https://0ba4-79-184-53-203.ngrok.io/orders/'+ this.props.index +'?time='+ date +' &price='+ this.state.price +'&seller=' + this.state.owner +'&buyer=' +this.state.account_of_the_user
     await instance_of_marketplace.methods.buy_asset(this.props.index).send({from: accounts[0], value: this.state.price})
     this.setState({loading_flag: false, errorMessage: '', asset_was_bought: true})
     const response = await fetch(url,{method:'POST', headers: {'Authorization': 'Basic '+btoa(confidential)}} )
