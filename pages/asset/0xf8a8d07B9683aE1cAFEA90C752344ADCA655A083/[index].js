@@ -43,7 +43,8 @@ class asset extends Component {
         }
 
         catch(e) {
-            this.setState({error_message: e})
+            console.log()
+            this.setState({error_message: e.message + ' price history data. Working on a fix. '})
         }
 
         
@@ -245,7 +246,7 @@ render() {
         
         
         <Form  error={!!this.state.error_message}> 
-         <Message error header="Oops!" margin="10ptx" content={this.state.error_message}  />
+         <Message error header="Oops!" margin="10ptx" onDismiss = {()=> { this.setState({error_message: ''})}} content={this.state.error_message}  />
          </Form>
          { this.state.asset_was_listed &&
   <Message color="green"   onDismiss = {this.dissmiss}  positive> Congratulation your NFT was successfully listed.</Message>
