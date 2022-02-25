@@ -40,7 +40,7 @@ class asset extends Component {
         let ngrok_url = 'https://43ac-79-184-53-203.ngrok.io/orders/'
         const response = await fetch(ngrok_url+ this.props.index, {method: 'GET', mode: 'cors', headers: {'Authorization': 'Basic '+btoa(confidential), "Content-type": "application/json"}, });
         const response_to_json = await response.json()
-        this.setState({order_history: response_to_json})
+        this.setState({order_history: response_to_json.reverse()})
         }
 
         catch(e) {
@@ -173,7 +173,7 @@ render_history() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-                {this.state.order_history.reverse().map((element, index)=>{
+                {this.state.order_history.map((element, index)=>{
                     return <Table.Row>
                     <Table.Cell>{this.state.order_history[index].time.slice(0,25)}</Table.Cell>
                     <Table.Cell>{Web3.utils.fromWei(this.state.order_history[index].price, 'ether') + ' ETH'}</Table.Cell>
