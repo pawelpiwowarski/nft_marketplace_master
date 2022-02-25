@@ -37,7 +37,7 @@ class asset extends Component {
     
         const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1) // We  are manually inputing one here because we know that we are only fetching one NFT metadata
         try {
-        const ngrok_url = 'https://43ac-79-184-53-203.ngrok.io/orders/'
+        let ngrok_url = 'https://43ac-79-184-53-203.ngrok.io/orders/'
         const response = await fetch(ngrok_url+ this.props.index, {method: 'GET', mode: 'cors', headers: {'Authorization': 'Basic '+btoa(confidential), "Content-type": "application/json"}, });
         const response_to_json = await response.json()
         this.setState({order_history: response_to_json})
@@ -128,6 +128,7 @@ buy_the_asset = async()=> {
 
     this.setState({loading_flag: true, errorMessage: ''})
     try {
+        let ngrok_url = 'https://43ac-79-184-53-203.ngrok.io/orders/'
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         const date = new Date()
         
@@ -172,7 +173,7 @@ render_history() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-                {this.state.order_history.map((element, index)=>{
+                {this.state.order_history.reverse().map((element, index)=>{
                     return <Table.Row>
                     <Table.Cell>{this.state.order_history[index].time.slice(0,25)}</Table.Cell>
                     <Table.Cell>{Web3.utils.fromWei(this.state.order_history[index].price, 'ether') + ' ETH'}</Table.Cell>
