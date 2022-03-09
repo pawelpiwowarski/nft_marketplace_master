@@ -35,7 +35,8 @@ class asset extends Component {
         order_history: [],
         authenication_flag: false,
         local_json: '',
-        asset_info_loaded: false
+        asset_info_loaded: false,
+        user_loaded: false
         
     }
 
@@ -63,7 +64,7 @@ class asset extends Component {
             const chainId = await provider.request({ method: 'eth_chainId' })
             const accounts = await provider.request({method: 'eth_requestAccounts'})
          
-            this.setState({local_json: await fetch_profile_details(accounts[0]),is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({local_json: await fetch_profile_details(accounts[0]),user_loaded: true,is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
             this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false})
 
         }
@@ -226,7 +227,7 @@ render() {
 
     return(
 
-        <Layout local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authenication_flag}>
+        <Layout loading={!this.state.user_loaded}local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authenication_flag}>
         {!this.state.asset_info_loaded && <Message  color='teal' size='huge' icon>
     <Icon name='circle notched' loading />
     <Message.Content>

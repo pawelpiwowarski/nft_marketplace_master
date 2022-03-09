@@ -13,7 +13,7 @@ const Layout = (props) => {
         href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css
         "/>
      
-     <Header local_json = {props.local_json}profile_details={props.profile_details} metamaskflag = {props.metamaskflag} address={props.account} auth={props.auth}/>
+     <Header loading={props.loading} local_json = {props.local_json}profile_details={props.profile_details} metamaskflag = {props.metamaskflag} address={props.account} auth={props.auth}/>
         {props.children}
        
         </Container>

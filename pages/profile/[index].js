@@ -45,7 +45,7 @@ class profile extends Component {
             
          
            
-            this.setState({ account_of_the_user:utils.getAddress(accounts[0]),local_json: await fetch_profile_details(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined),  authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
+            this.setState({ account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true,local_json: await fetch_profile_details(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined),  authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
         
         }
         this.setState({email,username,profile_picture: profile_url + url})
@@ -113,7 +113,8 @@ class profile extends Component {
         message_content: "",
         authenication_flag: false,
         local_json:'',
-        profile_picture: ''
+        profile_picture: '',
+        user_loaded: false
 
     }
      getactualindex(index) {
@@ -184,7 +185,7 @@ render() {
 
     return(
 
-        <Layout local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
+        <Layout loading = {!this.state.user_loaded}local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
 { this.state.username && <div>
 <Header  as='h1'> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  Email: {this.state.email}</Header> <Image spaced="right "size="small" circular centered
 src={this.state.profile_picture}></Image>

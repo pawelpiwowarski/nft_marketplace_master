@@ -22,6 +22,7 @@ class home_page extends Component {
     array_of_responses: [],
     array_of_metadatas: [],
     page_loading_flag: true,
+    user_loaded: false,
     authenication_flag: false,
     profile_details: '',
     local_json: ''
@@ -37,7 +38,7 @@ class home_page extends Component {
    
       const chainId = await provider.request({ method: 'eth_chainId' })
      
-      this.setState({local_json: await fetch_profile_details(accounts[0]),is_chainId_right: chainId == "0x4", account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true, 
+      this.setState({local_json: await fetch_profile_details(accounts[0]),user_loaded: true, is_chainId_right: chainId == "0x4", account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true, 
     })
 
      this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false})
@@ -98,7 +99,7 @@ render(){
 
     return(
    
-        <Layout local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authenication_flag} profile_details={this.state.profile_details}>
+        <Layout loading = {!this.state.user_loaded}local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authenication_flag} profile_details={this.state.profile_details}>
 
         {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <a target="_blank" href='https://faucets.chain.link/rinkeby' ><Message color='red' size='big' 
         content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network. The marketplace will not work unless you switch the networks.

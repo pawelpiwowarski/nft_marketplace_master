@@ -27,7 +27,8 @@ state = {
   was_asset_subimitted: false,
   content_loading_flag: false,
   authentication_flag: false,
-  local_json: ''
+  local_json: '',
+  user_loaded: false
 
 
 
@@ -39,7 +40,7 @@ async componentDidMount() {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
   
-   this.setState({ local_json: await fetch_profile_details(accounts[0]),account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined), authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
+   this.setState({ local_json: await fetch_profile_details(accounts[0]),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined), authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
   }
   const instance_address = await nft_creator._address;
   this.setState({instance_address, opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
@@ -134,7 +135,7 @@ isfileloaded(){
 
     
 return (
-<Layout  local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authentication_flag}>
+<Layout  loading ={!this.state.user_loaded}local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authentication_flag}>
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
   <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
