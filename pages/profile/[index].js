@@ -36,16 +36,19 @@ class profile extends Component {
             
             return response_to_json;
           }
+          const {username, email, url} = await fetch_profile_details(this.props.account)
 
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const accounts = await provider.request({method: 'eth_requestAccounts'})
 
-            const {username, email, url} = await fetch_profile_details(this.props.account)
+            
+         
            
-            this.setState({ account_of_the_user:utils.getAddress(accounts[0]),email,profile_picture: profile_url + url,username,local_json: await fetch_profile_details(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined),  authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
+            this.setState({ account_of_the_user:utils.getAddress(accounts[0]),local_json: await fetch_profile_details(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined),  authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
         
         }
+        this.setState({email,username,profile_picture: profile_url + url})
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
     const numbers_of_tokens_the_user_owns = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance.methods.balanceOf(String(this.props.account), index).call()}))
     this.setState({numbers_of_tokens_the_user_owns, list_of_offers})
