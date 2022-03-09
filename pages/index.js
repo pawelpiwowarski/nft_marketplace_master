@@ -100,10 +100,10 @@ render(){
    
         <Layout local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authenication_flag} profile_details={this.state.profile_details}>
 
-        {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <a target="_blank" href='https://faucets.chain.link/rinkeby' ><Message color='red' size='large' 
-        content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network.
+        {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <a target="_blank" href='https://faucets.chain.link/rinkeby' ><Message color='red' size='big' 
+        content="In order to access the marketplace, you need to connect your Metamask wallet to Rinkeby network. The marketplace will not work unless you switch the networks.
         You can get some sample ETH to work with using this link https://faucets.chain.link/rinkeby"/></a> }
-        {!this.state.does_user_has_metamask_installed && this.metamaskinfo()}
+        {!this.state.does_user_has_metamask_installed && !this.state.page_loading_flag && this.metamaskinfo()}
   
   
         <Header color='teal' as='h1'> Welcome to plateau-nft.art - simple NFT marketplace and minting framework working on Ethereum's Rinkeby test network. </Header>

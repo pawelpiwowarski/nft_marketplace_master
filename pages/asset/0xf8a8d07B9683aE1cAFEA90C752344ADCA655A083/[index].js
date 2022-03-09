@@ -282,13 +282,14 @@ render() {
         It looks like you don't have Metamask installed in your browser. In order to access the marketplace you need to download this extension.</Message>
         }
 
-        {
-        !this.state.dissmiss_flag  && this.state.does_user_has_metamask_installed && !this.state.is_chainId_right && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='huge' color='red'> 
-        Please connect to the Rinkeby test network and refresh the page! This site won't be rendered properly unless you do so! </Message>
-        }
+       
 
        </Grid>
 }
+{
+        !this.state.dissmiss_flag  && this.state.does_user_has_metamask_installed && !this.state.is_chainId_right && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='huge' color='red'> 
+        Please connect to the Rinkeby test network and refresh the page! This site won't be rendered properly unless you do so! </Message>
+        }
        {this.render_history()}
         </Layout>
 
