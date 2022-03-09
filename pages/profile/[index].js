@@ -197,7 +197,7 @@ src={this.state.profile_picture}></Image>
     <Icon name='circle notched' loading />
     <Message.Content>
       <Message.Header>Just one second</Message.Header>
-      We are fetching the images for you 
+      We are fetching profile info 
     </Message.Content>
   </Message>}
   {this.state.message_content != "" && <Message size='huge' color="teal">{this.state.message_content } </Message>}

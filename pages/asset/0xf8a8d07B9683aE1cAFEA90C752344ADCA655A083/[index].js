@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../../../components/Layout';
-import {Form, Button, Input, Header, Message, Card, Grid, Image, Table} from 'semantic-ui-react'
+import {Form, Icon, Button, Input, Header, Message, Card, Grid, Image, Table} from 'semantic-ui-react'
 import Link from 'next/link'
 import { utils } from "ethers";
 import instance from "../../../etherum_side/instance_of_the_contract";
@@ -34,7 +34,8 @@ class asset extends Component {
         contenttype: [],
         order_history: [],
         authenication_flag: false,
-        local_json: ''
+        local_json: '',
+        asset_info_loaded: false
         
     }
 
@@ -87,7 +88,7 @@ class asset extends Component {
         {
             this.setState({owner: seller})
         }
-        
+        this.setState({asset_info_loaded: true})
             }
 
 
@@ -226,6 +227,14 @@ render() {
     return(
 
         <Layout local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authenication_flag}>
+        {!this.state.asset_info_loaded && <Message  color='teal' size='huge' icon>
+    <Icon name='circle notched' loading />
+    <Message.Content>
+      <Message.Header>Just one second</Message.Header>
+      We are loading this NFT for you
+    </Message.Content>
+  </Message>}
+  { this.state.asset_info_loaded &&
         <Grid>
         <Grid.Column width={8}>
         <Card 
@@ -279,6 +288,7 @@ render() {
         }
 
        </Grid>
+}
        {this.render_history()}
         </Layout>
 

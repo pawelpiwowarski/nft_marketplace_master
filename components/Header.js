@@ -89,7 +89,7 @@ const Header = (props) => {
 
     <Menu.Menu position='right' >
   
-    <Dropdown fluid  item text={props.metamaskflag ? 'Plateau Profile': 'Login to Metamask'}>
+    <Dropdown fluid  item text={props.metamaskflag ? props.local_json.username ||'Plateau Profile': 'Login to Metamask'}>
     <Dropdown.Menu inverted>
 
    <Metamask_connect_button   address = {props.address} metamaskflag={props.metamaskflag}/>
