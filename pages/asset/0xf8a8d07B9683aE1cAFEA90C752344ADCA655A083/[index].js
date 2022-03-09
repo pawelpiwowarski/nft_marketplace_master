@@ -9,6 +9,8 @@ import Web3 from "web3";
 import fetch_metadata from "../../../utils/fetch_json";
 import confidential from '../../../utils/credentials'
 import instance_of_profile_authenictaion from '../../../etherum_side/instance_of_the_profile'
+import url_of_the_server from '../../../utils/fetch'
+import fetch_profile_details from '../../../utils/fetch_profile'
 class asset extends Component {
 
 
@@ -18,6 +20,7 @@ class asset extends Component {
         error_message: "",
         account_of_the_user: "",
         does_user_has_metamask_installed: false,
+        is_chainId_right: false,
         is_metamask_running: false,
         is_user_logged_in: 0,
         is_the_seller_logged_in: false,
@@ -30,7 +33,8 @@ class asset extends Component {
         uri_to_JSON: [],
         contenttype: [],
         order_history: [],
-        authenication_flag: false
+        authenication_flag: false,
+        local_json: ''
         
     }
 
@@ -39,7 +43,7 @@ class asset extends Component {
     
         const {array_of_metadatas, array_of_responses} = await fetch_metadata([this.props.uri], 1) // We  are manually inputing one here because we know that we are only fetching one NFT metadata
         try {
-        let ngrok_url = 'https://b169-83-24-113-140.ngrok.io/orders/'
+        let ngrok_url =  url_of_the_server + 'orders/'
         const response = await fetch(ngrok_url+ this.props.index, {method: 'GET', mode: 'cors', headers: {'Authorization': 'Basic '+btoa(confidential), "Content-type": "application/json"}, });
         const response_to_json = await response.json()
         this.setState({order_history: response_to_json.reverse()})
@@ -57,7 +61,10 @@ class asset extends Component {
             const provider  = window.ethereum
             const chainId = await provider.request({ method: 'eth_chainId' })
             const accounts = await provider.request({method: 'eth_requestAccounts'})
-            this.setState({is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined), authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
+         
+            this.setState({local_json: await fetch_profile_details(accounts[0]),is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false})
+
         }
         
 
@@ -130,7 +137,7 @@ buy_the_asset = async()=> {
 
     this.setState({loading_flag: true, errorMessage: ''})
     try {
-        let ngrok_url = 'https://b169-83-24-113-140.ngrok.io/orders/'
+        let ngrok_url = url_of_the_server + 'orders/'
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         const date = new Date()
         
@@ -218,7 +225,7 @@ render() {
 
     return(
 
-        <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
+        <Layout local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authenication_flag}>
         <Grid>
         <Grid.Column width={8}>
         <Card 

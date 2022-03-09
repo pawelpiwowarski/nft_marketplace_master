@@ -6,7 +6,8 @@ import Layout from '../components/Layout';
 import pinata from '../etherum_side/pinata';
 import { utils } from "ethers";
 import ipfs from "../etherum_side/ipfs";
-
+import instance_of_profile_authenictaion from '../etherum_side/instance_of_the_profile'
+import fetch_profile_details from '../utils/fetch_profile'
 class mint_nft extends Component 
 {
 
@@ -24,7 +25,9 @@ state = {
   instance_adress: "",
   opensea_url: "",
   was_asset_subimitted: false,
-  content_loading_flag: false
+  content_loading_flag: false,
+  authentication_flag: false,
+  local_json: ''
 
 
 
@@ -35,7 +38,8 @@ async componentDidMount() {
   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
-   this.setState({account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
+  
+   this.setState({ local_json: await fetch_profile_details(accounts[0]),account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined), authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
   }
   const instance_address = await nft_creator._address;
   this.setState({instance_address, opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
@@ -130,7 +134,7 @@ isfileloaded(){
 
     
 return (
-<Layout  metamaskflag = {this.state.is_metamask_running} account={this.state.account}>
+<Layout  local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authentication_flag}>
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
   <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
@@ -142,8 +146,7 @@ return (
   </Form.Field>
   <Form.Field>
   <label>Description of your NFT</label> 
-  <Input value={this.state.description_of_the_nft}
-    onChange={event => this.setState({description_of_the_nft: event.target.value})}name="description" />
+  <Input value={this.state.description_of_the_nft} onChange={event => this.setState({description_of_the_nft: event.target.value})}name="description" />
   </Form.Field>
   <Form.Field>
   

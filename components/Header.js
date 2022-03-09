@@ -1,21 +1,13 @@
-import React, { Component } from "react"; 
+import React from "react"; 
 import Link from 'next/link'
-import { Button, Menu } from "semantic-ui-react";
-import {withRouter } from 'next/router'
+import {Icon, Menu, Dropdown } from "semantic-ui-react";
 import Head from "next/head"
-
-
-
-
-
-
+import Modal_Profile from "./Modal";
 
 const connectMetamask = async () => {
 
     try {
-
         await ethereum.request({ method: 'eth_requestAccounts' });
-       
     }
 
     catch(error) {
@@ -36,8 +28,8 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined")
 if (metamaskflag) 
 {
     return <Link href={`/profile/${address}`}>
-    <a className='item' > Your Profile        {props.address}</a>
-
+    <a className='item' > <Icon name="shop"></Icon>  Your NFTs </a>
+    
     </Link>
 }
 else 
@@ -53,10 +45,18 @@ else
 
 }
 
+
 const Header = (props) => {
+  
 
 
-    
+
+
+   
+ 
+
+
+
     return (
         <>
       <Head>
@@ -87,10 +87,22 @@ const Header = (props) => {
     <a color="blue" className='item'> Mint a NFT </a>
     </Link>
 
-    <Menu.Menu position='right'>
-   
+    <Menu.Menu position='right' >
+  
+    <Dropdown fluid  item text={props.metamaskflag ? 'Plateau Profile': 'Login to Metamask'}>
+    <Dropdown.Menu inverted>
+
    <Metamask_connect_button   address = {props.address} metamaskflag={props.metamaskflag}/>
 
+   { props.metamaskflag &&
+   <Modal_Profile local_json ={ props.local_json} auth = {props.auth} address={props.address}>
+
+   </Modal_Profile>
+}
+    
+
+   </Dropdown.Menu>
+          </Dropdown>
     </Menu.Menu>
     
     
@@ -99,4 +111,4 @@ const Header = (props) => {
     )
     }
 
-export default withRouter(Header);
+export default Header;

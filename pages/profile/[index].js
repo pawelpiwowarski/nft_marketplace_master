@@ -1,11 +1,13 @@
 import React, { Component } from "react"; 
 import Layout from '../../components/Layout';
-import { Header, Message, Card, Icon} from 'semantic-ui-react'
+import { Header, Message, Card, Icon, Image} from 'semantic-ui-react'
 import Link  from 'next/link'
 import instance from "../../etherum_side/instance_of_the_contract";
 import { utils } from "ethers";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
-
+import instance_of_profile_authenictaion from '../../etherum_side/instance_of_the_profile'
+import fetch_profile_details from '../../utils/fetch_profile'
+import profile_url from '../../utils/fetch'
 class profile extends Component {
 
  
@@ -22,6 +24,7 @@ class profile extends Component {
 
     async componentDidMount() 
     {
+
         let contentType
         const array_of_metadatas = []
         const array_of_responses = []
@@ -37,7 +40,10 @@ class profile extends Component {
           if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
             const provider  = window.ethereum
             const accounts = await provider.request({method: 'eth_requestAccounts'})
-            this.setState({account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+
+            const {username, email, url} = await fetch_profile_details(this.props.account)
+           
+            this.setState({ account_of_the_user:utils.getAddress(accounts[0]),email,profile_picture: profile_url + url,username,local_json: await fetch_profile_details(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined),  authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
         
         }
     const list_of_offers = await Promise.all(Array(parseInt(this.props.numbers_of_tokens)).fill().map((element, index) => { return instance_of_marketplace.methods._listingDetails(index).call()}))
@@ -101,7 +107,10 @@ class profile extends Component {
         numbers_of_tokens_the_user_owns: [],
         array_of_responses: [],
         page_loading_flag: true,
-        message_content: ""
+        message_content: "",
+        authenication_flag: false,
+        local_json:'',
+        profile_picture: ''
 
     }
      getactualindex(index) {
@@ -172,11 +181,16 @@ render() {
 
     return(
 
-        <Layout metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user}>
-
-<Header as='h1'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
-
-{this.state.page_loading_flag && <Message color='big' color='teal' size='huge' icon>
+        <Layout local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
+{ this.state.username && <div>
+<Header  as='h1'> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  Email: {this.state.email}</Header> <Image spaced="right "size="small" circular centered
+src={this.state.profile_picture}></Image>
+<Header as='h2'> This profile NFTs: </Header>
+</div>}
+{ !this.state.username &&
+<Header as='h2'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
+}
+{this.state.page_loading_flag && <Message color='teal'  size='huge' icon>
     <Icon name='circle notched' loading />
     <Message.Content>
       <Message.Header>Just one second</Message.Header>
