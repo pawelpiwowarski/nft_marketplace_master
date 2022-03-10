@@ -1,9 +1,9 @@
 import React from "react"; 
 import Link from 'next/link'
-import {Icon, Menu, Dropdown } from "semantic-ui-react";
+import {Icon, Menu, Dropdown, Image } from "semantic-ui-react";
 import Head from "next/head"
 import Modal_Profile from "./Modal";
-
+import server_url from '../utils/fetch'
 const connectMetamask = async () => {
 
     try {
@@ -88,18 +88,20 @@ const Header = (props) => {
     </Link>
 
     <Menu.Menu position='right' >
-   
+  
     <Dropdown fluid  loading={props.loading} item text={props.metamaskflag && !props.loading ? props.local_json.username ||'Plateau Profile': 'Logging in ...'}>
   
     <Dropdown.Menu inverted>
-
+    <Image avatar floated="right" wraped size="mini" src={server_url  + props.local_json.url}></Image>
    <Metamask_connect_button   address = {props.address} metamaskflag={props.metamaskflag}/>
-
+   
    { props.metamaskflag &&
    <Modal_Profile local_json ={ props.local_json} auth = {props.auth} address={props.address}>
 
    </Modal_Profile>
 }
+<Link href={`https://pawelpiwowarski2000.gitbook.io/plateau_nft/`}><a target="_blank" class="item"><Icon name="book"></Icon>Documentation </a></Link>
+
     
 
    </Dropdown.Menu>
