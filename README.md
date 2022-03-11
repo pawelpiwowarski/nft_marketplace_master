@@ -1,3 +1,5 @@
+<a target="_blank" href='https://pawelpiwowarski2000.gitbook.io/plateau_nft/'> <h1> Link to the documentation </h1> </a> 
+
 # Welcome to my project 
 # This is Plateau NFT marketplace 
 # Simple NFT marketplace and minting framework working on Ethereum's Rinkeby test network.
