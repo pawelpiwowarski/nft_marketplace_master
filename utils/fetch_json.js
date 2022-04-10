@@ -1,18 +1,21 @@
-const fetch_metadata = async (array_of_uris, numbers_of_tokens, filter)=> {
+const fetch_metadata = async (array_of_uris, numbers_of_tokens)=> {
+
+
 let contentType
 const array_of_metadatas = []
 const array_of_responses = []
 async function fetchJSON(url) {
            
-    const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+    const response = await fetch(url, {method: "GET"});
 
     const response_to_json = await response.json();
+    console.log(response_to_json)
     
     return response_to_json;
   }
 
-  if (filter == undefined){
-  for (let i=0; i < numbers_of_tokens; i++) {
+  
+  for (let i=0 ; i < numbers_of_tokens; i++) {
     let uri = await fetchJSON(array_of_uris[i])
     array_of_metadatas.push(uri)
     try {
@@ -25,10 +28,8 @@ async function fetchJSON(url) {
       array_of_responses.push(contentType)
     }  
   }
-}
-else {
 
-}
+
     
      return {
         array_of_metadatas,

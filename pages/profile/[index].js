@@ -30,7 +30,7 @@ class profile extends Component {
         const array_of_responses = []
         async function fetchJSON(url) {
            
-            const response = await fetch(url, {method: "GET", headers: {"Content-type": "application/json"}});
+            const response = await fetch(url, {method: "GET"});
         
             const response_to_json = await response.json();
             
@@ -187,10 +187,29 @@ render() {
 
         <Layout loading = {!this.state.user_loaded}local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
 { this.state.username && <div>
-<Header  as='h1'> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  Email: {this.state.email}</Header> <Image spaced="right "size="small" circular centered
-src={this.state.profile_picture}></Image>
-<Header as='h2'> This profile NFTs: </Header>
+
+   
+<Card color="teal">
+<Image circular rounded  size="tiny"src={this.state.profile_picture} />
+    <Card.Content>
+         
+      <Card.Header> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  </Card.Header>
+      <Card.Meta></Card.Meta>
+      <Card.Description>
+      Email: {this.state.email}
+      </Card.Description>
+    </Card.Content>
+    <Card.Content extra>
+      <a>
+        <Icon name='shop' />
+        {this.state.array_of_metadatas.length} NFTs
+      </a>
+    </Card.Content>
+    
+  </Card>
+
 </div>}
+<Header as='h2'> This profile NFTs: </Header>
 { !this.state.username &&
 <Header as='h2'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
 }

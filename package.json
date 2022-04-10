@@ -21,6 +21,7 @@
   "name": "nft_marketplace",
   "version": "1.0.0",
   "main": "index.js",
+  "proxy": "http:/localhost:3001",
   "scripts": {
     "test": "mocha",
     "dev": "node server.js"

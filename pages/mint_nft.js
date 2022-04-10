@@ -70,8 +70,8 @@ try {
 this.setState({loading_flag: true, errorMessage: ''});
 
 
-const pinata_resopsnse = await pinata.pinJSONToIPFS(nft_metadata_object,options);
-const metadata = 'https://gateway.pinata.cloud/ipfs/' + pinata_resopsnse.IpfsHash;   
+const { cid } = await ipfs.add(JSON.stringify(nft_metadata_object)); 
+const metadata = "https://ipfs.io/ipfs/" + cid 
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
 await nft_creator.methods.mint(metadata).send({from: accounts[0]})
 this.setState({was_asset_subimitted: true})

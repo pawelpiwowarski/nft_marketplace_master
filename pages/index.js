@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { utils } from "ethers";
 import fetch_metadata from "../utils/fetch_json";
 import fetch_profile_details from '../utils/fetch_profile'
+import Pagination from "../components/Pagination";
 
 class home_page extends Component {
     
@@ -25,12 +26,14 @@ class home_page extends Component {
     user_loaded: false,
     authenication_flag: false,
     profile_details: '',
-    local_json: ''
+    local_json: '',
+
 
 
    }
    
    async componentDidMount() {
+
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
       
       const provider  = window.ethereum
@@ -56,9 +59,9 @@ class home_page extends Component {
             window.location.reload();
           });
         }
-
-      const {array_of_metadatas, array_of_responses} = await fetch_metadata(this.props.array_of_uris, this.props.numbers_of_tokens)
-
+     
+      const {array_of_metadatas, array_of_responses} = await fetch_metadata(this.props.array_of_uris, this.props.numbers_of_tokens, this.state.current_range)
+  
     this.setState({array_of_metadatas, array_of_responses, page_loading_flag: false, opensea_url: "https://rinkeby.etherscan.io/token/" + this.props.instance_address})
         }
    
@@ -74,7 +77,12 @@ class home_page extends Component {
        }
     renderNFT() {
 
-        return <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
+      
+
+      
+
+
+        return  <Card.Group itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link href = {`/asset/${this.props.instance_address}/${this.state.index}`} >
                 <a onMouseEnter={() => this.setState({index: index})}> <Card     
         style={{margin: "25px"}}
@@ -118,9 +126,21 @@ render(){
       We are fetching the NFT data for you
     </Message.Content>
   </Message>}
-         {this.renderNFT()} 
+         {this.renderNFT()} { /* 
+         <Pagination num = {this.props.numbers_of_tokens} callback={(page)=> {
+     
+           this.setState({active_page: page.activePage}, async ()=> {
+        
+            const {array_of_metadatas, array_of_responses} = await fetch_metadata(this.props.array_of_uris, 6, this.state.active_page)
+            console.log(array_of_metadatas)
+            //this.setState({array_of_metadatas, array_of_responses})
+           })
+          
+         }}></Pagination >
+        */ } 
          <Header size='large'  color="blue"> Marketplace written by Pawel Piwowarski contact at pawelpiwowarski2000@gmail.com - all rights reserved -
         <a href="https://github.com/pawelpiwowarski" target="_blank">  link to GitHub page. </a> </Header>
+       
         </Layout>
  
         
