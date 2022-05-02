@@ -16,3 +16,4 @@ return res_to_json
 }
 
 module.exports = fetch_profile_details
+
