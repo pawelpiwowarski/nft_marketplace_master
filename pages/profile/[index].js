@@ -188,9 +188,9 @@ render() {
         <Layout loading = {!this.state.user_loaded}local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
 { this.state.username && <div>
 
-   
+  <Image  circular size="small"src={this.state.profile_picture} />  
 <Card color="teal">
-<Image circular rounded  size="tiny"src={this.state.profile_picture} />
+
     <Card.Content>
          
       <Card.Header> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  </Card.Header>
