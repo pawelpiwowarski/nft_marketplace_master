@@ -43,7 +43,7 @@ class home_page extends Component {
      
       this.setState({local_json: await fetch_profile_details(accounts[0]),user_loaded: true, is_chainId_right: chainId == "0x4", account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true, 
     })
-
+    console.log(this.state.local_json)
      this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false})
 
      
@@ -116,7 +116,7 @@ render(){
   
   
         <Header color='teal' as='h1'> Welcome to plateau-nft.art - simple NFT marketplace and minting framework working on Ethereum's Rinkeby test network. </Header>
-        <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far. Currently in order to list an asset you need to mint something on the marketplace as well.</Header>
+        <Header as='h2'> There have been {this.props.numbers_of_tokens} NFTs minted so far.</Header>
         <Header as='h3'> Address of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
         
           {this.state.page_loading_flag && <Message  color='teal' size='huge' icon>

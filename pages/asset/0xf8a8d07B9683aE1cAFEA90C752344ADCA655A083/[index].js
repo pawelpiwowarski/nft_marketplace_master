@@ -36,7 +36,8 @@ class asset extends Component {
         authenication_flag: false,
         local_json: '',
         asset_info_loaded: false,
-        user_loaded: false
+        user_loaded: false,
+        address_of_the_marketplace: ""
         
     }
 
@@ -65,18 +66,23 @@ class asset extends Component {
             const accounts = await provider.request({method: 'eth_requestAccounts'})
          
             this.setState({local_json: await fetch_profile_details(accounts[0]),user_loaded: true,is_chainId_right: chainId == "0x4", account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
-            this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false})
+            this.setState({authenication_flag: this.state.is_chainId_right ? await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call(): false,address_of_the_marketplace: await instance_of_marketplace._address }
+            ) 
 
         }
         
-
+        console.log(this.state.address_of_the_marketplace)
         if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" && typeof this.state.account_of_the_user[0] != "undefined") {
             this.setState({does_user_has_metamask_installed: true}) 
             this.setState({is_user_logged_in: await instance.methods.balanceOf(this.state.account_of_the_user,this.props.index).call()})
           }
         
-        let owner = await instance.methods._owners(this.props.index).call()        
+        let owner = await instance.methods._owners(this.props.index).call() 
+        
+
         const {price, seller} = await instance_of_marketplace.methods._listingDetails(this.props.index).call()
+
+      
         this.setState({price: price, owner: owner})
 
         
@@ -211,7 +217,7 @@ onFormSubmit = async(event) => {
     try {
     const price_in_wei =  Web3.utils.toWei(this.state.price_of_the_listing, 'ether');
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-  
+    await instance.methods.setApprovalForAll(this.state.address_of_the_marketplace, true).send({from: accounts[0]})
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei).send({from: accounts[0]})
     this.setState({asset_was_listed: true, loading_flag: false, errorMessage: ''})
 
