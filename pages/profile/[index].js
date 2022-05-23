@@ -164,10 +164,10 @@ class profile extends Component {
     renderNFT() {
         
         
-        return  <Card.Group itemsPerRow={2} >{this.state.array_of_metadatas.map((element, index) => {
+        return  <Card.Group centered itemsPerRow={2} >{this.state.array_of_metadatas.map((element, index) => {
             return <Link href = {`/asset/${this.props.instance_address}/${this.state.index_of_the_nft}`} >
             <a  onMouseEnter={async () => this.setState({index_of_the_nft: this.getactualindex(index)})}>
-            <Card 
+            <Card raised
             key={index}
             style={{margin: "25px" }}
             image = {this.is_file_a_video(index)}  
@@ -188,11 +188,12 @@ render() {
         <Layout loading = {!this.state.user_loaded}local_json = {this.state.local_json}metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} auth={this.state.authentication_flag}>
 { this.state.username && <div>
 
-<Card color="teal">
+<Card color="teal" centered image raised size='tiny'>
 
     <Card.Content>
-         
-      <Card.Header> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  </Card.Header>
+      <Image fluid bordered wrapped centered size=""src={this.state.profile_picture}></Image>
+      <br></br>
+      <Card.Header textAllign = "center"> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.username} </a>  </Card.Header>
       <Card.Meta></Card.Meta>
       <Card.Description>
       Email: {this.state.email}
@@ -208,9 +209,12 @@ render() {
   </Card>
 
 </div>}
-<Header as='h2'> This profile NFTs: </Header>
+
 { !this.state.username &&
 <Header as='h2'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
+}
+{this.state.username &&
+<Header textAlign= "center"as='h1'> This profile NFTs: </Header>
 }
 {this.state.page_loading_flag && <Message color='teal'  size='huge' icon>
     <Icon name='circle notched' loading />
