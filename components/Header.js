@@ -1,9 +1,9 @@
-import React from "react"; 
+import React, {useEffect} from "react"; 
 import Link from 'next/link'
 import {Icon, Menu, Dropdown, Image } from "semantic-ui-react";
 import Head from "next/head"
 import Modal_Profile from "./Modal";
-import server_url from '../utils/fetch'
+import fetch_profile_details from '../utils/fetch_profile'
 const connectMetamask = async () => {
 
     try {
@@ -48,10 +48,17 @@ else
 
 const Header = (props) => {
   
+    const [local_json, set_local_json] = React.useState('')
 
 
 
-
+    useEffect(async ()=> {
+        if (props.address){
+        set_local_json(await fetch_profile_details(props.address.toLowerCase()))
+        }
+      }, [props.address])
+    
+      
    
  
 
@@ -89,20 +96,21 @@ const Header = (props) => {
 
     <Menu.Menu position='right' >
   
-    <Dropdown fluid  loading={props.loading} item text={props.metamaskflag && !props.loading ? props.local_json.username ||'Plateau Profile': 'Logging in ...'}>
+    <Dropdown fluid  loading={props.loading} item text={props.metamaskflag ? local_json.name || props.address: 'Logging in ...'}>
   
-    <Dropdown.Menu inverted>
-    <Image avatar floated="right" wraped size="mini" src={server_url  + props.local_json.url}></Image>
+    <Dropdown.Menu>
+    <Image avatar floated="right" size="mini" src={ 'https://www.samenfiks.nl/wp-content/uploads/2020/02/no-profile-picture.jpg'}></Image>
    <Metamask_connect_button   address = {props.address} metamaskflag={props.metamaskflag}/>
    
    { props.metamaskflag &&
-   <Modal_Profile local_json ={ props.local_json} auth = {props.auth} address={props.address}>
+   <Modal_Profile auth = {props.auth} address={props.address}>
 
    </Modal_Profile>
 }
-<Link href={`https://pawelpiwowarski2000.gitbook.io/plateau_nft/`}><a target="_blank" class="item"><Icon name="book"></Icon>Documentation </a></Link>
+<Link href={`https://pawelpiwowarski2000.gitbook.io/plateau_nft/`}><a target="_blank" className="item">
+    <Icon name="book"></Icon>Documentation </a></Link>
 
-    
+
 
    </Dropdown.Menu>
           </Dropdown>

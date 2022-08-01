@@ -10,9 +10,10 @@ module.exports = {
         stream: false, 
         tty:false, 
         zlib: false,
-        crypto: false
-    ,querystring: false };
-  
+        crypto: false,
+       querystring: false,
+     };
+
       return config;
     },
   };

@@ -3,11 +3,15 @@ import React, { Component } from "react";
 import nft_creator from '../etherum_side/instance_of_the_contract'
 import {Form, Button, Input, Header, Message} from 'semantic-ui-react'
 import Layout from '../components/Layout';
-import pinata from '../etherum_side/pinata';
 import { utils } from "ethers";
 import ipfs from "../etherum_side/ipfs";
-import instance_of_profile_authenictaion from '../etherum_side/instance_of_the_profile'
-import fetch_profile_details from '../utils/fetch_profile'
+import  {resize_image, upload_image_to_ipfs, upload_resized_image_to_ipfs, User_cant_mint_info} from "../components/mint_utils/utils";
+import { set_tokens} from "../utils/autheniticate";
+import {get_access_token} from '../utils/access_token'
+import { post_centralized_metadata } from "../utils/minting/post_centralized_metadata";
+import { create_new_space } from "../utils/space/space_fetch";
+import {CHAIN_ID} from '../etherum_side/addresses'
+
 class mint_nft extends Component 
 {
 
@@ -26,21 +30,29 @@ state = {
   opensea_url: "",
   was_asset_subimitted: false,
   content_loading_flag: false,
-  authentication_flag: false,
-  local_json: '',
-  user_loaded: false
+  user_loaded: false,
+  file_type: '',
+  access_token: '',
+  buffer: ''
 
 
 
 }
 
 async componentDidMount() {
-  
+
   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   const provider  = window.ethereum
    const accounts = await provider.request({method: 'eth_requestAccounts'})
-  
-   this.setState({ local_json: await fetch_profile_details(accounts[0]),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined), authentication_flag: await instance_of_profile_authenictaion.methods.verification_map(accounts[0]).call()})
+   await set_tokens(accounts[0])
+   const chainId = await provider.request({ method: 'eth_chainId' })
+   this.setState({is_chainId_right: chainId == CHAIN_ID})
+   if (!this.state.is_chainId_right) {
+
+    return;
+  }
+
+   this.setState({ access_token: get_access_token(),can_user_mint: await nft_creator.methods.Users_Approved_To_Mint(accounts[0]).call(),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
   }
   const instance_address = await nft_creator._address;
   this.setState({instance_address, opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
@@ -50,18 +62,26 @@ async componentDidMount() {
 
 onFormSubmit = async(event)=> {
 event.preventDefault();
+
+
+
+
+
+
+
   const nft_metadata_object = {
 
     "description": this.state.description_of_the_nft,
     "name": this.state.name_of_the_nft,
-    "image": this.state.file_url
+    "image": this.state.file_url,
+    "file_type": this.state.file_type,
+    "address_of_the_creator": this.state.account,
+    "image_small": this.state.short_file_url,
+
 
 
 }
 
-const options = {pinataMetadata: {
-  name: this.state.name_of_the_nft
-}}
 
 
 try {
@@ -69,11 +89,22 @@ try {
 
 this.setState({loading_flag: true, errorMessage: ''});
 
-
 const { cid } = await ipfs.add(JSON.stringify(nft_metadata_object)); 
 const metadata = "https://ipfs.io/ipfs/" + cid 
 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-await nft_creator.methods.mint(metadata).send({from: accounts[0]})
+await nft_creator.methods.mint(metadata).send({from: accounts[0], gas: '5000000'})
+const token_id = parseInt(await nft_creator.methods.Token_Id().call()) - 1
+const mongodb_metadata = {
+  token_id,
+  "description": this.state.description_of_the_nft,
+  "name": this.state.name_of_the_nft,
+}
+console.log(mongodb_metadata)
+const form_data = new FormData()
+form_data.append("image", this.state.buffer)
+const response_from_mongodb = await post_centralized_metadata(mongodb_metadata, form_data)
+await create_new_space()
+console.log(response_from_mongodb)
 this.setState({was_asset_subimitted: true})
 }
 
@@ -100,15 +131,28 @@ handleSubmission = async (e) => {
     if (this.state.name_of_the_nft == "" || this.state.description_of_the_nft == ""){
       throw new Error('One or more necessary data fields is not completed!');
     }
+
+    
     this.setState({content_loading_flag: true})
     const files = e.target.files
-    const reader = new FileReader()
-  reader.readAsArrayBuffer(files[0]);
-   reader.onloadend = async () => {
-    const { cid } = await ipfs.add(reader.result) // Display as a buffer
-    const img_source = "https://ipfs.io/ipfs/" + cid
-    this.setState({file_url: img_source, is_content_loaded: true, content_loading_flag: false})
-   }
+
+    if (files[0].size > 5242880) {
+      this.setState({content_loading_flag: false})
+      throw new Error("File is too large maxium size is 5MB")
+
+    }
+    this.setState({file_type: files[0].type})
+    this.setState({buffer: files[0]})
+    this.setState({file_url: await upload_image_to_ipfs(files[0]), is_content_loaded: true, content_loading_flag: false})
+   
+
+    console.log(this.state.file_url)
+
+    
+   this.setState({short_file_url: await upload_image_to_ipfs(await resize_image(files[0])) })
+    
+   console.log(this.state.short_file_url)
+  
    }
 
    catch (err)
@@ -135,7 +179,9 @@ isfileloaded(){
 
     
 return (
-<Layout  loading ={!this.state.user_loaded}local_json={this.state.local_json} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.authentication_flag}>
+<Layout  loading ={!this.state.user_loaded} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.can_user_mint}>
+{!this.state.is_chainId_right  && <a target="_blank" href='https://polygon.technology/' ><Message color='purple' size='big' 
+        content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
   <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
@@ -143,7 +189,7 @@ return (
   <Form.Field>
   <label>Name of your NFT </label> 
   <Input value={this.state.name_of_the_nft}
-    onChange={event => this.setState({name_of_the_nft: event.target.value})}name="name" />
+    onChange={event => this.setState({name_of_the_nft: event.target.value})} name="name" />
   </Form.Field>
   <Form.Field>
   <label>Description of your NFT</label> 
@@ -151,10 +197,10 @@ return (
   </Form.Field>
   <Form.Field>
   
-  <label> Image of your NFT (jpg,   jpeg, png,  gif, mp4)</label>
+  <label> Image of your NFT (jpg,   jpeg, png,  gif, mp4). Max size 5Mb </label>
 
                 <Button
-                  disabled = {!this.state.is_metamask_running}
+                  disabled = {!this.state.is_metamask_running || !this.state.can_user_mint}
                   loading = {this.state.content_loading_flag}
                   size = 'large'
                   positive = {this.state.is_content_loaded}
@@ -180,6 +226,9 @@ return (
   
  <Button  size= 'large' disabled={!this.state.is_content_loaded} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
 
+ 
+ 
+<User_cant_mint_info user_cannot_mint= {!this.state.is_metamask_running || this.state.can_user_mint}/>
   
   {!this.state.is_metamask_running &&
   <Message color='orange' size='large' content="You need to connect your wallet to sumbit metadata!"/>

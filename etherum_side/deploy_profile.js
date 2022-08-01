@@ -4,7 +4,7 @@ import fs from 'fs'
 const compiledNFT_contract = JSON.parse(fs.readFileSync('./build_profile/Submit_Profile.json'));
 
 const provider = new HDWalletProvider (
-    'exhaust spoon mirror pony guard diagram palm sister poet pulp original coil', 
+    '',  // here you need to add your mnemonic phrase
 'https://rinkeby.infura.io/v3/6d6b6d3a7c164567a05a88d04c2a3c92'
 
 ); 

@@ -1,0 +1,17 @@
+1) Add listings history/price information derived from mongodb centralised database - 
+in order not to deploy a new contract for hosting the data.- DONE
+2) Add user verification service, users can login, create accounts, recieve emails when their asssets are
+sold - In Work
+3) Create a simple messaging service for the users to interact with eachother, to prevent spam
+each message will be a call to a contract so sending a message costs ETH.  - In Work
+
+
+
+Important aspects that need to be adresssed quickly: 
+
+
+- Create new smart contract for NFT minting as well as the marketplace itself, proposed changes:
+
+- Not only users who mint an assset can sell (create funtion like authorize user that calls the internal funtion approve for all).
+- Users can delits assets (add function like delist()). 
+- Only authorized users can mint! (add copyright checkmark)

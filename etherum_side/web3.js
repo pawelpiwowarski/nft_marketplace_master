@@ -16,7 +16,7 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined" ) {
 else {
   // We are on the server *OR* the user is not running metamask
   const provider = new Web3.providers.WebsocketProvider(
-    "wss://rinkeby.infura.io/ws/v3/6d6b6d3a7c164567a05a88d04c2a3c92"
+    "wss://black-bold-water.matic-testnet.discover.quiknode.pro/64ec46db114c87d96ef15bca97f4cd673fc74efd/"
   );
   web3 = new Web3(provider);
 }

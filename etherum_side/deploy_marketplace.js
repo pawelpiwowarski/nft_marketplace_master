@@ -1,17 +1,19 @@
 import Web3 from "web3";
 import HDWalletProvider  from '@truffle/hdwallet-provider'
 import fs from 'fs'
+
+
 const compiledNFT_contract = JSON.parse(fs.readFileSync('./build/Marketplace.json'));
 
-const address_of_the_nft = "0x1DEDa0e734465B737e2999532dc424ee39721DB5"
-console.log(compiledNFT_contract)
+const address_of_the_nft = "0x7BA4821C6951BD6A75290974bF8Fc9eCADf95478"
+
 
 
 
 
 
 const provider = new HDWalletProvider (
-    'exhaust spoon mirror pony guard diagram palm sister poet pulp original coil', 
+    '', // here you need to add your mnemonic phrase
 'https://rinkeby.infura.io/v3/6d6b6d3a7c164567a05a88d04c2a3c92'
 
 ); 

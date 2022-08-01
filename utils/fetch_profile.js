@@ -1,10 +1,11 @@
 import url from './fetch'
-import { utils } from "ethers";
+import { does_user_exists } from './autheniticate';
 
 const fetch_profile_details = async(address)=> {
     let res_to_json
     try {
-        const res = await fetch( url + 'get_profile_details?address=' +  utils.getAddress(address), {method: 'GET', headers: {'Content-Type': 'application/json'}} )
+   
+        const res = await fetch( url + `users/` +  address.toLowerCase(), {method: 'GET'} )
 
        res_to_json = await res.json()
        
@@ -12,7 +13,13 @@ const fetch_profile_details = async(address)=> {
       catch(e) {
         res_to_json = e
       }
-return res_to_json
+
+if ((await does_user_exists(address))) {
+      return res_to_json
+}
+else {
+  return ''
+}
 }
 
 module.exports = fetch_profile_details
