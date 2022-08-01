@@ -8,7 +8,7 @@ import { set_tokens} from "../utils/autheniticate";
 import {get_access_token} from '../utils/access_token'
 import { fetch_all_spaces } from "../utils/space/space_fetch";
 import {CHAIN_ID} from '../etherum_side/addresses'
-
+import url from '../utils/fetch'
 class home_page extends Component {
     
    state = {
@@ -87,7 +87,7 @@ class home_page extends Component {
           <Card    
         style={{margin: "25px", width: "300px"}}
         key={index} 
-        image = {`http://localhost:3000/space/image/${element._id}`}
+        image = {`${url}/space/image/${element._id}`}
         header={this.state.array_of_metadatas[index].description}/> </a></Link>})}</Card.Group>;
 
     }
