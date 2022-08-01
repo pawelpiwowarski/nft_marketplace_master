@@ -10,7 +10,7 @@ import {fetch_metadata_for_specific_token} from '../../utils/minting/post_centra
 import { get_tokens_owned_by_a_user } from "../../utils/grapql_query";
 import {get_access_token} from '../../utils/access_token'
 import {CHAIN_ID} from '../../etherum_side/addresses'
-
+import url from '../../utils/fetch'
 class profile extends Component {
 
  
@@ -79,8 +79,8 @@ class profile extends Component {
     is_file_a_video = (index)=> {
 
         if (this.props.array_of_metadatas[index].mimetype === 'video/mp4')
-          return <video  ui="false" wrapped="true" loop  autoPlay="autoplay" muted src={`data:${this.props.array_of_metadatas[index].mimetype};base64,${this.props.array_of_metadatas[index].buffer}`}> </video>
-       return `data:${this.props.array_of_metadatas[index].mimetype};base64,${this.props.array_of_metadatas[index].buffer}`
+          return <video  ui="false" wrapped="true" loop  autoPlay="autoplay" muted src={`${url}/asset/image/${index}`}> </video>
+       return `${url}/asset/image/${index}`
 
 
 
