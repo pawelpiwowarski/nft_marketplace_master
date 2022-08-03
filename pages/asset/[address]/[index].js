@@ -48,6 +48,7 @@ class asset extends Component {
     async componentDidMount() {
 
         let owner = (await fetch_transaction_history_from_the_graph(this.props.index)).data.tokens[0].owner.id
+        console.log(owner)
         try {
         
  
@@ -80,6 +81,7 @@ class asset extends Component {
                 this.setState({does_user_has_metamask_installed: true}) 
                 return this.setState({asset_info_loaded: true});
               }
+   
             this.setState({address_of_the_marketplace: await instance_of_marketplace._address,
                 is_the_user_appproved :await is_user_approved(this.state.account_of_the_user, instance_of_marketplace._address) }
 
@@ -101,10 +103,11 @@ class asset extends Component {
 
         this.setState({price: price, owner: owner, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
   
-       
+        console.log(this.state.is_the_owner_logged_in)
+        console.log(this.state.price)
         if (price != 0) // Asset is listed 
         {
-            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.props.owner)})
+            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner)})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
