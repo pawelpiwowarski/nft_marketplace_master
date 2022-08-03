@@ -107,7 +107,7 @@ class asset extends Component {
         console.log(this.state.price)
         if (price != 0) // Asset is listed 
         {
-            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.ow)})
+            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
@@ -279,11 +279,11 @@ render() {
 
         extra = {<div>
         <a  href={`/profile/${this.state.owner}`}>
-        <h5> {"Address of the owner: " + this.state.owner} </h5>
+        <h5> {"Address of the owner: " + this.state.owner.toLowerCase()} </h5>
         </a> 
         <a  href={`/space/${this.state.creator}`}>
         
-        <h5>{"Address of the creator: " + this.state.creator} </h5>
+        <h5>{"Address of the creator: " + this.state.creator.toLowerCase()} </h5>
         </a>
         </div>
         }
