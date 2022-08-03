@@ -114,7 +114,7 @@ handleSubmission = async (e) => {
 
             <Card.Group>
             <Card centered  fluid color='teal'>
-                <Image style={{height: "300px"}}src={ this.state.src || `http://localhost:3000/space/image/${this.props.creator.toLowerCase()}`}></Image>
+                <Image style={{height: "300px"}}src={ this.state.src || `${profile_url}space/image/${this.props.creator.toLowerCase()}`}></Image>
                 { this.state.is_creator_logged_in &&
              
                 <Button onClick={() => this.fileInputRef.current.click()}
@@ -193,7 +193,7 @@ export async function getServerSideProps(context) {
     const instance_address = await instance._address
 
   
-
+    
     return {props: {creator: context.params.address,
     array_of_metadatas: (await fetch_all_tokens_created_by_a_user(context.params.address)).assets,
 tokens: tokens_created_by_user,
