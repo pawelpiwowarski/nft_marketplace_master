@@ -50,7 +50,11 @@ class asset extends Component {
         let owner = this.props.owner
         try {
         
+ 
+        const metadata = await fetch_metadata_for_specific_token(this.props.index)
+        const {name,description,creator, mimetype} = metadata
 
+        this.setState({name,description,creator,mimetype, metadata})
 
 
         this.setState({order_history: await fetch_sales_for_id(this.props.index,this.props.address)})
@@ -124,7 +128,7 @@ async link_address_to_profile(){
 
 is_file_a_video = () => {
 
-    if(this.props.mimetype === 'video/mp4') {
+    if(this.state.mimetype === 'video/mp4') {
     
        return <video ui="false" wrapped="true" loop  autoPlay="autoplay" controls muted src={`${url}asset/image/${this.props.index}`} ></video>
     }
@@ -274,16 +278,16 @@ render() {
         <a  href={`/profile/${this.props.owner}`}>
         <h5> {"Address of the owner: " + this.props.owner} </h5>
         </a> 
-        <a  href={`/space/${this.props.creator}`}>
+        <a  href={`/space/${this.state.creator}`}>
         
-        <h5>{"Address of the creator: " + this.props.creator} </h5>
+        <h5>{"Address of the creator: " + this.state.creator} </h5>
         </a>
         </div>
         }
     
  
-        header={this.props.name}
-        description = {this.props.description} 
+        header={this.state.name}
+        description = {this.state.description} 
   
         />
 
@@ -323,7 +327,7 @@ render() {
     
 
   { this.state.is_the_owner_logged_in &&
-  <Actions asset_listed = {Boolean(this.state.price != 0)} flag = {this.state.price} index = {this.props.index} account = {this.state.account_of_the_user} props={this.props.metadata}> </Actions>
+  <Actions asset_listed = {Boolean(this.state.price != 0)} flag = {this.state.price} index = {this.props.index} account = {this.state.account_of_the_user} props={this.state.metadata}> </Actions>
 }
        </Grid.Column>
        {
@@ -357,19 +361,14 @@ export async function getServerSideProps(context) {
           let history_from_the_graph = await fetch_transaction_history_from_the_graph(index)
           let owner = history_from_the_graph.data.tokens[0].owner.id
 
-        const  metadata =  await fetch_metadata_for_specific_token(index)
 
-        const {name,description,creator, mimetype} = metadata
     return {
       props: {
         address,
-        owner: owner,
-        name,
-        description,
-        creator,
+        owner,
         index,
-        mimetype,
-        metadata
+
+
 
    }, // will be passed to the page component as props
     }

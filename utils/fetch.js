@@ -1,2 +1,2 @@
 
-module.exports = 'https://plateauapi.azurewebsites.net/'
+module.exports = 'http://localhost:8080/'

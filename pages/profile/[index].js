@@ -26,9 +26,11 @@ class profile extends Component {
 
     async componentDidMount() 
     {
+      const array_of_metadatas = await Promise.all(this.props.tokens.map(async (element, index) => { 
+        let response = await fetch_metadata_for_specific_token(element.tokenID)
+        return response}))
 
-
-      
+        this.setState({array_of_metadatas})
           const {name, email} = await fetch_profile_details(this.props.account)
 
     
@@ -49,7 +51,7 @@ class profile extends Component {
      
   
       
-    if (this.props.array_of_metadatas.length == 0)
+    if (this.state.array_of_metadatas.length == 0)
     {
 
     this.setState({message_content: "Sorry, this user deos not hold any NFTs ", page_loading_flag: false})
@@ -78,7 +80,7 @@ class profile extends Component {
         
     is_file_a_video = (index)=> {
 
-        if (this.props.array_of_metadatas[index].mimetype === 'video/mp4')
+        if (this.state.array_of_metadatas[index].mimetype === 'video/mp4')
           return <video  ui="false" wrapped="true" loop  autoPlay="autoplay" muted src={`${url}/asset/image/${index}`}> </video>
        return `${url}/asset/image/${index}`
 
@@ -92,15 +94,15 @@ class profile extends Component {
     renderNFT() {
         
         
-        return  <Card.Group centered itemsPerRow={2} >{this.props.array_of_metadatas.map((element, index) => {
+        return  <Card.Group centered itemsPerRow={2} >{this.state.array_of_metadatas.map((element, index) => {
             return <Link   key={index}href = {`/asset/${this.props.instance_address}/${this.props.tokens[index].tokenID}`} >
             <a >
             <Card raised
             key={index}
             style={{margin: "25px" }}
             image = {this.is_file_a_video(index)}  
-            description={this.props.array_of_metadatas[index].description} 
-            header={this.props.array_of_metadatas[index].name}
+            description={this.state.array_of_metadatas[index].description} 
+            header={this.state.array_of_metadatas[index].name}
     
         
             />
@@ -133,7 +135,7 @@ render() {
     <Card.Content extra>
       <a>
         <Icon name='shop' />
-        {this.props.array_of_metadatas.length} NFTs
+        {this.state.array_of_metadatas.length} NFTs
       </a>
     </Card.Content>
     
@@ -168,24 +170,15 @@ export async function getServerSideProps(context) {
 
     
   
-    let account = context.query.index || context.query.address
-    const response = await get_tokens_owned_by_a_user(account)
-    let tokens = response.data.tokens
-
-    const array_of_metadatas = await Promise.all(tokens.map(async (element, index) => { 
-      let response = await fetch_metadata_for_specific_token(element.tokenID)
-      return response}))
-
-    
 
 
-    const instance_address = await instance._address
-    const numbers_of_tokens = await tokens.length
+
       return {props:{
-        account,
-        tokens,
-        instance_address,numbers_of_tokens,
-        array_of_metadatas
+        account: context.query.index || context.query.address,
+        tokens : (await get_tokens_owned_by_a_user(account)).data.tokens,
+        instance_address: await instance._address,
+        numbers_of_tokens:  await tokens.length,
+
 
  }}
 
