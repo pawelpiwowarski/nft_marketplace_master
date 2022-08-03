@@ -95,6 +95,7 @@ const Modal_Profile = (props)=> {
     }
     
     const final_submission = async()=> {
+      setError('')
       const obj ={ 
         name: username || local_json.name,
         email: email || local_json.email
@@ -108,6 +109,7 @@ const Modal_Profile = (props)=> {
        const response = await create_user(props.address, username, email)
       
        if (response.error) {
+        set_loading_flag(false)
         return setError(response.error)
       }
 
@@ -120,22 +122,32 @@ const Modal_Profile = (props)=> {
        
         
         set_loading_flag(true)
-        
+        if (username || email) {
           const response = await patch(props.address, obj)
           if (response.error) {
+            set_loading_flag(false)
             return setError(response.error)
           }
-
+        }
         if (current_buffer) {
 
   
           
     let data = new FormData()
     data.append('avatar', current_buffer)
-    await post_avatar(data)
+    const response = await post_avatar(data)
+    if (response.error) {
+      set_loading_flag(false)
+      return setError(response.error)
+    }
+    setPositive(response)
 
         }
-      
+        else {
+          setError('You did not specify any changes!')
+          set_loading_flag(false)
+
+        }
   
         set_username(username)
         set_email(email)

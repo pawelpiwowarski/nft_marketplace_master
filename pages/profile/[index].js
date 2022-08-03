@@ -6,6 +6,7 @@ import instance from "../../etherum_side/instance_of_the_contract";
 import { utils } from "ethers";
 import fetch_profile_details from '../../utils/fetch_profile'
 import profile_url from '../../utils/fetch'
+import { set_tokens} from "../../utils/autheniticate";
 import {fetch_metadata_for_specific_token} from '../../utils/minting/post_centralized_metadata'
 import { get_tokens_owned_by_a_user } from "../../utils/grapql_query";
 import {get_access_token} from '../../utils/access_token'
@@ -39,7 +40,8 @@ class profile extends Component {
             const accounts = await provider.request({method: 'eth_requestAccounts'})
      
           
-           
+            await set_tokens(accounts[0])
+
             this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call() ,access_token: get_access_token(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
             const chainId = await provider.request({ method: 'eth_chainId' })
             this.setState({is_chainId_right: chainId == CHAIN_ID})
