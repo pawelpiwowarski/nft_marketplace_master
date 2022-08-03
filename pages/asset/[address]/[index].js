@@ -355,11 +355,12 @@ render() {
 
 export async function getServerSideProps(context) {
 
-          let address   = context.query.instance_address
-  
-          let index = context.query.index_of_the_nft
+          let address   = context.query.instance_address || context.query.address
+    
+          let index = context.query.index_of_the_nft || context.query.index
   
 
+          console.log(context.query)
 
 
     return {
