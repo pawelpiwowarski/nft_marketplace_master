@@ -170,12 +170,12 @@ export async function getServerSideProps(context) {
 
     
   
-
-
+  let account = context.query.index || context.query.address
+  let tokens = (await get_tokens_owned_by_a_user(account)).data.tokens
 
       return {props:{
-        account: context.query.index || context.query.address,
-        tokens : (await get_tokens_owned_by_a_user(account)).data.tokens,
+        account,
+        tokens,
         instance_address: await instance._address,
         numbers_of_tokens:  await tokens.length,
 

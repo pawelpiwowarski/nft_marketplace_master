@@ -47,14 +47,14 @@ class asset extends Component {
     
     async componentDidMount() {
 
-        let owner = this.props.owner
+        let owner = (await fetch_transaction_history_from_the_graph(this.props.index)).data.tokens[0].owner.id
         try {
         
  
         const metadata = await fetch_metadata_for_specific_token(this.props.index)
         const {name,description,creator, mimetype} = metadata
 
-        this.setState({name,description,creator,mimetype, metadata})
+        this.setState({name,description,creator,mimetype, metadata, owner})
 
 
         this.setState({order_history: await fetch_sales_for_id(this.props.index,this.props.address)})
@@ -99,7 +99,7 @@ class asset extends Component {
 
         const {price, seller} = await instance_of_marketplace.methods.Listing_details(instance._address,this.props.index).call()
 
-        this.setState({price: price, owner: owner, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.props.owner.toLowerCase())})
+        this.setState({price: price, owner: owner, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
   
        
         if (price != 0) // Asset is listed 
@@ -118,8 +118,8 @@ class asset extends Component {
 
 async link_address_to_profile(){
 
-    return <Link href={`/profile/${this.props.owner}`}>
-    <a className='item' > {this.props.owner}</a>
+    return <Link href={`/profile/${this.state.owner}`}>
+    <a className='item' > {this.state.owner}</a>
 
     </Link>
 }
@@ -275,8 +275,8 @@ render() {
         image = {this.is_file_a_video()}  
 
         extra = {<div>
-        <a  href={`/profile/${this.props.owner}`}>
-        <h5> {"Address of the owner: " + this.props.owner} </h5>
+        <a  href={`/profile/${this.state.owner}`}>
+        <h5> {"Address of the owner: " + this.state.owner} </h5>
         </a> 
         <a  href={`/space/${this.state.creator}`}>
         
@@ -358,14 +358,13 @@ export async function getServerSideProps(context) {
           let address   = context.query.instance_address
   
           let index = context.query.index_of_the_nft
-          let history_from_the_graph = await fetch_transaction_history_from_the_graph(index)
-          let owner = history_from_the_graph.data.tokens[0].owner.id
+  
+
 
 
     return {
       props: {
         address,
-        owner,
         index,
 
 
