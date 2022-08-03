@@ -6,6 +6,7 @@ import instance from "../../etherum_side/instance_of_the_contract";
 import { utils } from "ethers";
 import fetch_profile_details from '../../utils/fetch_profile'
 import profile_url from '../../utils/fetch'
+import url from '../../utils/fetch'
 import {  get_tokens_created_by_a_user } from "../../utils/grapql_query";
 import { set_tokens} from "../../utils/autheniticate";
 import { fetch_description, update_banner, update_description } from "../../utils/space/space_fetch";
@@ -26,12 +27,13 @@ class space extends Component {
         user_loaded: false,
         is_creator_logged_in: false,
         positive_message: '',
-        error_message: ''
+        error_message: '',
+        array_of_metadatas:[]
 
     }
 async componentDidMount() {
 
-
+    this.setState({array_of_metadatas: (await fetch_all_tokens_created_by_a_user(this.props.creator)).assets})
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
 
         const provider  = window.ethereum
@@ -97,9 +99,9 @@ handleSubmission = async (e) => {
   }
   is_file_a_video = (index)=> {
 
-    if (this.props.array_of_metadatas[index].mimetype === 'video/mp4')
-      return <video ui="false" wrapped="true"  loop  autoPlay="autoplay" muted src={`data:${this.props.array_of_metadatas[index].mimetype};base64,${this.props.array_of_metadatas[index].image.buffer}`}> </video>
-   return `data:${this.props.array_of_metadatas[index].mimetype};base64,${this.props.array_of_metadatas[index].image.buffer}`
+    if (this.state.array_of_metadatas[index].mimetype === 'video/mp4')
+      return <video ui="false" wrapped="true"  loop  autoPlay="autoplay" muted src= {`${url}asset/image/${this.state.array_of_metadatas[index]._id}`}> </video>
+   return `${url}asset/image/${this.state.array_of_metadatas[index]._id}`
 
 
 
@@ -165,15 +167,15 @@ handleSubmission = async (e) => {
 
           </Card.Group>
 
-          <Card.Group centered itemsPerRow={2} >{this.props.array_of_metadatas.map((element, index) => {
+          <Card.Group centered itemsPerRow={2} >{this.state.array_of_metadatas.map((element, index) => {
             return <Link  key={index} href = {`/asset/${this.props.instance_address}/${element._id}`} >
             <a >
             <Card raised
             key={index}
             style={{margin: "25px" }}
             image = {this.is_file_a_video(index)}  
-            description={this.props.array_of_metadatas[index].description} 
-            header={this.props.array_of_metadatas[index].name}
+            description={this.state.array_of_metadatas[index].description} 
+            header={this.state.array_of_metadatas[index].name}
     
         
             />
@@ -189,13 +191,13 @@ handleSubmission = async (e) => {
 
 export async function getServerSideProps(context) {
 
+
     const tokens_created_by_user = await get_tokens_created_by_a_user(context.params.address)
     const instance_address = await instance._address
-
-  
+    console.log(context.params.address)
+    console.log(tokens_created_by_user)
     
     return {props: {creator: context.params.address,
-    array_of_metadatas: (await fetch_all_tokens_created_by_a_user(context.params.address)).assets,
 tokens: tokens_created_by_user,
 instance_address}}
 }

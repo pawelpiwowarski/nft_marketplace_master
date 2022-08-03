@@ -27,10 +27,9 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined")
 {
 if (metamaskflag) 
 {
-    return <Link href={`/profile/${address}`}>
-    <a className='item' > <Icon name="shop"></Icon>  Your NFTs </a>
+    return  <a href={`/profile/${address}`} className='item' > <Icon name="shop"></Icon>  Your NFTs </a>
     
-    </Link>
+
 }
 else 
 {

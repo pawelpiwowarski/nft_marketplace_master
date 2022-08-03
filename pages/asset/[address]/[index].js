@@ -107,7 +107,7 @@ class asset extends Component {
         console.log(this.state.price)
         if (price != 0) // Asset is listed 
         {
-            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner)})
+            this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.ow)})
         }
         else if (price == 0 && seller != "0x0000000000000000000000000000000000000000")/// Asset was delisted 
         {
