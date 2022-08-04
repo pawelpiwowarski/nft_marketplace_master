@@ -142,6 +142,7 @@ export async function getServerSideProps(context) {
     const instance_address = instance._address;
     const numbers_of_tokens = spaces_data.length;
 
+    console.log(spaces_data)
   
 
    return {

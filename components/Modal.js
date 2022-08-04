@@ -123,12 +123,22 @@ const Modal_Profile = (props)=> {
         
         set_loading_flag(true)
         if (username || email) {
+          try {
           const response = await patch(props.address, obj)
           if (response.error) {
             set_loading_flag(false)
             return setError(response.error)
           }
+          }
+          catch(e){
+            set_loading_flag(false)
+            return setError(e.message)
+          }
         }
+
+        
+
+         
         if (current_buffer) {
 
   
@@ -143,11 +153,7 @@ const Modal_Profile = (props)=> {
     setPositive(response)
 
         }
-        else {
-          setError('You did not specify any changes!')
-          set_loading_flag(false)
-
-        }
+   
   
         set_username(username)
         set_email(email)
