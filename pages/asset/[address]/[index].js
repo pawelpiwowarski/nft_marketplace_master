@@ -300,7 +300,7 @@ render() {
         { this.state.is_the_owner_logged_in  && Boolean(this.state.price == 0)  && this.state.is_the_user_appproved  &&
         <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}>
         <Form.Field> 
-        <label>Price for which you want to list the asset in ETH</label> 
+        <label>Price for which you want to list the asset in MATIC</label> 
         <Input value={this.state.price_of_the_listing} onChange={event => this.setState({price_of_the_listing: event.target.value})}/>
         </Form.Field>
         <Button  size='huge' color='teal' content="List the asset"  loading={this.state.loading_flag}></Button>
