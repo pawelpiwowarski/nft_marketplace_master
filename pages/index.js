@@ -34,7 +34,16 @@ class home_page extends Component {
    }
    
    async componentDidMount() {
+    const resoonse_2 = await fetch(`http://localhost:8080/get_cookie`, {method: "GET",    
+     mode: 'cors',
+    redirect: 'follow',    credentials: 'include',headers: {
 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+
+    }})
+
+console.log(resoonse_2)
     this.setState({array_of_metadatas: this.props.array_of_uris})
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
       

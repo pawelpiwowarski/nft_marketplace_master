@@ -26,12 +26,19 @@ const request = await window.ethereum.request({
 
 
    
-const response = await fetch(`${url}users/authenticate/?signature=${request}`, {method: "POST", headers: {
-  'Content-Type': 'application/json'
-},body: JSON.stringify({address}), credentials: 'include' })
+const response = await fetch(`${url}users/authenticate/?signature=${request}`, {method: "POST",   
+mode: 'cors',
+redirect: 'follow',   
+credentials: 'include',headers: {
+
+ 'Content-Type': 'application/json',
+ 'Accept': 'application/json'
+
+},body: JSON.stringify({address})})
 
 const response_to_json = await response.json()
 
+console.log(response_to_json)
 
 
 
