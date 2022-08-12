@@ -83,8 +83,8 @@ class profile extends Component {
     is_file_a_video = (index)=> {
 
         if (this.state.array_of_metadatas[index].mimetype === 'video/mp4')
-          return <video  ui="false" wrapped="true" loop  autoPlay="autoplay" muted src={`${url}/asset/image/${this.props.tokens[index].tokenID}`}> </video>
-       return `${url}/asset/image/${this.props.tokens[index].tokenID}`
+          return <video  ui="false" wrapped="true" loop  autoPlay="autoplay" muted src={`${this.state.array_of_metadatas[index].url}`}> </video>
+       return `${this.state.array_of_metadatas[index].url}`
 
 
 

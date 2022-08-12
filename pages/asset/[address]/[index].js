@@ -133,9 +133,9 @@ is_file_a_video = () => {
 
     if(this.state.mimetype === 'video/mp4') {
     
-       return <video ui="false" wrapped="true" loop  autoPlay="autoplay" controls muted src={`${url}asset/image/${this.props.index}`} ></video>
+       return <video ui="false" wrapped="true" loop  autoPlay="autoplay" controls muted src={`${this.state.array_of_metadatas[index].url}`} ></video>
     }
-   return <Image src={`${url}asset/image/${this.props.index}`} /> 
+   return <Image src={`${this.state.array_of_metadatas[index].url}`} /> 
 }
 
 is_asset_listed() {
