@@ -46,15 +46,15 @@ return response_to_json
 
 }
 
-export const create_user = async(address, message, email)=> {
+export const create_user = async(address, username, email)=> {
   const request = await window.ethereum.request({
     method: 'personal_sign',
-    params: [`Sign this message to login to the marketplace for 7 days! ${message}`, address]
+    params: [`Sign this message to approve that you are the owner of the account: ! ${username}`, address]
 })
 
 const response = await fetch(`${url}users/create/?signature=${request}`, {method: "POST", headers: {
   'Content-Type': 'application/json'
-},body: JSON.stringify({message, address, email}), credentials: 'include' })
+},body: JSON.stringify({username, address, email}), credentials: 'include' })
 
 return (await response.json())
 

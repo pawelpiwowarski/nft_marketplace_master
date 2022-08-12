@@ -25,8 +25,6 @@ class home_page extends Component {
     page_loading_flag: true,
     user_loaded: false,
     authenication_flag: false,
-
-
     access_token: ''
 
 
@@ -34,14 +32,10 @@ class home_page extends Component {
    }
    
    async componentDidMount() {
-    const resoonse_2 = await fetch(`${url}get_cookie`, {method: "GET",    
-     mode: 'cors',
-    redirect: 'follow',    credentials: 'include',headers: {
+    const resoonse_2 = await fetch(`${url}get_cookie`, {method: "GET", mode: 'cors',
+    redirect: 'follow',  credentials: 'include'})
 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-
-    }})
+    console.log(resoonse_2)
 
 console.log(resoonse_2)
     this.setState({array_of_metadatas: this.props.array_of_uris})
@@ -54,9 +48,9 @@ console.log(resoonse_2)
      
 
       const chainId = await provider.request({ method: 'eth_chainId' })
-
-
-      this.setState({access_token: get_access_token(),user_loaded: true, is_chainId_right: chainId == CHAIN_ID, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true, 
+      
+    
+      this.setState({access_token: get_access_token(),user_loaded: true, is_chainId_right: chainId === CHAIN_ID, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined),does_user_has_metamask_installed: true, 
     })
 
     if (!this.state.is_chainId_right) {
@@ -151,15 +145,17 @@ export async function getServerSideProps(context) {
     const instance_address = instance._address;
     const numbers_of_tokens = spaces_data.length;
 
-    console.log(spaces_data)
-  
+
+
 
    return {
      props: {instance_address,
         numbers_of_tokens,
         array_of_uris:spaces_data
    
-  }, // will be passed to the page component as props
+  }
    }
+
+
  }
 export default home_page

@@ -11,6 +11,7 @@ import fetch_profile_details from '../utils/fetch_profile'
 import { set_tokens } from "../utils/autheniticate";
 import instance from "../etherum_side/instance_of_the_contract";
 import Web3 from "web3";
+import { set_access_token } from "../utils/access_token";
 const Modal_Profile = (props)=> {
 
     const [loading_flag, set_loading_flag] = React.useState(false)
@@ -107,6 +108,7 @@ const Modal_Profile = (props)=> {
       
       if (!(await does_user_exists(props.address))) {
        const response = await create_user(props.address, username, email)
+    
       
        if (response.error) {
         set_loading_flag(false)
