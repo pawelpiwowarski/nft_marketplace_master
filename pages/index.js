@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import { Header, Message, Card, Icon} from 'semantic-ui-react'
+import { Header, Message, Card, Icon, Image} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -85,12 +85,19 @@ class home_page extends Component {
         return  <Card.Group centered  style={{width: "100%", height: "100%"}} itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link     key={index} href = {`/space/${element._id}`} >
           <a onMouseEnter={() => this.setState({index: index})}> 
-          <Card   
-        style={{margin: "25px", width: "300px", overflowWrap: "break-word"}}
+
+          <Card   color="teal"raised style={{margin: "25px", width: "300px",overflowWrap: "break-word"}}
         key={index} 
-        image = {`${url}/space/image/${element._id}`}
-        extra= {`Created by : ${this.state.array_of_metadatas[index]._id}`}
-        header={this.state.array_of_metadatas[index].description}/> </a></Link>})}</Card.Group>;
+      
+      
+        >
+        <Image style={{height: "250px", width: "300px"}}src={`${url}/space/image/${element._id}`}></Image>
+        <Card.Content>
+        <Card.Header>{this.state.array_of_metadatas[index].description}</Card.Header>
+        <Card.Description>{`Created by : ${this.state.array_of_metadatas[index]._id}`}</Card.Description>
+        </Card.Content>
+        </Card>
+     </a></Link>})}</Card.Group>;
 
     }
    
