@@ -3,7 +3,7 @@ import { Button, Header, Image, Modal, Input, Message} from 'semantic-ui-react'
 import instance from "../../etherum_side/instance_of_the_contract";
 import instance_of_marketplace from "../../etherum_side/instance_of_the_marketplace";
 import { utils } from "ethers";
-
+import url from '../../utils/fetch'
 const Actions = (json)=> {
 
 
@@ -27,9 +27,9 @@ const Actions = (json)=> {
     
     if (json.props.mimetype == 'video/mp4')
     {
-       return <div> <video width="400px" height="400px" loop  autoPlay="autoplay"  muted src={`data:${json.props.mimetype};base64,${json.props.buffer}`} ></video> <br></br> </div>
+       return <div> <video width="400px" height="400px" loop  autoPlay="autoplay"  muted src={`${url}asset/image/${json.index}`} ></video> <br></br> </div>
     }
-   return <Image size='medium' src={`data:${json.props.mimetype};base64,${json.props.buffer}`} /> 
+   return <Image size='medium' src={`${url}asset/image/${json.index}`} /> 
 }
 
 const [action, actions_list_scroll] = React.useState(false)
@@ -107,9 +107,7 @@ const [message_content, setmessage] = React.useState('')
               
             }
             startloading(true)
-            console.log(json.account)
-            console.log(address)
-            console.log(json.index)
+
             await instance.methods.safeTransferFrom(json.account,address,json.index,1, []).send({from: json.account, gas: '200000'})
             setmessage("Your NFT has been sucessfully transfered! ")
             startloading(false)

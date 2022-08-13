@@ -13,7 +13,6 @@ import { fetch_sales_for_id } from "../../../utils/sales_grqpqlquery";
 import timestamp from 'unix-timestamp'
 import { set_tokens} from "../../../utils/autheniticate";
 import {get_access_token} from '../../../utils/access_token'
-import url from '../../../utils/fetch'
 import {CHAIN_ID} from '../../../etherum_side/addresses'
 import { sale_fetch } from "../../../utils/sale_fetch/sale_fetch";
 
