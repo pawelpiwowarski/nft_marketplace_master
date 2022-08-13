@@ -34,6 +34,9 @@ class home_page extends Component {
    async componentDidMount() {
   
     this.setState({array_of_metadatas: this.props.array_of_uris})
+
+
+
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
       
       const provider  = window.ethereum
@@ -82,10 +85,11 @@ class home_page extends Component {
         return  <Card.Group centered  style={{width: "100%", height: "100%"}} itemsPerRow={3} >{this.state.array_of_metadatas.map((element, index) => 
             {return <Link     key={index} href = {`/space/${element._id}`} >
           <a onMouseEnter={() => this.setState({index: index})}> 
-          <Card    
-        style={{margin: "25px", width: "300px"}}
+          <Card   
+        style={{margin: "25px", width: "300px", overflowWrap: "break-word"}}
         key={index} 
         image = {`${url}/space/image/${element._id}`}
+        extra= {`Created by : ${this.state.array_of_metadatas[index]._id}`}
         header={this.state.array_of_metadatas[index].description}/> </a></Link>})}</Card.Group>;
 
     }
@@ -113,7 +117,7 @@ render(){
   
         <Header icon textAlign ="center" color='teal' as='h1'>   Welcome to plateau-nft.art! Simple proof of skill minimalistic NFT marketplace and minting framework working on the Polygon network.</Header>
         <Header textAlign ="center"  as='h3'> Address of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
-        
+        <Header style={{fontFamily: "lato", color: 'teal'}}textAlign="left" as="h2"> Plateau Spotlight Collections: </Header>
           {this.state.page_loading_flag && <Message  color='teal' size='huge' icon>
     <Icon name='circle notched' loading />
     <Message.Content>
@@ -139,7 +143,6 @@ export async function getServerSideProps(context) {
     const spaces_data = await fetch_all_spaces()
     const instance_address = instance._address;
     const numbers_of_tokens = spaces_data.length;
-
 
 
 
