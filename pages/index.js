@@ -35,7 +35,7 @@ class home_page extends Component {
    async componentDidMount() {
   
     this.setState({array_of_metadatas: this.props.array_of_uris})
-
+    console.log(process.env.NEXT_PUBLIC_projectId)
 
 
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
