@@ -34,6 +34,7 @@ class space extends Component {
 async componentDidMount() {
 
     this.setState({array_of_metadatas: (await fetch_all_tokens_created_by_a_user(this.props.creator)).assets})
+    console.log(this.state.array_of_metadatas)
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
 
         const provider  = window.ethereum
@@ -179,6 +180,7 @@ handleSubmission = async (e) => {
             style={{margin: "25px" }}
             image = {this.is_file_a_video(index)}  
             description={this.state.array_of_metadatas[index].description} 
+            extra={this.state.array_of_metadatas[index].price == 0 ? "Not for sale ": `${this.state.array_of_metadatas[index].price} MATIC`}
             header={this.state.array_of_metadatas[index].name}
     
         

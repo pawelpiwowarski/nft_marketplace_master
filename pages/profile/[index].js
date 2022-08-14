@@ -105,7 +105,8 @@ class profile extends Component {
             image = {this.is_file_a_video(index)}  
             description={this.state.array_of_metadatas[index].description} 
             header={this.state.array_of_metadatas[index].name}
-    
+            extra={this.state.array_of_metadatas[index].price == 0 ? "Not for sale ": `${this.state.array_of_metadatas[index].price} MATIC`}
+
         
             />
             </a></Link>})}
