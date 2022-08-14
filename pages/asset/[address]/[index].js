@@ -273,7 +273,7 @@ render() {
         <Grid>
         <Grid.Column width={8}>
         <Card 
-        style = {{width: "100%"}}
+        style = {{width: "100%", overflowWrap: "break-word"}}
         image = {this.is_file_a_video()}  
 
         extra = {<div>
