@@ -162,6 +162,18 @@ render() {
   {this.state.message_content != "" && <Message size='huge' color="teal">{this.state.message_content } </Message>}
         {!this.state.page_loading_flag && this.renderNFT()}
 
+        <div className="footer">
+
+
+<ul>
+
+  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
+ <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
+ <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
+ <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://mumbai.polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
+
+</ul>
+</div>
 
         </Layout>
     )
