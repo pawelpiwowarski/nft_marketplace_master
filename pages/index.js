@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import { Header, Message, Card, Icon, Image} from 'semantic-ui-react'
+import { Header, Message, Card, Icon, Image, Container} from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -9,6 +9,7 @@ import {get_access_token} from '../utils/access_token'
 import { fetch_all_spaces } from "../utils/space/space_fetch";
 import {CHAIN_ID} from '../etherum_side/addresses'
 import url from '../utils/fetch'
+
 class home_page extends Component {
     
    state = {
@@ -123,8 +124,7 @@ render(){
   
   
         <Header icon textAlign ="center" color='teal' as='h1'>   Welcome to plateau-nft.art! Simple proof of skill minimalistic NFT marketplace and minting framework working on the Polygon network.</Header>
-        <Header textAlign ="center"  as='h3'> Address of the NFT contract: <a href={this.state.opensea_url} target="_blank"> {this.props.instance_address} </a> </Header>
-        <Header style={{fontFamily: "lato", color: 'teal'}}textAlign="left" as="h2"> Plateau Spotlight Collections: </Header>
+        <Header style={{color: 'teal'}}textAlign="left" color="teal" as="h2"> Plateau Spotlight Collections: </Header>
           {this.state.page_loading_flag && <Message  color='teal' size='huge' icon>
     <Icon name='circle notched' loading />
     <Message.Content>
@@ -133,10 +133,27 @@ render(){
     </Message.Content>
   </Message>}
          {this.renderNFT()} 
-         <Header  textAlign ="center"  size='large'  color="blue"> Marketplace written by Pawel Piwowarski using React.js and Next.js. On-chain data queried from The Graph. 
-Contact at pawelpiwowarski2000@gmail.com 
-        <a href="https://github.com/pawelpiwowarski/nft_marketplace_master" target="_blank">  link to GitHub page with the source code. </a> </Header>
-       
+
+
+
+
+
+  <div className="footer">
+
+
+<ul>
+
+  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
+ <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
+ <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
+ <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={this.state.opensea_url}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
+
+</ul>
+</div>
+
+
+
+  
         </Layout>
  
         

@@ -235,7 +235,7 @@ return (
   }
   <Message error header="Oops!" content={this.state.error_message}  />
   { this.state.was_asset_subimitted &&
-  <Message color="green"  positive> Congratulation your NFT was sucesfully minted. You can see it by going to the home page.</Message>
+  <Message color="green"  positive> Congratulation your NFT was sucesfully minted. You can see it by going to the your NFT tab in account settings.</Message>
   }
   
  </Form >

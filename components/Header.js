@@ -82,7 +82,7 @@ const Header = (props) => {
 
     
     <Link href='/'>
-    <a className='item'> Plateau NFT </a>
+    <a className='item' id="menu"> Plateau NFT </a>
     </Link>
 
     
@@ -90,10 +90,10 @@ const Header = (props) => {
     
     
     <Link href='/mint_nft'>
-    <a color="blue" className='item'> Mint a NFT </a>
+    <a color="blue" id="menu" className='item'> Mint a NFT </a>
     </Link>
 
-    <Menu.Menu position='right' >
+    <Menu.Menu id="menu" position='right' >
   
     <Dropdown fluid  loading={props.loading} item text={props.metamaskflag ? local_json.name || props.address: 'Logging in ...'}>
   
