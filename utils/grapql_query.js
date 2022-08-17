@@ -1,4 +1,4 @@
-const url = 'https://api.thegraph.com/subgraphs/name/pawelpiwowarski/plateau-marketplace'
+const url = 'https://api.thegraph.com/subgraphs/name/pawelpiwowarski/polygon-plateau'
 
 
 export async function common_fetch(url, query) {

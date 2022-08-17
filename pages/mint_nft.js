@@ -5,13 +5,12 @@ import {Form, Button, Input, Header, Message, Icon} from 'semantic-ui-react'
 import Layout from '../components/Layout';
 import { utils } from "ethers";
 import ipfs from "../etherum_side/ipfs";
-import  {resize_image, upload_image_to_ipfs, upload_resized_image_to_ipfs, User_cant_mint_info} from "../components/mint_utils/utils";
+import  { upload_image_to_ipfs, User_cant_mint_info} from "../components/mint_utils/utils";
 import { set_tokens} from "../utils/autheniticate";
 import {get_access_token} from '../utils/access_token'
 import { post_centralized_metadata } from "../utils/minting/post_centralized_metadata";
 import { create_new_space } from "../utils/space/space_fetch";
 import {CHAIN_ID} from '../etherum_side/addresses'
-import instance from "../etherum_side/instance_of_the_contract";
 
 class mint_nft extends Component 
 {
@@ -67,8 +66,13 @@ event.preventDefault();
 
 
 
-this.setState({file_url: await upload_image_to_ipfs(this.state.buffer), short_file_url:await upload_image_to_ipfs(await resize_image(this.state.buffer)) })
 
+
+this.setState({loading_flag: true})
+
+this.setState({file_url: await upload_image_to_ipfs(this.state.buffer) })
+
+this.setState({loading_flag: false})
 
   const nft_metadata_object = {
 
@@ -77,7 +81,6 @@ this.setState({file_url: await upload_image_to_ipfs(this.state.buffer), short_fi
     "image": this.state.file_url,
     "file_type": this.state.file_type,
     "address_of_the_creator": this.state.account,
-    "image_small": this.state.short_file_url,
 
 
 
