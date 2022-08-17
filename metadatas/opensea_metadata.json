@@ -1,0 +1,8 @@
+{
+    "name": "Plateau-nft.art",
+    "description": "Tokens minted on the Plateau-nft.art site",
+    "image": "https://www.plateau-nft.art/android-chrome-512x512.png",
+    "external_link": "https://www.plateau-nft.art/",
+    "seller_fee_basis_points": 200, 
+    "fee_recipient": "0x709DdA4dc26711E2d680290ce9B3dE53A96380B1" 
+  }

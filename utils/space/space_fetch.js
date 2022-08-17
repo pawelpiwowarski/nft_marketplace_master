@@ -3,12 +3,12 @@ import { get_access_token } from '../access_token'
 
 
 
-export const update_description = async(description, address)=> {
+export const update_description = async(title,description,address)=> {
 
     const response = await fetch(`${url}space/${address.toLowerCase()}`, {method: "PATCH", headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer${get_access_token()}`
-    }, body: JSON.stringify({description}) })
+    }, body: JSON.stringify({title, description}) })
 
     const response_to_json = await response.json()
 
@@ -29,6 +29,17 @@ export const fetch_all_spaces = async() => {
 
     return await response.json()
 }
+export const fetch_title = async(address)=> {
+
+
+    const response = await fetch(`${url}space/data/${address.toLowerCase()}`, {method: "GET"})
+
+    const response_json = await response.json()
+
+    return response_json.title
+}
+
+
 export const fetch_description = async(address)=> {
 
 

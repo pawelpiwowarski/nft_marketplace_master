@@ -1073,7 +1073,8 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
 
 contract Plateau_NFT is ERC1155, Ownable, ReentrancyGuard {
-    
+
+ string public contractURI = 'https://bafkreig5phffzczylwsf36brclmvl7lou2mj27hxfdbd5bgii5pbbaq23u.ipfs.nftstorage.link/';
  uint256 public Token_Id = 0; 
  address public primary_Marketplace;
  uint256 public feeForAbilityToMint = 10 ether;

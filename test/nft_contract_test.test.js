@@ -168,7 +168,7 @@ describe('Payable functions', ()=> {
     it('owner withdraws the correct ammount of money for the fees', async()=> {
 
 
-        await nft_instance.methods.approve_user_to_mint().send({from: accounts[1], gas: '1000000', value: Web3.utils.toWei('0.1', 'ether')})
+        await nft_instance.methods.approve_user_to_mint().send({from: accounts[1], gas: '1000000', value: Web3.utils.toWei('10', 'ether')})
         const balance_before_transaction = await web3.eth.getBalance(accounts[0]);
         await nft_instance.methods.withdraw_minting_fees().send({from: accounts[0], gas: '1000000'})
         const balance_after_transaction = await web3.eth.getBalance(accounts[0]);
@@ -202,7 +202,7 @@ assert.fails()
 
 const common_good_mint = async()=> {
 
-    await nft_instance.methods.approve_user_to_mint().send({from: accounts[1], gas: '1000000', value: Web3.utils.toWei('0.1', 'ether')})
+    await nft_instance.methods.approve_user_to_mint().send({from: accounts[1], gas: '1000000', value: Web3.utils.toWei('10', 'ether')})
     await nft_instance.methods.mint('abc').send({from: accounts[1],  gas: '1000000'})
 }
 
@@ -218,7 +218,7 @@ it('contract handles 20 mint transactions and the metadata is persistant', async
  
 
     const array_from_contract = await Promise.all(Array(20).fill().map(async (element, i)=> {
-        await nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 10], gas:'1000000', value: Web3.utils.toWei('0.1', 'ether')})
+        await nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 10], gas:'1000000', value: Web3.utils.toWei('10', 'ether')})
         await nft_instance.methods.mint(array_of_strings[i]).send({from: accounts[i % 10],  gas: '1000000'})
         return await nft_instance.methods.uri(i+1).call()
 
@@ -243,14 +243,14 @@ describe('Primary marketplace feautures', ()=> {
     })
     it ('after mint marketplace is approved to spend tokens', async ()=> {
         await nft_instance.methods.set_contract_for_the_marketplace(accounts[3]).send({from: accounts[0], gas: '1000000'})
-        await nft_instance.methods.approve_user_to_mint().send({from: accounts[2], gas: '1000000', value: Web3.utils.toWei('0.1', 'ether')})
+        await nft_instance.methods.approve_user_to_mint().send({from: accounts[2], gas: '1000000', value: Web3.utils.toWei('10', 'ether')})
         await nft_instance.methods.mint('abc').send({from: accounts[2],  gas: '1000000'})
         assert.ok(await nft_instance.methods.isApprovedForAll(accounts[2], accounts[3]).call())
 
     })
     it('Primary marketplace is approved to spend tokens of authenticated users', async ()=> {
         await nft_instance.methods.set_contract_for_the_marketplace(address_of_the_marketplace).send({from: accounts[0], gas: '1000000'})
-        await nft_instance.methods.approve_user_to_mint().send({from: accounts[2], gas: '1000000', value: Web3.utils.toWei('0.1', 'ether')})
+        await nft_instance.methods.approve_user_to_mint().send({from: accounts[2], gas: '1000000', value: Web3.utils.toWei('10', 'ether')})
         const marketplace = await nft_instance.methods.primary_Marketplace().call()
         assert.ok( ! await nft_instance.methods.isApprovedForAll(accounts[9], marketplace).call())
        assert.ok(await nft_instance.methods.isApprovedForAll( accounts[2], address_of_the_marketplace).call())
@@ -264,14 +264,14 @@ describe("Marketplace tests", ()=> {
     beforeEach(async()=> {
 
         array_of_listings_from_second_marketplace = await Promise.all(Array(2).fill().map(async (element,i)=>{
-            await second_nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 9], gas:'1000000', value: Web3.utils.toWei('0.1', 'ether')})
+            await second_nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 9], gas:'1000000', value: Web3.utils.toWei('10', 'ether')})
             await second_nft_instance.methods.mint(array_of_strings[i]).send({from: accounts[i % 9],  gas: '1000000'})
             await marketplace_instance.methods.list_asset(i +1, Web3.utils.toWei('1', 'ether'),second_nft_address).send({from:accounts[i%9], gas:'500000'})
             return await marketplace_instance.methods.Listing_details(second_nft_address, i+1).call()
 
         }))
         array_of_listings_from_marketplace = await Promise.all(Array(20).fill().map(async (element, i)=> {
-            await nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 9], gas:'1000000', value: Web3.utils.toWei('0.1', 'ether')})
+            await nft_instance.methods.approve_user_to_mint().send({from:accounts[i % 9], gas:'1000000', value: Web3.utils.toWei('10', 'ether')})
             await nft_instance.methods.mint(array_of_strings[i]).send({from: accounts[i % 9],  gas: '1000000'})
             await marketplace_instance.methods.list_asset(i +1, Web3.utils.toWei('1', 'ether'),address_of_the_contract).send({from:accounts[i%9], gas:'500000'})
             return await marketplace_instance.methods.Listing_details(address_of_the_contract, i+1).call()

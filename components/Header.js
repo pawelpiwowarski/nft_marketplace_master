@@ -95,7 +95,7 @@ const Header = (props) => {
 
     <Menu.Menu id="menu" position='right' >
   
-    <Dropdown fluid  loading={props.loading} item text={props.metamaskflag ? local_json.name || props.address: 'Logging in ...'}>
+    <Dropdown fluid   item text={!props.loading ? local_json.name || props.address: 'Plateau Profile'}>
   
     <Dropdown.Menu>
     <Image avatar floated="right" size="mini" src={ 'https://www.samenfiks.nl/wp-content/uploads/2020/02/no-profile-picture.jpg'}></Image>

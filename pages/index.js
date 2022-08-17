@@ -94,7 +94,7 @@ class home_page extends Component {
         >
         <Image style={{height: "250px", width: "300px"}}src={`${url}/space/image/${element._id}`}></Image>
         <Card.Content>
-        <Card.Header>{this.state.array_of_metadatas[index].description}</Card.Header>
+        <Card.Header>{this.state.array_of_metadatas[index].title}</Card.Header>
         <Card.Description>{`Created by : ${this.state.array_of_metadatas[index]._id}`}</Card.Description>
         </Card.Content>
         </Card>
@@ -123,7 +123,7 @@ render(){
         {!this.state.does_user_has_metamask_installed && !this.state.page_loading_flag && this.metamaskinfo()}
   
   
-        <Header icon textAlign ="center" color='teal' as='h1'>   Welcome to plateau-nft.art! Simple proof of skill minimalistic NFT marketplace and minting framework working on the Polygon network.</Header>
+        <Header icon textAlign ="center" color='teal' as='h1'>   Welcome to plateau-nft.art! Simple minimalistic NFT marketplace and minting framework working on the Polygon network.</Header>
         <Header style={{color: 'teal'}}textAlign="left" color="teal" as="h2"> Plateau Spotlight Collections: </Header>
           {this.state.page_loading_flag && <Message  color='teal' size='huge' icon>
     <Icon name='circle notched' loading />
@@ -138,18 +138,6 @@ render(){
 
 
 
-  <div className="footer">
-
-
-<ul>
-
-  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
- <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
- <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
- <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={this.state.opensea_url}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
-
-</ul>
-</div>
 
 
 

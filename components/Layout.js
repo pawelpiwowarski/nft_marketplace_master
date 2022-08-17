@@ -1,6 +1,7 @@
-import { Container} from 'semantic-ui-react'
+import { Container, Icon} from 'semantic-ui-react'
 import React from 'react';
 import Header from './Header';
+import instance from '../etherum_side/instance_of_the_contract';
 const Layout = (props) => {
 
     return(
@@ -16,6 +17,18 @@ const Layout = (props) => {
      <Header loading={props.loading} profile_details={props.profile_details} metamaskflag = {props.metamaskflag} address={props.account} auth={props.auth}/>
         {props.children}
        
+  <div className="footer">
+
+
+<ul>
+
+  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
+ <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
+ <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
+ <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://mumbai.polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
+
+</ul>
+</div>
         </Container>
     )
 }

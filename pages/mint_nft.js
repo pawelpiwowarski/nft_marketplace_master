@@ -34,7 +34,7 @@ state = {
   user_loaded: false,
   file_type: '',
   access_token: '',
-  buffer: ''
+
 
 
 
@@ -67,7 +67,7 @@ event.preventDefault();
 
 
 
-
+this.setState({file_url: await upload_image_to_ipfs(this.state.buffer), short_file_url:await upload_image_to_ipfs(await resize_image(this.state.buffer)) })
 
 
   const nft_metadata_object = {
@@ -144,15 +144,10 @@ handleSubmission = async (e) => {
     }
     this.setState({file_type: files[0].type})
     this.setState({buffer: files[0]})
-    this.setState({file_url: await upload_image_to_ipfs(files[0]), is_content_loaded: true, content_loading_flag: false})
+    this.setState({ is_content_loaded: true, content_loading_flag: false})
    
 
-    console.log(this.state.file_url)
-
-    
-   this.setState({short_file_url: await upload_image_to_ipfs(await resize_image(files[0])) })
-    
-   console.log(this.state.short_file_url)
+   
   
    }
 
@@ -248,18 +243,6 @@ return (
   </Header>
 
 
-  <div className="footer">
-
-
-<ul>
-
-  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
- <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
- <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
- <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://mumbai.polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
-
-</ul>
-</div>
 
  </Layout>
 );

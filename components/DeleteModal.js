@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Icon, Button, Dropdown, Modal, Image, Header, } from "semantic-ui-react";
+import {Icon, Button, Dropdown, Modal, Image, Header, Message, } from "semantic-ui-react";
 import { delete_account } from "../utils/account/deleteaccount";
 
 const delete_query = async (address)=> {
@@ -8,6 +8,8 @@ const delete_query = async (address)=> {
 }
 const Delete_modal = (props)=> {
     const [open, setOpen] = React.useState(false)
+
+    const [message, setMessage] = React.useState('')
 
 return( <Modal
 
@@ -29,12 +31,24 @@ return( <Modal
     <Button size="massive"content="No"  onClick = {()=> {
             setOpen(false)
     }} positive></Button>
-    <Button size="massive" content="Yes" negative onClick = {()=> {
-            delete_query(props.address)
-            setOpen(false)
+    <Button size="massive" content="Yes" negative onClick = {async ()=> {
+            setMessage(await delete_query(props.address))
+     
     }}></Button>
 
+
+
+
+
 </div>
+
+{message && <Message content={message} onDismiss = {()=> {
+
+
+    setOpen(false)
+}}  positive> 
+
+</Message>}
 </Modal.Description>
 </Modal>)
 }

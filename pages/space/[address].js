@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../../components/Layout';
-import { Header, Message, Card, Icon, Input,Image, Button} from 'semantic-ui-react'
+import { Header, Message, Card, Icon, Input,Image, Button, Form, TextArea, Text} from 'semantic-ui-react'
 import Link  from 'next/link'
 import instance from "../../etherum_side/instance_of_the_contract";
 import { utils } from "ethers";
@@ -9,7 +9,7 @@ import profile_url from '../../utils/fetch'
 import url from '../../utils/fetch'
 import {  get_tokens_created_by_a_user } from "../../utils/grapql_query";
 import { set_tokens} from "../../utils/autheniticate";
-import { fetch_description, update_banner, update_description } from "../../utils/space/space_fetch";
+import { fetch_description, update_banner, update_description, fetch_title } from "../../utils/space/space_fetch";
 import { fetch_all_tokens_created_by_a_user } from "../../utils/minting/post_centralized_metadata";
 import {CHAIN_ID} from '../../etherum_side/addresses'
 class space extends Component {
@@ -18,6 +18,8 @@ class space extends Component {
 
 
     state = {
+
+        title: "",
         description: "",
         account_of_the_user: "",
         is_metamask_running: false,
@@ -51,7 +53,7 @@ async componentDidMount() {
     }
     
     const {username, email, url} = await fetch_profile_details(this.state.account_of_the_user)
-    this.setState({description: await fetch_description(this.props.creator)})
+    this.setState({title: await fetch_title(this.props.creator), description: await fetch_description(this.props.creator)})
     this.setState({email,username,profile_picture: profile_url + url})
 
 }
@@ -143,16 +145,16 @@ handleSubmission = async (e) => {
                         this.submitBanner()
                         this.setState({submit_button: false})}}> Submit banner </Button>
                  } {this.state.is_creator_logged_in &&
-                <Header size="huge" textAlign = "center" > Description: <Input> <input 
+                <Header size="huge" textAlign = "center" > Title: <Input> <input 
 
-                placeholder= {this.state.description}
+                placeholder= {this.state.title}
                 onChange={(e)=> {
-                    this.setState({description: e.currentTarget.value})
+                    this.setState({title: e.currentTarget.value})
                 }}></input></Input> <Button onClick= {async ()=> {
 
                     try {
-                    const response = await update_description(this.state.description, this.state.account_of_the_user)
-                this.setState({positive_message: response, is_creator_logged_in: false, description: await fetch_description(this.props.creator)})} 
+                    const response = await update_description(this.state.title, this.state.description,this.state.account_of_the_user)
+                this.setState({positive_message: response, is_creator_logged_in: false,description: await fetch_description(this.props.creator) ,title: await fetch_title(this.props.creator)})} 
                 catch(e) {
                     this.setState({error_message: e.Message})
 
@@ -162,13 +164,30 @@ handleSubmission = async (e) => {
                    
                     } size="big" content="Submit Changes"positive></
                 Button > </Header> }
+
+ 
                 {
-                    !this.state.is_creator_logged_in && <Header size="huge" textAlign = "center"> {this.state.description}</Header>
-                }
+                    !this.state.is_creator_logged_in && <Header size="huge" textAlign = "center"> {this.state.title}</Header>
+                }<Card.Content> <Card.Description style={{color: 'black'}}>   
+                { this.state.is_creator_logged_in &&
+                <Form>
+   <Header> Description: </Header>
+                <TextArea 
+
+                value={this.state.description}
+                onChange={(e)=> {
+                    this.setState({description: e.currentTarget.value})
+                }}>  </TextArea>
+
+              </Form> } {
+                !this.state.is_creator_logged_in  && <p>
+{this.state.description}
+             </p>
+              }</Card.Description></Card.Content>
                 <Header size="small" textAlign = "center" > Tokens minted by: <Link href={`/profile/${this.props.creator}`}>
     <a className='item' > {this.props.creator}</a>
 
-    </Link> </Header></Card>
+    </Link> </Header> </Card>
 
           </Card.Group>
 
@@ -190,18 +209,6 @@ handleSubmission = async (e) => {
             </Card.Group>
 
 
-<div className="footer">
-
-
-<ul>
-
-  <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
- <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
- <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
- <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://mumbai.polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
-
-</ul>
-</div>
 
           </Layout>
         )
