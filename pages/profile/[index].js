@@ -129,7 +129,7 @@ render() {
     <Card.Content>
       <Image fluid bordered wrapped centered src={ profile_url + `users/${this.props.account.toLowerCase()}/avatar`}></Image>
       <br></br>
-      <Card.Header style ={{"textAllign": "center"}}> Username: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.state.name} </a>  </Card.Header>
+      <Card.Header style ={{"textAllign": "center"}}> Username: <a target="_blank" href= { "https://polygonscan.com/address/" + this.props.account}>{this.state.name} </a>  </Card.Header>
       <Card.Meta></Card.Meta>
       <Card.Description>
       Email: {this.state.email}

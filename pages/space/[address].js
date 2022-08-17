@@ -120,6 +120,7 @@ handleSubmission = async (e) => {
         content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
         {this.state.positive_message && <Message positive content={this.state.positive_message}></Message>}
         {this.state.error_message && <Message negative content={this.state.error_message}></Message>}
+<br></br>
 
             <Card.Group>
             <Card centered  fluid color='teal'>
