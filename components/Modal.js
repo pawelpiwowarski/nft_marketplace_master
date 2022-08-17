@@ -182,7 +182,7 @@ return (
       <Modal.Description>
       
           {!props.auth &&
-          <Header as='h3'>  In order mint on the marketplace you have to pay a small one time operational cost to the marketplace - 10 MATIC. Authenticated user have access to creating their own profiles on the marketplace setting up a username and a profile picture as well as reciving emails when an asset has ben sold.</Header>
+          <Header as='h3'>  In order mint on the marketplace you have to pay a small one time operational cost to the marketplace - 10 MATIC. Authenticated user have access to creating their own profiles on the marketplace setting up a username and a profile picture as well as receiving emails when an asset has been sold. </Header>
 
 }
           <h2> Your Address: {props.address}</h2>
