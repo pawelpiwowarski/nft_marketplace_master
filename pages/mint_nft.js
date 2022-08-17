@@ -55,7 +55,7 @@ async componentDidMount() {
    this.setState({ access_token: get_access_token(),can_user_mint: await nft_creator.methods.Users_Approved_To_Mint(accounts[0]).call(),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
   }
   const instance_address = await nft_creator._address;
-  this.setState({instance_address, opensea_url: "https://testnets.opensea.io/collection/plateau-nft-9owk6a6mmf"})
+  this.setState({instance_address, opensea_url: "https://opensea.io/collection/plateau-nft-art"})
 
 }
 
