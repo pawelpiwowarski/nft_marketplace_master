@@ -182,7 +182,7 @@ return (
       <Modal.Description>
       
           {!props.auth &&
-          <Header as='h3'>  In order mint on the marketplace you have to pay a small one time operational cost to the marketplace - 10 MATIC. Authenticated user have access to creating their own profiles on the marketplace setting up a username and a profile picture.</Header>
+          <Header as='h3'>  In order mint on the marketplace you have to pay a small one time operational cost to the marketplace - 10 MATIC. Authenticated user have access to creating their own profiles on the marketplace setting up a username and a profile picture as well as reciving emails when an asset has ben sold.</Header>
 
 }
           <h2> Your Address: {props.address}</h2>
@@ -232,7 +232,7 @@ return (
         disabled = {props.auth}
         positive = {props.auth}
         loading ={loading_flag}
-        > {props.auth ? 'You are an authenicated user! ': 'Authentication required - 10 MATIC'} 
+        > {props.auth ? 'You are an authenicated user! ': 'Authenticate for 10 MATIC'} 
     
          </Button>
          { props.auth &&
