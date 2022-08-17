@@ -25,7 +25,9 @@ const Layout = (props) => {
   <a  style={{color: 'black'}}target="_blank" href="https://github.com/pawelpiwowarski/nft_marketplace_master"><li> <Icon name="code branch"></Icon>Github</li></a>
  <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
  <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
- <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>        
+ <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>  
+ <a style={{color: 'black', hoover: {color: "blue"}}} target="_blank" href={`https://opensea.io/collection/plateau-nft-art`}><li><Icon name="ship"></Icon>OpenSea</li></a>  
+
 
 </ul>
 </div>

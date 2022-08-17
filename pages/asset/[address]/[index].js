@@ -276,13 +276,18 @@ render() {
         style = {{width: "100%", overflowWrap: "break-word"}}
         image = {this.is_file_a_video()}  
 
-        extra = {<div>
+        extra = {<div id="extra">
         <a  href={`/profile/${this.state.owner}`}>
-        <h5> {"Address of the owner: " + this.state.owner.toLowerCase()} </h5>
+        <h4 > {"Address of the owner: " + this.state.owner.toLowerCase()} </h4>
         </a> 
         <a  href={`/space/${this.state.creator}`}>
         
-        <h5>{"Address of the creator: " + this.state.creator.toLowerCase()} </h5>
+        <h4>{"Address of the creator: " + this.state.creator.toLowerCase()} </h4>
+        </a>
+        <a target = "_blank" href={`https://opensea.io/assets/matic/${instance._address}/${this.props.index}`}> 
+        <div id="opensea">
+        <h2> {"View asset on opensea"}</h2>
+        </div>
         </a>
         </div>
         }
