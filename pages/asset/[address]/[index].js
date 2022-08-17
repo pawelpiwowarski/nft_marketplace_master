@@ -245,7 +245,7 @@ onFormSubmit = async(event) => {
     const price_in_wei =  Web3.utils.toWei(this.state.price_of_the_listing, 'ether');
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     await instance_of_marketplace.methods.list_asset(this.props.index, price_in_wei, await instance._address).send({from: accounts[0]})
-    this.setState({loading_flag: false, errorMessage: '', message_content: 'Congratulation your NFT was successfully listed.'})
+    this.setState({loading_flag: false, errorMessage: '', message_content: 'Congratulation your NFT was successfully listed. You might have to wait up to 5 minutes for the changes to be visible. '})
 
     }
 
