@@ -181,7 +181,7 @@ handleSubmission = async (e) => {
                 }}>  </TextArea>
 
               </Form> } {
-                !this.state.is_creator_logged_in  && <p>
+                !this.state.is_creator_logged_in  && <p id="description">
 {this.state.description}
              </p>
               }</Card.Description></Card.Content>
