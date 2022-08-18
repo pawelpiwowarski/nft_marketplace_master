@@ -8,10 +8,6 @@
 
 > Contains various implementations of the API contract described in [interface-blockstore](https://github.com/ipfs/js-ipfs-interfaces/tree/master/packages/interface-blockstore)
 
-## Lead Maintainer <!-- omit in toc -->
-
-[Alex Potsides](https://github.com/achingbrain)
-
 ## Table of Contents <!-- omit in toc -->
 
 - [Implementations](#implementations)
