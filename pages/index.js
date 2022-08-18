@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import Layout from '../components/Layout';
-import { Header, Message, Card, Icon, Image, Container} from 'semantic-ui-react'
+import { Header, Message, Card, Icon, Image } from 'semantic-ui-react'
 import instance from "../etherum_side/instance_of_the_contract";
 import Link from 'next/link'
 import { utils } from "ethers";
@@ -34,8 +34,8 @@ class home_page extends Component {
    
    async componentDidMount() {
   
-    this.setState({array_of_metadatas: this.props.array_of_uris})
-    console.log(process.env.NEXT_PUBLIC_projectId)
+    this.setState({array_of_metadatas: this.props.array_of_uris, page_loading_flag: false,})
+    
 
 
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
@@ -56,7 +56,8 @@ class home_page extends Component {
 
       return this.setState({page_loading_flag: false})
     }
-    this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call()})
+  
+    this.setState({ authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call()})
 
 
      
@@ -73,7 +74,7 @@ class home_page extends Component {
           });
         }
      
-    this.setState({ opensea_url: "https://mumbai.polygonscan.com/token/" + this.props.instance_address, page_loading_flag: false})
+
         }
    
         
