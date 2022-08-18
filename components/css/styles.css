@@ -55,3 +55,9 @@ word-spacing: normal;}
   
   font-size: large;
 }
+
+#rights {
+  font-family: Menlo, monospace;
+  text-align: center;
+color: black;
+}

@@ -22,13 +22,20 @@ const Layout = (props) => {
 
 <ul>
 
- <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Email</li></a>
+ <a style={{color: 'black'}} href="mailto:support@plateau-nft.art"> <li><Icon name="mail"></Icon> Support </li></a>
  <a style={{color: 'black'}}target="_blank" href="https://twitter.com/ArtPlateau"> <li><Icon name="twitter"></Icon> Twitter</li></a>
+ <a style={{color: 'black', hoover: {color: "blue"}}} target="_blank" href={`https://www.instagram.com/plateaunft`}><li><Icon name="instagram"></Icon>Instagram</li></a>  
+
  <a style={{color: 'black', hoover: {color: "violet"}}} target="_blank" href={`https://polygonscan.com/token/${instance._address}`}><li><Icon name="compass"></Icon>PolygonScan</li></a>  
  <a style={{color: 'black', hoover: {color: "blue"}}} target="_blank" href={`https://opensea.io/collection/plateau-nft-art`}><li><Icon name="ship"></Icon>OpenSea</li></a>  
 
 
+
 </ul>
+
+</div>
+<div id="rights">
+ <p>All right reserved Plateau-nft 2022 <Icon name="copyright outline icon"> </Icon></p>
 </div>
         </Container>
     )
