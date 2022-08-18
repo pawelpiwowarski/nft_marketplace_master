@@ -35,8 +35,9 @@ class space extends Component {
     }
 async componentDidMount() {
 
-    this.setState({array_of_metadatas: (await fetch_all_tokens_created_by_a_user(this.props.creator)).assets})
-    console.log(this.state.array_of_metadatas)
+    this.setState({array_of_metadatas: (await fetch_all_tokens_created_by_a_user(this.props.creator)).assets, 
+        title: await fetch_title(this.props.creator), description: await fetch_description(this.props.creator)})
+
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
 
         const provider  = window.ethereum
@@ -46,7 +47,7 @@ async componentDidMount() {
         this.setState({is_chainId_right: chainId == CHAIN_ID})
         const {username, email, url} = await fetch_profile_details(this.state.account_of_the_user)
         this.setState({email,username,profile_picture: profile_url + url})
-        this.setState({title: await fetch_title(this.props.creator), description: await fetch_description(this.props.creator), is_creator_logged_in: accounts[0].toLowerCase() === this.props.creator.toLowerCase(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+        this.setState({ is_creator_logged_in: accounts[0].toLowerCase() === this.props.creator.toLowerCase(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
 
 
         if (!this.state.is_chainId_right) {
