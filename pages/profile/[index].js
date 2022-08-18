@@ -42,7 +42,7 @@ class profile extends Component {
           
             await set_tokens(accounts[0])
 
-            this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call() ,access_token: get_access_token(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({ access_token: get_access_token(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
             const chainId = await provider.request({ method: 'eth_chainId' })
             this.setState({is_chainId_right: chainId == CHAIN_ID})
           
@@ -59,8 +59,13 @@ class profile extends Component {
     this.setState({message_content: "Sorry, this user deos not hold any NFTs ", page_loading_flag: false})
 
     }
- 
     this.setState({page_loading_flag: false})
+
+    if (!this.state.is_chainId_right) {
+      return;
+    }
+
+    this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call()})
     }
 
     state = {
@@ -121,8 +126,7 @@ render() {
         <Layout auth = {this.state.authenication_flag} loading = {!this.state.user_loaded} metamaskflag = {this.state.is_metamask_running} account={this.state.account_of_the_user} >
 { this.state.name && <div>
 
-  {!this.state.is_chainId_right  && <a target="_blank" href='https://polygon.technology/' ><Message color='purple' size='big' 
-        content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
+
 
 <Card color="teal" centered raised size='tiny'>
 
@@ -145,7 +149,8 @@ render() {
   </Card>
 
 </div>}
-
+{!this.state.is_chainId_right  && <a target="_blank" href='https://polygon.technology/' ><Message color='purple' size='big' 
+        content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
 { !this.state.username &&
 <Header as='h2'>The NFTs that belong to the address: <a target="_blank" href= { "https://rinkeby.etherscan.io/address/" + this.props.account}>{this.props.account} </a> </Header>
 }
@@ -176,7 +181,6 @@ export async function getServerSideProps(context) {
   
   let account = context.query.index || context.query.address
   let tokens = (await get_tokens_owned_by_a_user(account)).data.tokens
-  console.log(tokens)
       return {props:{
         account,
         tokens,

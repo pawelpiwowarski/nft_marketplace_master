@@ -47,15 +47,21 @@ async componentDidMount() {
    await set_tokens(accounts[0])
    const chainId = await provider.request({ method: 'eth_chainId' })
    this.setState({is_chainId_right: chainId == CHAIN_ID})
+ 
+
+   this.setState({ access_token: get_access_token(),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
+
+   const instance_address = await nft_creator._address;
+   this.setState({instance_address, opensea_url: "https://opensea.io/collection/plateau-nft-art"})
+
    if (!this.state.is_chainId_right) {
 
     return;
   }
 
-   this.setState({ access_token: get_access_token(),can_user_mint: await nft_creator.methods.Users_Approved_To_Mint(accounts[0]).call(),user_loaded: true, account:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account != undefined)})
+  this.setState({can_user_mint: await nft_creator.methods.Users_Approved_To_Mint(accounts[0]).call()})
   }
-  const instance_address = await nft_creator._address;
-  this.setState({instance_address, opensea_url: "https://opensea.io/collection/plateau-nft-art"})
+
 
 }
 

@@ -44,17 +44,19 @@ async componentDidMount() {
         await set_tokens(accounts[0])
         const chainId = await provider.request({ method: 'eth_chainId' })
         this.setState({is_chainId_right: chainId == CHAIN_ID})
-        if (!this.state.is_chainId_right) {
+        const {username, email, url} = await fetch_profile_details(this.state.account_of_the_user)
+        this.setState({email,username,profile_picture: profile_url + url})
+        this.setState({title: await fetch_title(this.props.creator), description: await fetch_description(this.props.creator), is_creator_logged_in: accounts[0].toLowerCase() === this.props.creator.toLowerCase(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
 
+
+        if (!this.state.is_chainId_right) {
             return;
           }
-        this.setState({  authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call(), is_creator_logged_in: accounts[0].toLowerCase() === this.props.creator.toLowerCase(),account_of_the_user:utils.getAddress(accounts[0]),user_loaded: true, is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+        this.setState({  authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call()})
 
     }
     
-    const {username, email, url} = await fetch_profile_details(this.state.account_of_the_user)
-    this.setState({title: await fetch_title(this.props.creator), description: await fetch_description(this.props.creator)})
-    this.setState({email,username,profile_picture: profile_url + url})
+
 
 }
 

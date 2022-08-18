@@ -75,13 +75,13 @@ class asset extends Component {
 
             await set_tokens(accounts[0])
         
-            this.setState({ authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call(), access_token:  get_access_token(),user_loaded: true,is_chainId_right: chainId == CHAIN_ID, account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
+            this.setState({  access_token:  get_access_token(),user_loaded: true,is_chainId_right: chainId == CHAIN_ID, account_of_the_user:  utils.getAddress(accounts[0]), is_metamask_running: Boolean(this.state.account_of_the_user != undefined)})
             if (!this.state.is_chainId_right) {
                 this.setState({does_user_has_metamask_installed: true}) 
                 return this.setState({asset_info_loaded: true});
               }
    
-            this.setState({address_of_the_marketplace: await instance_of_marketplace._address,
+            this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call(), address_of_the_marketplace: await instance_of_marketplace._address,
                 is_the_user_appproved :await is_user_approved(this.state.account_of_the_user, instance_of_marketplace._address) }
 
 
@@ -348,7 +348,7 @@ render() {
 }
 {
         !this.state.dissmiss_flag  && this.state.does_user_has_metamask_installed && !this.state.is_chainId_right && <Message onDismiss={() => {this.setState({dissmiss_flag: true})}} size='huge' color='purple'> 
-        Please connect to the Polygon network and refresh the page! This site won't be rendered properly unless you do so! </Message>
+        If you wish to interact with the asset please connect to the Polygon network and refresh the page! </Message>
         }
        {this.render_history()}
 
