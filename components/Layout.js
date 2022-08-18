@@ -35,7 +35,7 @@ const Layout = (props) => {
 
 </div>
 <div id="rights">
- <p>All right reserved Plateau-nft 2022 <Icon name="copyright outline icon"> </Icon></p>
+ <p><Icon name="copyright outline"> </Icon>All right reserved Plateau-nft 2022 </p>
 </div>
         </Container>
     )

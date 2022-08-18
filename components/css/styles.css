@@ -60,4 +60,6 @@ word-spacing: normal;}
   font-family: Menlo, monospace;
   text-align: center;
 color: black;
+font-size: small;
+font-weight: 1000;
 }
