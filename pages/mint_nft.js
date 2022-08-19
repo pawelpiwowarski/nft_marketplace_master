@@ -196,7 +196,7 @@ return (
         content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
   <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
-  <Header as='h3' ><a href={"https://rinkeby.etherscan.io/token/" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
+  <Header as='h3' ><a href={"https://polygonscan.com/token" + this.state.instance_address} target="_blank"> {this.state.instance_address} </a></Header>  
   <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}> 
   <Form.Field>
   <label>Name of your NFT </label> 
