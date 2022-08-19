@@ -10,7 +10,12 @@ ul {
       grid-auto-flow: column;
     }
   }
-  
+  #modal {
+    margin: auto;
+  width: 100%;
+
+  padding: 10px;
+  }
 
   #menu {
     color: white;
@@ -64,3 +69,7 @@ color: black;
 font-size: small;
 font-weight: 1000;
 }
+
+#preview { 
+  text-align: center;
+padding-bottom: 20px;}

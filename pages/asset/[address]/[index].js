@@ -80,9 +80,9 @@ class asset extends Component {
                 this.setState({does_user_has_metamask_installed: true}) 
                 return this.setState({asset_info_loaded: true});
               }
-   
-            this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call(), address_of_the_marketplace: await instance_of_marketplace._address,
-                is_the_user_appproved :await is_user_approved(this.state.account_of_the_user, instance_of_marketplace._address) }
+              this.setState({address_of_the_marketplace: await instance_of_marketplace._address })
+            this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call(),
+                is_the_user_appproved :await instance.methods.isApprovedForAll(accounts[0], this.state.address_of_the_marketplace).call() }
 
 
             ) 

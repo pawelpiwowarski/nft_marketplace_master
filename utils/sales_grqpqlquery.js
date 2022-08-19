@@ -1,4 +1,4 @@
-const url = 'https://api.thegraph.com/subgraphs/name/pawelpiwowarski/polygon-plateau-sales' 
+const url = 'https://api.thegraph.com/subgraphs/name/pawelpiwowarski/polygonplateausalesv2' 
 
 import { common_fetch } from "./grapql_query"
 

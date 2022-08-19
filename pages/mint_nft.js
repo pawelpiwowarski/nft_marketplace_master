@@ -11,7 +11,7 @@ import {get_access_token} from '../utils/access_token'
 import { post_centralized_metadata } from "../utils/minting/post_centralized_metadata";
 import { create_new_space } from "../utils/space/space_fetch";
 import {CHAIN_ID} from '../etherum_side/addresses'
-
+import { Preview_modal } from "../components/mint_utils/preview_modal";
 class mint_nft extends Component 
 {
 
@@ -153,6 +153,13 @@ handleSubmission = async (e) => {
     }
     this.setState({file_type: files[0].type})
     this.setState({buffer: files[0]})
+
+    let file_reader = new FileReader
+    file_reader.readAsDataURL(files[0])
+
+    file_reader.onloadend = ()=> {
+      this.setState({buffer_url:file_reader.result})
+    }
     this.setState({ is_content_loaded: true, content_loading_flag: false})
    
 
@@ -201,7 +208,7 @@ return (
   <Input value={this.state.description_of_the_nft} onChange={event => this.setState({description_of_the_nft: event.target.value})}name="description" />
   </Form.Field>
   <Form.Field>
-  
+
   <label> Image of your NFT (jpg,   jpeg, png,  gif, mp4). Max size 5Mb </label>
 
                 <Button
@@ -227,12 +234,21 @@ return (
 
 
 
-  
-  
+
+
+                { this.state.name_of_the_nft && this.state.description_of_the_nft && this.state.buffer_url &&
+                              <div id="preview" > 
+              <Preview_modal image = {
+                this.state.buffer_url
+        
+              }name= {this.state.name_of_the_nft} description = {this.state.description_of_the_nft} creator = {this.state.account} owner = {this.state.account}></Preview_modal
+                >
+              </div> 
+                }
  <Button  size= 'large' disabled={!this.state.is_content_loaded} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
 
  
- 
+
 <User_cant_mint_info user_cannot_mint= {!this.state.is_metamask_running || this.state.can_user_mint}/>
   
   {!this.state.is_metamask_running &&
@@ -250,7 +266,6 @@ return (
    Check minted NFTS on Opensea.
     </a>
   </Header>
-
 
 
  </Layout>

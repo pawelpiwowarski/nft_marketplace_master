@@ -61,11 +61,11 @@ class profile extends Component {
     }
     this.setState({page_loading_flag: false})
 
-    if (!this.state.is_chainId_right) {
+    if (!this.state.is_chainId_right ) {
       return;
     }
 
-    this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(accounts[0]).call()})
+    this.setState({authenication_flag: await instance.methods.Users_Approved_To_Mint(this.state.account_of_the_user).call()})
     }
 
     state = {
@@ -177,9 +177,9 @@ render() {
 export async function getServerSideProps(context) {
     
 
-    
+  console.log(context.query)
   
-  let account = context.query.index || context.query.address
+  let account =  context.query.address || context.query.index
   let tokens = (await get_tokens_owned_by_a_user(account)).data.tokens
       return {props:{
         account,
