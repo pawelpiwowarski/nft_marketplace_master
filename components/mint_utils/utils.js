@@ -12,7 +12,8 @@ if (!props.user_cannot_mint)
 return (
         <Message size="huge" color="teal"> In order to mint an artwork, your address will need to become authenicated.
         <br></br>
-        In order to do so, you need to authenticate your address in the account settings tab in the right side menu.    </Message>
+        In order to do so, you need to authenticate your address in the account settings tab in the right side menu, you can also submit your 
+        portfolio via this   <a target="_blank" href="https://forms.gle/L5dioDSCsAJZPCEA9"> link</a> to become authenicated free of charge. </Message>
 
 )
 }

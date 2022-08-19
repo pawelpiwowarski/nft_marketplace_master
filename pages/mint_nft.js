@@ -1,7 +1,7 @@
 
 import React, { Component } from "react"; 
 import nft_creator from '../etherum_side/instance_of_the_contract'
-import {Form, Button, Input, Header, Message, Icon} from 'semantic-ui-react'
+import {Form, Button, Input, Header, Message, Checkbox} from 'semantic-ui-react'
 import Layout from '../components/Layout';
 import { utils } from "ethers";
 import ipfs from "../etherum_side/ipfs";
@@ -194,7 +194,7 @@ return (
 <Layout  loading ={!this.state.user_loaded} metamaskflag = {this.state.is_metamask_running} account={this.state.account} auth={this.state.can_user_mint}>
 {!this.state.is_chainId_right  && <a target="_blank" href='https://polygon.technology/' ><Message color='purple' size='big' 
         content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
-  <Header as='h1'> Mint your very own NFT!  Add a name, description and some cool artwork!</Header>
+  <Header as='h1'> Mint your very own ERC1155 NFT !  Add a name, description and some cool artwork!</Header>
   <Header as='h2'> Address of the NFT smart contract: </Header>
   <Header as='h3' ><a href={`https://polygonscan.com/token/${this.state.instance_address}`} target="_blank"> {this.state.instance_address} </a></Header>  
   <Form onSubmit={this.onFormSubmit} error={!!this.state.error_message}> 
@@ -228,9 +228,16 @@ return (
                   hidden
                   onChange={this.handleSubmission}
                 />
-              
-              </Form.Field>
+                <br></br>
+                <br></br>
+                            <Checkbox 
+                            onClick={()=> {
+                              this.setState({copyright_check: true})
+                            }}
+                            disabled = {!this.state.can_user_mint}
+                             label='I acknowledge that whis work is my own creation. ' />
 
+              </Form.Field>
 
 
 
@@ -245,7 +252,7 @@ return (
                 >
               </div> 
                 }
- <Button  size= 'large' disabled={!this.state.is_content_loaded} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
+ <Button  size= 'large' slider disabled={!this.state.is_content_loaded || !this.state.copyright_check} loading={this.state.loading_flag} type="submit"   primary>Sumbit NFT metadata</Button>
 
  
 
