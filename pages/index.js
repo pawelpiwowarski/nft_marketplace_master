@@ -14,6 +14,8 @@ class home_page extends Component {
     
    state = {
     
+
+    portfolio_message: false,
     index: 0,
     loadingflag : true,
     opensea_urls: '',
@@ -122,7 +124,10 @@ render(){
         {!this.state.is_chainId_right &&  this.state.does_user_has_metamask_installed && <a target="_blank" href='https://polygon.technology/' ><Message color='purple' size='big' 
         content="In order to access the marketplace, you need to connect your Metamask wallet to the Polygon network. The marketplace will not work correctly unless you switch the networks."/></a> }
         {!this.state.does_user_has_metamask_installed && !this.state.page_loading_flag && this.metamaskinfo()}
-  
+        {!this.state.portfolio_message && 
+          <Message style= {{fontWeight: "50px"}}size="massive" onDismiss={()=> {
+          this.setState({portfolio_message: true})
+        }} color="teal"><a target="_blank" href="https://medium.com/@support_11984/call-for-artists-32c254f01289">Become a part of Plateau marketplace submit your portfolio today! </a> </Message> }
   
         <Header icon textAlign ="center" color='teal' as='h1'>   Welcome to plateau-nft.art! Simple minimalistic NFT marketplace and minting framework working on the Polygon network.</Header>
         <Header style={{color: 'teal'}}textAlign="left" color="teal" as="h2"> Plateau Spotlight Collections: </Header>
