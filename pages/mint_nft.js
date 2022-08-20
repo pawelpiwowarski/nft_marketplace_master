@@ -263,7 +263,7 @@ return (
   }
   <Message error header="Oops!" content={this.state.error_message}  />
   { this.state.was_asset_subimitted &&
-  <Message color="green"  positive> Congratulation your NFT was sucesfully minted. You can see it by going to the your NFT tab in account settings.</Message>
+  <Message color="green" size="big" positive> Congratulation your NFT was sucesfully minted. Please wait around 2 minutes for the blockchain information to sync with our servers. </Message>
   }
   
  </Form >
