@@ -15,7 +15,7 @@ import { set_tokens} from "../../../utils/autheniticate";
 import {get_access_token} from '../../../utils/access_token'
 import {CHAIN_ID} from '../../../etherum_side/addresses'
 import { sale_fetch } from "../../../utils/sale_fetch/sale_fetch";
-
+import {get_price_in_eur, get_price_in_usd} from '../../../utils/asset/price_in_eur'
 class asset extends Component {
 
 
@@ -47,7 +47,6 @@ class asset extends Component {
     async componentDidMount() {
 
         let owner = (await fetch_transaction_history_from_the_graph(this.props.index)).data.tokens[0].owner.id
-        console.log(owner)
         try {
         
  
@@ -99,11 +98,10 @@ class asset extends Component {
         
 
         const {price, seller} = await instance_of_marketplace.methods.Listing_details(instance._address,this.props.index).call()
-
-        this.setState({price: price, owner: owner, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
+        
+        this.setState({price: price, owner: owner, price_in_eur: await get_price_in_eur(price),price_in_usd: await get_price_in_usd(price),is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
   
-        console.log(this.state.is_the_owner_logged_in)
-        console.log(this.state.price)
+  
         if (price != 0) // Asset is listed 
         {
             this.setState({owner: seller, is_the_owner_logged_in: Boolean(this.state.account_of_the_user.toLowerCase() == this.state.owner.toLowerCase())})
@@ -143,9 +141,14 @@ is_asset_listed() {
     {
     
         return (
+            <div>
         <Header size="huge" color="teal">
-        Current Price:  {Web3.utils.fromWei(this.state.price, 'ether')} MATIC
+        Current Price:  
         </Header>
+        <Header size="huge" color="teal"> {Web3.utils.fromWei(this.state.price, 'ether')} MATIC </Header>
+        <Header size="medium" color="teal"> {`${this.state.price_in_eur} EUR | ${this.state.price_in_usd} USD`}</Header>
+        <br></br>
+        </div>
         )
     }
 
@@ -180,9 +183,9 @@ buy_the_asset = async()=> {
         
     const {events: {Sell}} = await instance_of_marketplace.methods.buy_asset(this.props.index,  await instance._address).send({from: accounts[0], value: this.state.price})
 
-    console.log(Sell)
+
     const response = await sale_fetch(Sell)
-    console.log(response)
+
 
     this.setState({loading_flag: false, error_message: '', message_content: 'Congratulation you have successfully bought an NFT.'})
 
@@ -368,7 +371,7 @@ export async function getServerSideProps(context) {
           let index = context.query.index_of_the_nft || context.query.index
   
 
-          console.log(context.query)
+
 
 
     return {
