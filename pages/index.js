@@ -172,6 +172,12 @@ class home_page extends Component {
           </Message>
         )}
 
+        <Message style={{ fontWeight: "30px" }} size="massive" color="red">
+          The marketplace is currently migrating to a new API endpoint, all
+          visible problems like fetching pictures should be resolved in the next
+          24h. Thank you for your patience.{" "}
+        </Message>
+
         <Header icon textAlign="center" color="teal" as="h1">
           {" "}
           Welcome to plateau-nft.art! Simple minimalistic NFT marketplace and
