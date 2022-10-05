@@ -1,1 +1,1 @@
-module.exports = "http://01234.ddns.net";
+module.exports = "http://01234.ddns.net/";
