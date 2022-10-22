@@ -9,7 +9,7 @@ import { get_access_token } from "../utils/access_token";
 import { fetch_all_spaces } from "../utils/space/space_fetch";
 import { CHAIN_ID } from "../etherum_side/addresses";
 import url from "../utils/fetch";
-
+import render_outsiders from "../components/outside_collections/render_outsiders";
 class home_page extends Component {
   state = {
     portfolio_message: false,
@@ -29,6 +29,7 @@ class home_page extends Component {
   };
 
   async componentDidMount() {
+    render_outsiders();
     this.setState({
       array_of_metadatas: this.props.array_of_uris,
       page_loading_flag: false,
@@ -179,7 +180,7 @@ class home_page extends Component {
         </Header>
         <Header style={{ color: "teal" }} textAlign="left" color="teal" as="h2">
           {" "}
-          Plateau Spotlight Collections:{" "}
+          Plateau Collections:{" "}
         </Header>
         {this.state.page_loading_flag && (
           <Message color="teal" size="huge" icon>
@@ -191,6 +192,10 @@ class home_page extends Component {
           </Message>
         )}
         {this.renderNFT()}
+        <Header style={{ color: "teal" }} textAlign="left" color="teal" as="h2">
+          {" "}
+          All Collections:{" "}
+        </Header>
       </Layout>
     );
   }
