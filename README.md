@@ -2,7 +2,7 @@
 
 # Welcome to my project 
 # This is Plateau NFT marketplace 
-# Simple NFT marketplace and minting framework working on Ethereum's Rinkeby test network.
+# Simple NFT marketplace and minting framework working on the Polygon.
 # To run your local version of this marketplace:
 # 1) Download the source code
 # 2) Run npm init to download dependancies
