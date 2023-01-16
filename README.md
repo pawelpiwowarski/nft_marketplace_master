@@ -1,4 +1,4 @@
-# 🅟🅛🅐🅣🅔🅤- NFT Marketplace ⛰️
+# 🅟🅛🅐🅣🅔🅤 NFT Marketplace ⛰️
 
 A decentralized application for minting and trading unique NFTs on the Polygon blockchain.
 
