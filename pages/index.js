@@ -29,7 +29,6 @@ class home_page extends Component {
   };
 
   async componentDidMount() {
-    render_outsiders();
     this.setState({
       array_of_metadatas: this.props.array_of_uris,
       page_loading_flag: false,

@@ -10,7 +10,7 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
 } else {
   // We are on the server *OR* the user is not running metamask
   const provider = new Web3.providers.WebsocketProvider(
-    "wss://solemn-sleek-spring.matic.discover.quiknode.pro/1bcfe54a925848e8c7d9c23ac21c48bb5855c84e/"
+    "wss://polygon-mainnet.g.alchemy.com/v2/KLbfkqsd1Rh4Gm8yBeFAs-qVAmhgTWfa"
   );
   web3 = new Web3(provider);
 }

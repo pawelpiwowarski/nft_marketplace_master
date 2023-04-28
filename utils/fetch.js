@@ -1,1 +1,1 @@
-module.exports = "https://01234.ddns.net:3000/";
+module.exports = "https://plateau-api.onrender.com/";
